@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">LocaWebMailApp</string>
+    <string name="calendar_organizer_you">You</string>
+    <string name="calendar_organizer_text">Organizer</string>
+    <string name="calendar_save_button">Save</string>
+    <string name="calendar_update_button">Update</string>
+    <string name="calendar_event_placeholder_title">Give the event a title</string>
+    <string name="calendar_task_placeholder_title">Give the task a title</string>
+    <string name="calendar_event_participants">Participants</string>
+    <string name="calendar_all_day">All day</string>
+    <string name="calendar_choose_color">Choose a color</string>
+    <string name="calendar_event_description_text">Describe the event</string>
+    <string name="calendar_task_description_text">Describe the task</string>
+    <string name="calendar_dropdown_task">Task</string>
+    <string name="calendar_dropdown_event">Event</string>
+    <string name="calendar_color_red">Red</string>
+    <string name="calendar_color_blue">Blue</string>
+    <string name="calendar_color_yellow">Yellow</string>
+    <string name="calendar_color_Pink">Pink</string>
+    <string name="calendar_event_people_selector_placeholder">Search guest</string>
+    <string name="calendar_repeat_selector_no">Do not repeat</string>
+    <string name="calendar_repeat_selector_all_day">Every day</string>
+    <string name="calendar_time_selector_title">Select time</string>
+    <string name="calendar_ok_button">Ok</string>
+    <string name="calendar_cancel_button">Cancel</string>
+    <string name="navbar_modal_all_accounts">All accounts</string>
+    <string name="navbar_modal_main">Main</string>
+    <string name="navbar_modal_sent">Sent</string>
+    <string name="navbar_modal_favorites">Favorites</string>
+    <string name="navbar_modal_drafts">Drafts</string>
+    <string name="navbar_modal_calendar">Calendar</string>
+    <string name="mail_main_searchbar">Search in email</string>
+    <string name="navbar_modal_archive">Filed</string>
+    <string name="navbar_modal_bin">Bin</string>
+    <string name="navbar_modal_spam">Spam</string>
+</resources>

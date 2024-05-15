@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LocaWebMailApp</string>
+    <string name="calendar_organizer_you">Você</string>
+    <string name="calendar_organizer_text">Organizador</string>
+    <string name="calendar_save_button">Salvar</string>
+    <string name="calendar_update_button">Atualizar</string>
+    <string name="calendar_event_placeholder_title">Dê um título para o evento</string>
+    <string name="calendar_task_placeholder_title">Dê um título á tarefa</string>
+    <string name="calendar_event_participants">Participantes</string>
+    <string name="calendar_all_day">Todo o dia</string>
+    <string name="calendar_choose_color">Escolha uma cor</string>
+    <string name="calendar_event_description_text">Descreva o evento</string>
+    <string name="calendar_task_description_text">Descreva a tarefa</string>
+    <string name="calendar_dropdown_task">Tarefa</string>
+    <string name="calendar_dropdown_event">Evento</string>
+    <string name="calendar_color_red">Vermelho</string>
+    <string name="calendar_color_blue">Azul</string>
+    <string name="calendar_color_yellow">Amarelo</string>
+    <string name="calendar_color_Pink">Rosa</string>
+    <string name="calendar_event_people_selector_placeholder">Buscar convidado</string>
+    <string name="calendar_repeat_selector_no">Não repetir</string>
+    <string name="calendar_repeat_selector_all_day">Todos os dias</string>
+    <string name="calendar_time_selector_title">Selecione o horário</string>
+    <string name="calendar_ok_button">Ok</string>
+    <string name="calendar_cancel_button">Cancelar</string>
+    <string name="navbar_modal_all_accounts">Todas as contas</string>
+    <string name="navbar_modal_main">Principal</string>
+    <string name="navbar_modal_sent">Enviados</string>
+    <string name="navbar_modal_favorites">Favoritos</string>
+    <string name="navbar_modal_drafts">Rascunhos</string>
+    <string name="navbar_modal_calendar">Calendário</string>
+    <string name="mail_main_searchbar">Pesquisar no email</string>
+    <string name="navbar_modal_archive">Arquivado</string>
+    <string name="navbar_modal_bin">Lixeira</string>
+    <string name="navbar_modal_spam">Spam</string>
+</resources>
