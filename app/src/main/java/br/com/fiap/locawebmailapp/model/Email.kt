@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter
     ])
 data class Email(
     @PrimaryKey(autoGenerate = true) var id_email: Long = 0,
-    var id_usuario: Long = 1,
+    var id_usuario: Long = 0,
     var remetente: String = "",
     var destinatario: String = "",
     var cc: String = "",

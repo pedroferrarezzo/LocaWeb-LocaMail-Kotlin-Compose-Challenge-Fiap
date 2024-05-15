@@ -174,7 +174,13 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
                 modifier = Modifier
                     .padding(8.dp)
                     .fillMaxWidth(),
-                onClickFirstButton = { navController.popBackStack() },
+                onClickFirstButton = {
+                    val previousBackStackEntry = navController.previousBackStackEntry
+                    if (previousBackStackEntry != null) {
+                        previousBackStackEntry.savedStateHandle.set("data", agenda.data)
+                    }
+                    navController.popBackStack()
+                                     },
                 onClickSecondButton = {
                     isEdit.value = true
                 },
@@ -195,9 +201,9 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
                         agenda.cor = selectedColor.value
                         agenda.data =
                             if (millisToLocalDate.toString().equals("null")) LocalDate.now()
-                                .toString() else millisToLocalDate!!.plusDays(1).toString()
+                                .toString() else millisToLocalDate!!.toString()
 
-                        if (selectedRepeat.value == agenda.repeticao && selectedDate.value == stringToDate(initialDate)) {
+                        if (selectedRepeat.value == agenda.repeticao) {
 
                             agenda.repeticao = selectedRepeat.value
                             agendaConvidado.id_agenda = agenda.id_agenda
@@ -220,7 +226,6 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
                                     )
                                 }
                             }
-
                         }
 
                         else if (agenda.repeticao == 2 && selectedDate.value != stringToDate(initialDate)) {
@@ -301,6 +306,11 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
                                     }
                                 }
                             }
+                        }
+                        val previousBackStackEntry = navController.previousBackStackEntry
+                        if (previousBackStackEntry != null) {
+                            previousBackStackEntry.savedStateHandle.set("data", if (millisToLocalDate.toString().equals("null")) LocalDate.now()
+                                .toString() else millisToLocalDate!!.toString())
                         }
                         navController.popBackStack()
                     }
@@ -603,6 +613,10 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
                 agendaConvidadoRepository.excluirPorIdAgenda(agenda.id_agenda)
 
                 agendaRepository.excluiAgenda(agenda)
+                val previousBackStackEntry = navController.previousBackStackEntry
+                if (previousBackStackEntry != null) {
+                    previousBackStackEntry.savedStateHandle.set("data", agenda.data)
+                }
                 navController.popBackStack()
             },
             colors = ButtonDefaults.buttonColors(

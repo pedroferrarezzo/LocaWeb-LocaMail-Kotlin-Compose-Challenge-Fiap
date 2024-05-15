@@ -55,6 +55,7 @@ import br.com.fiap.locawebmailapp.components.general.RowIconButton
 import br.com.fiap.locawebmailapp.database.repository.AgendaConvidadoRepository
 import br.com.fiap.locawebmailapp.database.repository.AgendaRepository
 import br.com.fiap.locawebmailapp.database.repository.ConvidadoRepository
+import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.Agenda
 import br.com.fiap.locawebmailapp.model.AgendaConvidado
 import br.com.fiap.locawebmailapp.model.Convidado
@@ -109,6 +110,11 @@ fun CriaEventoScreen(navController: NavController) {
         mutableStateOf(dateToCompleteStringDate(LocalDate.now()))
     }
 
+    val usuarioRepository = UsuarioRepository(LocalContext.current)
+    val usuarioSelecionado = remember {
+        mutableStateOf(usuarioRepository.listarUsuarioSelecionado())
+    }
+
     val openDialogColorPicker = remember { mutableStateOf(false) }
     val selectedColor = remember { mutableStateOf(1) }
 
@@ -149,7 +155,13 @@ fun CriaEventoScreen(navController: NavController) {
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth(),
-            onClickFirstButton = { navController.popBackStack() },
+            onClickFirstButton = {
+                val previousBackStackEntry = navController.previousBackStackEntry
+                if (previousBackStackEntry != null) {
+                    previousBackStackEntry.savedStateHandle.set("data", LocalDate.now().toString())
+                }
+                navController.popBackStack()
+                                 },
             onClickSecondButton = {
                 if (taskTitle.value.isEmpty()) {
                     isErrorTitle.value = true
@@ -160,11 +172,12 @@ fun CriaEventoScreen(navController: NavController) {
                     agenda.proprietario = "1"
                     agenda.tarefa = true
                     agenda.data = if (millisToLocalDate.toString().equals("null")) LocalDate.now()
-                        .toString() else millisToLocalDate!!.plusDays(1).toString()
+                        .toString() else millisToLocalDate!!.toString()
                     agenda.horario = time.value
                     agenda.cor = selectedColor.value
                     agenda.repeticao = selectedRepeat.value
                     agenda.tarefa = false
+                    agenda.id_usuario = usuarioSelecionado.value.id_usuario
 
                     if (agenda.repeticao == 2) {
                         if (agendaRepository.listarGrupoRepeticao().isNotEmpty()) {
@@ -195,6 +208,11 @@ fun CriaEventoScreen(navController: NavController) {
                         }
                     }
 
+                    val previousBackStackEntry = navController.previousBackStackEntry
+                    if (previousBackStackEntry != null) {
+                        previousBackStackEntry.savedStateHandle.set("data", if (millisToLocalDate.toString().equals("null")) LocalDate.now()
+                            .toString() else millisToLocalDate!!.toString())
+                    }
                     navController.popBackStack()
                 }
             },

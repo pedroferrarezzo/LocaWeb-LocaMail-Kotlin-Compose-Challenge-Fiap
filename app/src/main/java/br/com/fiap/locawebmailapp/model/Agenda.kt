@@ -3,15 +3,24 @@ package br.com.fiap.locawebmailapp.model
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.time.LocalDate
 
 @Immutable
-@Entity(tableName = "T_LCW_AGENDA")
+@Entity(tableName = "T_LCW_AGENDA",
+    foreignKeys =
+    [ForeignKey(
+        entity = Usuario::class,
+        childColumns = ["id_usuario"],
+        parentColumns = ["id_usuario"]
+    )
+    ])
 data class Agenda(
     @PrimaryKey(autoGenerate = true) var id_agenda: Long = 0,
     var nome: String = "",
     var descritivo: String = "",
+    var id_usuario: Long = 0,
     var cor: Int = 0,
     var localizacao: String = "",
     var notificacao: Int = 0,

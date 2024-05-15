@@ -33,4 +33,5 @@
     <string name="navbar_modal_archive">Filed</string>
     <string name="navbar_modal_bin">Bin</string>
     <string name="navbar_modal_spam">Spam</string>
+    <string name="calendar_main_searchbar">Search activities</string>
 </resources>

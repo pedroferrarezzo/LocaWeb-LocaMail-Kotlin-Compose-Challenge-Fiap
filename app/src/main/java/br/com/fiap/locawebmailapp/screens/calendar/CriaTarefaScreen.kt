@@ -50,6 +50,7 @@ import br.com.fiap.locawebmailapp.components.calendar.TextFieldCalendar
 import br.com.fiap.locawebmailapp.components.calendar.TimeSelectorDialog
 import br.com.fiap.locawebmailapp.components.general.RowIconButton
 import br.com.fiap.locawebmailapp.database.repository.AgendaRepository
+import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.Agenda
 import br.com.fiap.locawebmailapp.utils.convertMillisToLocalDate
 import br.com.fiap.locawebmailapp.utils.dateToCompleteStringDate
@@ -109,6 +110,10 @@ fun CriaTarefaScreen(navController: NavController) {
     val selectedRepeat = remember { mutableStateOf(1) }
 
     val agendaRepository = AgendaRepository(LocalContext.current)
+    val usuarioRepository = UsuarioRepository(LocalContext.current)
+    val usuarioSelecionado = remember {
+        mutableStateOf(usuarioRepository.listarUsuarioSelecionado())
+    }
     val agenda = Agenda()
 
     val isErrorTitle = remember { mutableStateOf(false) }
@@ -122,7 +127,13 @@ fun CriaTarefaScreen(navController: NavController) {
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth(),
-            onClickFirstButton = { navController.popBackStack() },
+            onClickFirstButton = {
+                val previousBackStackEntry = navController.previousBackStackEntry
+                if (previousBackStackEntry != null) {
+                    previousBackStackEntry.savedStateHandle.set("data", LocalDate.now().toString())
+                }
+                navController.popBackStack()
+                                 },
             onClickSecondButton = {
                 if (taskTitle.value.isEmpty()) {
                     isErrorTitle.value = true
@@ -133,10 +144,11 @@ fun CriaTarefaScreen(navController: NavController) {
                     agenda.proprietario = "1"
                     agenda.tarefa = true
                     agenda.data = if (millisToLocalDate.toString().equals("null")) LocalDate.now()
-                        .toString() else millisToLocalDate!!.plusDays(1).toString()
+                        .toString() else millisToLocalDate!!.toString()
                     agenda.horario = time.value
                     agenda.cor = selectedColor.value
                     agenda.repeticao = selectedRepeat.value
+                    agenda.id_usuario = usuarioSelecionado.value.id_usuario
 
 
                     if (agenda.repeticao == 2) {
@@ -153,7 +165,11 @@ fun CriaTarefaScreen(navController: NavController) {
                         agendaRepository.criarAgenda(agenda)
 
                     }
-
+                    val previousBackStackEntry = navController.previousBackStackEntry
+                    if (previousBackStackEntry != null) {
+                        previousBackStackEntry.savedStateHandle.set("data", if (millisToLocalDate.toString().equals("null")) LocalDate.now()
+                            .toString() else millisToLocalDate!!.toString())
+                    }
                     navController.popBackStack()
                 }
             },

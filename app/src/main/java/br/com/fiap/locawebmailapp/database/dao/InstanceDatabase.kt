@@ -12,7 +12,7 @@ import br.com.fiap.locawebmailapp.model.Convidado
 import br.com.fiap.locawebmailapp.model.Email
 import br.com.fiap.locawebmailapp.model.Usuario
 
-@Database(entities = [Agenda::class, Convidado::class, AgendaConvidado::class, Email::class, Anexo::class, Usuario::class, Alteracao::class], version = 20)
+@Database(entities = [Agenda::class, Convidado::class, AgendaConvidado::class, Email::class, Anexo::class, Usuario::class, Alteracao::class], version = 21)
 abstract class InstanceDatabase : RoomDatabase() {
 
     abstract fun agendaDao(): AgendaDao

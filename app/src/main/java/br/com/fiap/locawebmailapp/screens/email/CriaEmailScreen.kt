@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -421,16 +422,19 @@ fun CriaEmailScreen(navController: NavController) {
                         contentColor = colorResource(id = R.color.white)
                     ),
                     shape = RoundedCornerShape(5.dp),
-                    modifier = Modifier.padding(horizontal = 5.dp)
+                    modifier = Modifier.padding(horizontal = 5.dp),
+                    contentPadding = PaddingValues(2.dp)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = destinatario)
+                        Text(
+                            text = destinatario,
+                            fontSize = 10.sp)
                         Icon(
                             imageVector = Icons.Filled.Clear,
                             contentDescription = "",
-                            modifier = Modifier.padding(start = 2.dp)
+                            modifier = Modifier.padding(start = 2.dp).width(15.dp).height(15.dp)
                         )
                     }
                 }
@@ -508,7 +512,8 @@ fun CriaEmailScreen(navController: NavController) {
                             contentColor = colorResource(id = R.color.white)
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        modifier = Modifier.padding(horizontal = 5.dp)
+                        modifier = Modifier.padding(horizontal = 5.dp),
+                        contentPadding = PaddingValues(2.dp)
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
@@ -517,7 +522,7 @@ fun CriaEmailScreen(navController: NavController) {
                             Icon(
                                 imageVector = Icons.Filled.Clear,
                                 contentDescription = "",
-                                modifier = Modifier.padding(start = 2.dp)
+                                modifier = Modifier.padding(start = 2.dp).width(15.dp).height(15.dp)
                             )
                         }
                     }
@@ -593,7 +598,8 @@ fun CriaEmailScreen(navController: NavController) {
                             contentColor = colorResource(id = R.color.white)
                         ),
                         shape = RoundedCornerShape(5.dp),
-                        modifier = Modifier.padding(horizontal = 5.dp)
+                        modifier = Modifier.padding(horizontal = 5.dp),
+                        contentPadding = PaddingValues(2.dp)
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
@@ -602,7 +608,7 @@ fun CriaEmailScreen(navController: NavController) {
                             Icon(
                                 imageVector = Icons.Filled.Clear,
                                 contentDescription = "",
-                                modifier = Modifier.padding(start = 2.dp)
+                                modifier = Modifier.padding(start = 2.dp).width(15.dp).height(15.dp)
                             )
                         }
                     }

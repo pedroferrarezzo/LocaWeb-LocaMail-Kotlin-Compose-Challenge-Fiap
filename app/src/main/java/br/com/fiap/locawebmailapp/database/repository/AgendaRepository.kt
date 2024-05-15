@@ -13,12 +13,12 @@ class AgendaRepository(context: Context) {
         return agendaDao.criarAgenda(agenda)
     }
 
-    fun listarAgendaPorDia(data: String): List<Agenda> {
-        return agendaDao.listarAgendaPorDia(data)
+    fun listarAgendaPorDia(data: String, id_usuario: Long): List<Agenda> {
+        return agendaDao.listarAgendaPorDia(data, id_usuario)
     }
 
-    fun listarCorAgendaPorDia(data: String): List<AgendaCor> {
-        return agendaDao.listarCorAgendaPorDia(data)
+    fun listarCorAgendaPorDia(data: String, id_usuario: Long): List<AgendaCor> {
+        return agendaDao.listarCorAgendaPorDia(data, id_usuario)
     }
 
     fun listarGrupoRepeticao(): List<AgendaGrupoRepeticao> {

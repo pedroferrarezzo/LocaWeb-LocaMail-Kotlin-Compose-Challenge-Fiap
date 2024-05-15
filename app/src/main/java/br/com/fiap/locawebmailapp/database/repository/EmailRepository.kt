@@ -25,15 +25,17 @@ class EmailRepository(context: Context) {
 
         for (email in emailDao.listarTodosEmails()) {
 
-            val idRemetente = usuarioRepository.retornaUsarioPorEmail(email.email.remetente).id_usuario
+            val usuario = usuarioRepository.retornaUsarioPorEmail(email.email.remetente)
 
-            if (listTodosEmails.isNotEmpty()) {
+            val idRemetente = if (usuario != null) usuario.id_usuario else null
+
+            if (listTodosEmails.isNotEmpty() && idRemetente != null) {
                 if (email.alteracao.alt_id_usuario != idRemetente && listTodosEmails.last().alteracao.alt_id_email != email.alteracao.alt_id_email) {
                     listTodosEmails.add(email)
                 }
             }
 
-            else {
+            else if (idRemetente != null) {
                 if (email.alteracao.alt_id_usuario != idRemetente) {
                     listTodosEmails.add(email)
                 }

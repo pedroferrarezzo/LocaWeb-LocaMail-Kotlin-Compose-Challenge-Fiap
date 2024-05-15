@@ -199,23 +199,29 @@ fun EMailTodasContasScreen(navController: NavController) {
                                 ) + stringParaLista(it.email.cco))) {
 
                                     if (destinatario.isNotBlank()) {
-                                        val idDestinatario =
-                                            usuarioRepository.retornaUsarioPorEmail(destinatario).id_usuario
-                                        val alteracao =
-                                            alteracaoRepository.listarAlteracaoPorIdEmailEIdUsuario(
-                                                it.email.id_email,
-                                                idDestinatario
-                                            )
+                                        val usuario =
+                                            usuarioRepository.retornaUsarioPorEmail(destinatario)
 
-                                        if (alteracao != null) {
-                                            isImportant.value =
-                                                alteracaoRepository.verificarImportantePorIdEmailEIdUsuario(
+                                        val idDestinatario =
+                                            if (usuario != null) usuario.id_usuario else null
+
+                                        if (idDestinatario != null) {
+                                            val alteracao =
+                                                alteracaoRepository.listarAlteracaoPorIdEmailEIdUsuario(
                                                     it.email.id_email,
                                                     idDestinatario
                                                 )
 
-                                            if (!isImportant.value) {
-                                                break
+                                            if (alteracao != null) {
+                                                isImportant.value =
+                                                    alteracaoRepository.verificarImportantePorIdEmailEIdUsuario(
+                                                        it.email.id_email,
+                                                        idDestinatario
+                                                    )
+
+                                                if (!isImportant.value) {
+                                                    break
+                                                }
                                             }
                                         }
                                     }
@@ -230,23 +236,29 @@ fun EMailTodasContasScreen(navController: NavController) {
                                 ) + stringParaLista(it.email.cco))) {
 
                                     if (destinatario.isNotBlank()) {
-                                        val idDestinatario =
-                                            usuarioRepository.retornaUsarioPorEmail(destinatario).id_usuario
-                                        val alteracao =
-                                            alteracaoRepository.listarAlteracaoPorIdEmailEIdUsuario(
-                                                it.email.id_email,
-                                                idDestinatario
-                                            )
+                                        val usuario =
+                                            usuarioRepository.retornaUsarioPorEmail(destinatario)
 
-                                        if (alteracao != null) {
-                                            isRead.value =
-                                                alteracaoRepository.verificarLidoPorIdEmailEIdUsuario(
+                                        val idDestinatario =
+                                            if (usuario != null) usuario.id_usuario else null
+
+                                        if (idDestinatario != null) {
+                                            val alteracao =
+                                                alteracaoRepository.listarAlteracaoPorIdEmailEIdUsuario(
                                                     it.email.id_email,
                                                     idDestinatario
                                                 )
 
-                                            if (!isRead.value) {
-                                                break
+                                            if (alteracao != null) {
+                                                isRead.value =
+                                                    alteracaoRepository.verificarLidoPorIdEmailEIdUsuario(
+                                                        it.email.id_email,
+                                                        idDestinatario
+                                                    )
+
+                                                if (!isRead.value) {
+                                                    break
+                                                }
                                             }
                                         }
                                     }
@@ -262,16 +274,22 @@ fun EMailTodasContasScreen(navController: NavController) {
                                                 it.email.cc
                                             ) + stringParaLista(it.email.cco))) {
                                                 if (destinatario.isNotBlank()) {
-                                                    val idDestinatario =
+                                                    val usuario =
                                                         usuarioRepository.retornaUsarioPorEmail(
                                                             destinatario
-                                                        ).id_usuario
+                                                        )
+                                                    val idDestinatario =
+                                                        if (usuario != null) usuario.id_usuario else null
 
-                                                    alteracaoRepository.atualizarLidoPorIdEmail(
-                                                        isRead.value,
-                                                        it.email.id_email,
-                                                        idDestinatario
-                                                    )
+                                                    if (idDestinatario != null) {
+                                                        alteracaoRepository.atualizarLidoPorIdEmail(
+                                                            isRead.value,
+                                                            it.email.id_email,
+                                                            idDestinatario
+                                                        )
+                                                    }
+
+
                                                 }
                                             }
                                         }
@@ -361,16 +379,23 @@ fun EMailTodasContasScreen(navController: NavController) {
                                                     it.email.cc
                                                 ) + stringParaLista(it.email.cco))) {
                                                     if (destinatario.isNotBlank()) {
-                                                        val idDestinatario =
+
+
+                                                        val usuario =
                                                             usuarioRepository.retornaUsarioPorEmail(
                                                                 destinatario
-                                                            ).id_usuario
+                                                            )
+                                                        val idDestinatario =
+                                                            if (usuario != null) usuario.id_usuario else null
 
-                                                        alteracaoRepository.atualizarImportantePorIdEmail(
-                                                            isImportant.value,
-                                                            it.email.id_email,
-                                                            idDestinatario
-                                                        )
+                                                        if (idDestinatario != null) {
+                                                            alteracaoRepository.atualizarImportantePorIdEmail(
+                                                                isImportant.value,
+                                                                it.email.id_email,
+                                                                idDestinatario
+                                                            )
+                                                        }
+
                                                     }
                                                 }
                                             }) {

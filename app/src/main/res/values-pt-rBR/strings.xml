@@ -34,4 +34,5 @@
     <string name="navbar_modal_archive">Arquivado</string>
     <string name="navbar_modal_bin">Lixeira</string>
     <string name="navbar_modal_spam">Spam</string>
+    <string name="calendar_main_searchbar">Pesquisar atividades</string>
 </resources>

@@ -1,5 +1,7 @@
 package br.com.fiap.locawebmailapp.screens.calendar
 
+import android.os.Bundle
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,6 +46,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.components.calendar.ColorSelectorDalog
@@ -63,6 +66,7 @@ import br.com.fiap.locawebmailapp.utils.returnStringRepeatOption
 import br.com.fiap.locawebmailapp.utils.stringToDate
 import br.com.fiap.locawebmailapp.utils.stringToLocalDate
 import br.com.fiap.locawebmailapp.utils.validateIfAllDay
+import java.lang.RuntimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -139,7 +143,14 @@ fun EditaTarefaScreen(navController: NavController, id_agenda: Int) {
                 modifier = Modifier
                     .padding(8.dp)
                     .fillMaxWidth(),
-                onClickFirstButton = { navController.popBackStack() },
+                onClickFirstButton = {
+                    val previousBackStackEntry = navController.previousBackStackEntry
+                    if (previousBackStackEntry != null) {
+                        previousBackStackEntry.savedStateHandle.set("data", agenda.data)
+                    }
+
+                    navController.popBackStack()
+                },
                 onClickSecondButton = {
                     isEdit.value = true
                 },
@@ -160,17 +171,22 @@ fun EditaTarefaScreen(navController: NavController, id_agenda: Int) {
                         agenda.cor = selectedColor.value
                         agenda.data =
                             if (millisToLocalDate.toString().equals("null")) LocalDate.now()
-                                .toString() else millisToLocalDate!!.plusDays(1).toString()
+                                .toString() else millisToLocalDate!!.toString()
 
-                        if (selectedRepeat.value == agenda.repeticao && selectedDate.value == stringToDate(initialDate)) {
+
+
+                        if (selectedRepeat.value == agenda.repeticao) {
                             agenda.repeticao = selectedRepeat.value
-                            agendaRepository.atualizaAgenda(agenda)
-                        }
 
-                        else if (agenda.repeticao == 2 && selectedDate.value != stringToDate(initialDate)) {
+                            agendaRepository.atualizaAgenda(agenda)
+                        } else if (agenda.repeticao == 2 && selectedDate.value != stringToDate(
+                                initialDate
+                            )
+                        ) {
                             agendaRepository.excluirPorGrupoRepeticao(
                                 agenda.grupo_repeticao
                             )
+
 
                             for (day in returnOneMonthFromDate(agenda.data)) {
                                 agenda.id_agenda = 0
@@ -178,11 +194,8 @@ fun EditaTarefaScreen(navController: NavController, id_agenda: Int) {
                                 agendaRepository.criarAgenda(agenda)
 
                             }
-                        }
+                        } else if (selectedRepeat.value == 1 && agenda.repeticao == 2) {
 
-
-
-                        else if (selectedRepeat.value == 1 && agenda.repeticao == 2) {
 
                             agendaRepository.excluirPorGrupoRepeticaoExcetoData(
                                 agenda.grupo_repeticao,
@@ -192,10 +205,8 @@ fun EditaTarefaScreen(navController: NavController, id_agenda: Int) {
                                 agenda.grupo_repeticao,
                                 1
                             )
-                        }
+                        } else if (selectedRepeat.value == 2 && agenda.repeticao == 1 && selectedDate.value != agenda.data) {
 
-
-                        else if (selectedRepeat.value == 2 && agenda.repeticao == 1 && selectedDate.value != agenda.data) {
                             agendaRepository.excluiAgenda(agenda)
 
                             for (day in returnOneMonthFromDate(agenda.data)) {
@@ -204,9 +215,9 @@ fun EditaTarefaScreen(navController: NavController, id_agenda: Int) {
                                 agenda.data = day
                                 agendaRepository.criarAgenda(agenda)
                             }
-                        }
+                        } else if (selectedRepeat.value == 2 && agenda.repeticao == 1) {
 
-                        else if (selectedRepeat.value == 2 && agenda.repeticao == 1) {
+
                             agenda.repeticao = 2
                             agendaRepository.atualizaOpcaoRepeticaoPorIdAgenda(agenda.id_agenda, 2)
 
@@ -218,6 +229,13 @@ fun EditaTarefaScreen(navController: NavController, id_agenda: Int) {
                                 }
                             }
                         }
+
+                        val previousBackStackEntry = navController.previousBackStackEntry
+                        if (previousBackStackEntry != null) {
+                            previousBackStackEntry.savedStateHandle.set("data", if (millisToLocalDate.toString().equals("null")) LocalDate.now()
+                                .toString() else millisToLocalDate!!.toString())
+                        }
+
                         navController.popBackStack()
                     }
                 },
@@ -457,6 +475,10 @@ fun EditaTarefaScreen(navController: NavController, id_agenda: Int) {
                 .align(Alignment.BottomCenter),
             onClick = {
                 agendaRepository.excluiAgenda(agenda)
+                val previousBackStackEntry = navController.previousBackStackEntry
+                if (previousBackStackEntry != null) {
+                    previousBackStackEntry.savedStateHandle.set("data", agenda.data)
+                }
                 navController.popBackStack()
             },
             colors = ButtonDefaults.buttonColors(

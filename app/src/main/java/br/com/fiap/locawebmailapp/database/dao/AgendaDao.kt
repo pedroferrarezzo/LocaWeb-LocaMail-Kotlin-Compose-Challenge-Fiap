@@ -14,11 +14,11 @@ interface AgendaDao {
     @Insert
     fun criarAgenda(agenda: Agenda): Long
 
-    @Query("SELECT * FROM T_LCW_AGENDA WHERE data = :data")
-    fun listarAgendaPorDia(data: String): List<Agenda>
+    @Query("SELECT * FROM T_LCW_AGENDA WHERE data = :data AND id_usuario = :id_usuario")
+    fun listarAgendaPorDia(data: String, id_usuario: Long): List<Agenda>
 
-    @Query("SELECT DISTINCT cor FROM T_LCW_AGENDA WHERE data = :data")
-    fun listarCorAgendaPorDia(data: String): List<AgendaCor>
+    @Query("SELECT DISTINCT cor FROM T_LCW_AGENDA WHERE data = :data AND id_usuario = :id_usuario")
+    fun listarCorAgendaPorDia(data: String, id_usuario: Long): List<AgendaCor>
 
     @Query("SELECT DISTINCT grupo_repeticao FROM T_LCW_AGENDA")
     fun listarGrupoRepeticao(): List<AgendaGrupoRepeticao>

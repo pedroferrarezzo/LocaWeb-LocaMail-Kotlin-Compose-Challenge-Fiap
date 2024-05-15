@@ -101,74 +101,65 @@ fun VisualizaEmailScreen(
         for (destinatario in todosDestinatarios) {
 
             if (destinatario.isNotBlank()) {
+
+                val usuario =
+                    usuarioRepository.retornaUsarioPorEmail(
+                        destinatario
+                    )
+
                 val idDestinatario =
-                    usuarioRepository.retornaUsarioPorEmail(destinatario).id_usuario
+                    if (usuario != null) usuario.id_usuario else null
 
-                val alteracao =
-                    alteracaoRepository.listarAlteracaoPorIdEmailEIdUsuario(
-                        email.id_email,
-                        idDestinatario
-                    )
+                if (idDestinatario != null) {
+                    val alteracao =
+                        alteracaoRepository.listarAlteracaoPorIdEmailEIdUsuario(
+                            email.id_email,
+                            idDestinatario
+                        )
 
-                if (alteracao != null) {
+                    if (alteracao != null) {
 
-                    isImportant.value = alteracaoRepository.verificarImportantePorIdEmailEIdUsuario(
-                        email.id_email,
-                        idDestinatario
-                    )
-                    if (!isImportant.value) {
-                        break
+                        isImportant.value =
+                            alteracaoRepository.verificarImportantePorIdEmailEIdUsuario(
+                                email.id_email,
+                                idDestinatario
+                            )
+                        if (!isImportant.value) {
+                            break
+                        }
                     }
                 }
             }
-
-
         }
 
         for (destinatario in todosDestinatarios) {
             if (destinatario.isNotBlank()) {
+                val usuario =
+                    usuarioRepository.retornaUsarioPorEmail(
+                        destinatario
+                    )
+
                 val idDestinatario =
-                    usuarioRepository.retornaUsarioPorEmail(destinatario).id_usuario
-                val alteracao =
-                    alteracaoRepository.listarAlteracaoPorIdEmailEIdUsuario(
-                        email.id_email,
-                        idDestinatario
-                    )
+                    if (usuario != null) usuario.id_usuario else null
 
-                if (alteracao != null) {
+                if (idDestinatario != null) {
+                    val alteracao =
+                        alteracaoRepository.listarAlteracaoPorIdEmailEIdUsuario(
+                            email.id_email,
+                            idDestinatario
+                        )
 
-                    isArchive.value = alteracaoRepository.verificarArquivadoPorIdEmailEIdUsuario(
-                        email.id_email,
-                        idDestinatario
-                    )
+                    if (alteracao != null) {
 
-                    if (!isArchive.value) {
-                        break
-                    }
-                }
-            }
+                        isArchive.value =
+                            alteracaoRepository.verificarArquivadoPorIdEmailEIdUsuario(
+                                email.id_email,
+                                idDestinatario
+                            )
 
-        }
-
-        for (destinatario in todosDestinatarios) {
-
-            if (destinatario.isNotBlank()) {
-                val idDestinatario =
-                    usuarioRepository.retornaUsarioPorEmail(destinatario).id_usuario
-                val alteracao =
-                    alteracaoRepository.listarAlteracaoPorIdEmailEIdUsuario(
-                        email.id_email,
-                        idDestinatario
-                    )
-
-                if (alteracao != null) {
-                    isSpam.value = alteracaoRepository.verificarSpamPorIdEmailEIdUsuario(
-                        email.id_email,
-                        idDestinatario
-                    )
-
-                    if (!isSpam.value) {
-                        break
+                        if (!isArchive.value) {
+                            break
+                        }
                     }
                 }
             }
@@ -176,23 +167,66 @@ fun VisualizaEmailScreen(
         }
 
         for (destinatario in todosDestinatarios) {
+
             if (destinatario.isNotBlank()) {
+                val usuario =
+                    usuarioRepository.retornaUsarioPorEmail(
+                        destinatario
+                    )
+
                 val idDestinatario =
-                    usuarioRepository.retornaUsarioPorEmail(destinatario).id_usuario
-                val alteracao =
-                    alteracaoRepository.listarAlteracaoPorIdEmailEIdUsuario(
-                        email.id_email,
-                        idDestinatario
+                    if (usuario != null) usuario.id_usuario else null
+
+                if (idDestinatario != null) {
+                    val alteracao =
+                        alteracaoRepository.listarAlteracaoPorIdEmailEIdUsuario(
+                            email.id_email,
+                            idDestinatario
+                        )
+
+                    if (alteracao != null) {
+                        isSpam.value = alteracaoRepository.verificarSpamPorIdEmailEIdUsuario(
+                            email.id_email,
+                            idDestinatario
+                        )
+
+                        if (!isSpam.value) {
+                            break
+                        }
+                    }
+                }
+            }
+
+        }
+
+        for (destinatario in todosDestinatarios) {
+            if (destinatario.isNotBlank()) {
+                val usuario =
+                    usuarioRepository.retornaUsarioPorEmail(
+                        destinatario
                     )
 
-                if (alteracao != null) {
-                    isExcluido.value = alteracaoRepository.verificarExcluidoPorIdEmailEIdUsuario(
-                        email.id_email,
-                        idDestinatario
-                    )
+                val idDestinatario =
+                    if (usuario != null) usuario.id_usuario else null
 
-                    if (!isExcluido.value) {
-                        break
+                if (idDestinatario != null) {
+
+                    val alteracao =
+                        alteracaoRepository.listarAlteracaoPorIdEmailEIdUsuario(
+                            email.id_email,
+                            idDestinatario
+                        )
+
+                    if (alteracao != null) {
+                        isExcluido.value =
+                            alteracaoRepository.verificarExcluidoPorIdEmailEIdUsuario(
+                                email.id_email,
+                                idDestinatario
+                            )
+
+                        if (!isExcluido.value) {
+                            break
+                        }
                     }
                 }
             }
@@ -234,6 +268,7 @@ fun VisualizaEmailScreen(
 
                 )
 
+                // AQU
                 Row {
 
                     IconButton(onClick = {
@@ -260,13 +295,21 @@ fun VisualizaEmailScreen(
                             if (isTodasContasScreen) {
                                 for (destinatario in todosDestinatarios) {
                                     if (destinatario.isNotBlank()) {
+                                        val usuario =
+                                            usuarioRepository.retornaUsarioPorEmail(
+                                                destinatario
+                                            )
+
                                         val idDestinatario =
-                                            usuarioRepository.retornaUsarioPorEmail(destinatario).id_usuario
-                                        alteracaoRepository.atualizarExcluidoPorIdEmail(
-                                            true,
-                                            email.id_email,
-                                            idDestinatario
-                                        )
+                                            if (usuario != null) usuario.id_usuario else null
+
+                                        if (idDestinatario != null) {
+                                            alteracaoRepository.atualizarExcluidoPorIdEmail(
+                                                true,
+                                                email.id_email,
+                                                idDestinatario
+                                            )
+                                        }
                                     }
                                 }
                                 Toast.makeText(
@@ -308,14 +351,21 @@ fun VisualizaEmailScreen(
                                 isSpam.value = !isSpam.value
                                 for (destinatario in todosDestinatarios) {
                                     if (destinatario.isNotBlank()) {
-                                        val idDestinatario =
-                                            usuarioRepository.retornaUsarioPorEmail(destinatario).id_usuario
+                                        val usuario =
+                                            usuarioRepository.retornaUsarioPorEmail(
+                                                destinatario
+                                            )
 
-                                        alteracaoRepository.atualizarSpamPorIdEmail(
-                                            isSpam.value,
-                                            email.id_email,
-                                            idDestinatario
-                                        )
+                                        val idDestinatario =
+                                            if (usuario != null) usuario.id_usuario else null
+
+                                        if (idDestinatario != null) {
+                                            alteracaoRepository.atualizarSpamPorIdEmail(
+                                                isSpam.value,
+                                                email.id_email,
+                                                idDestinatario
+                                            )
+                                        }
                                     }
                                 }
                             } else {
@@ -346,14 +396,21 @@ fun VisualizaEmailScreen(
                                 isArchive.value = !isArchive.value
                                 for (destinatario in todosDestinatarios) {
                                     if (destinatario.isNotBlank()) {
-                                        val idDestinatario =
-                                            usuarioRepository.retornaUsarioPorEmail(destinatario).id_usuario
+                                        val usuario =
+                                            usuarioRepository.retornaUsarioPorEmail(
+                                                destinatario
+                                            )
 
-                                        alteracaoRepository.atualizarArquivadoPorIdEmail(
-                                            isArchive.value,
-                                            email.id_email,
-                                            idDestinatario
-                                        )
+                                        val idDestinatario =
+                                            if (usuario != null) usuario.id_usuario else null
+
+                                        if (idDestinatario != null) {
+                                            alteracaoRepository.atualizarArquivadoPorIdEmail(
+                                                isArchive.value,
+                                                email.id_email,
+                                                idDestinatario
+                                            )
+                                        }
                                     }
                                 }
                             } else {
@@ -383,13 +440,21 @@ fun VisualizaEmailScreen(
                                 for (destinatario in todosDestinatarios) {
                                     if (destinatario.isNotBlank()) {
 
+                                        val usuario =
+                                            usuarioRepository.retornaUsarioPorEmail(
+                                                destinatario
+                                            )
+
                                         val idDestinatario =
-                                            usuarioRepository.retornaUsarioPorEmail(destinatario).id_usuario
-                                        alteracaoRepository.atualizarImportantePorIdEmail(
-                                            isImportant.value,
-                                            email.id_email,
-                                            idDestinatario
-                                        )
+                                            if (usuario != null) usuario.id_usuario else null
+
+                                        if (idDestinatario != null) {
+                                            alteracaoRepository.atualizarImportantePorIdEmail(
+                                                isImportant.value,
+                                                email.id_email,
+                                                idDestinatario
+                                            )
+                                        }
                                     }
                                 }
                             } else {

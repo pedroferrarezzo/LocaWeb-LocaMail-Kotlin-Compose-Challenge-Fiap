@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import br.com.fiap.locawebmailapp.screens.calendar.CalendarMainScreen
 import br.com.fiap.locawebmailapp.screens.calendar.CriaEventoScreen
 import br.com.fiap.locawebmailapp.screens.calendar.CriaTarefaScreen
@@ -28,6 +30,7 @@ import br.com.fiap.locawebmailapp.screens.email.EmailsFavoritosScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsSpamScreen
 import br.com.fiap.locawebmailapp.screens.email.VisualizaEmailScreen
 import br.com.fiap.locawebmailapp.ui.theme.LocaWebMailAppTheme
+import br.com.fiap.locawebmailapp.utils.stringToLocalDate
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +48,24 @@ class MainActivity : ComponentActivity() {
                         startDestination = "emailmainscreen"
                     ) {
 
-                        composable(route = "calendarmainscreen") {
-                            CalendarMainScreen(navController = navController)
+                        composable(
+                            route = "calendarmainscreen?data={data}",
+                            arguments = listOf(
+                                navArgument("data") {
+                                    type = NavType.StringType
+                                    nullable = true
+                                },
+                            ),) {
+                            val data = it.savedStateHandle.get<String>("data")
+
+                            if (data != null) {
+                                CalendarMainScreen(navController = navController, stringToLocalDate(data))
+                            }
+                            else {
+                                CalendarMainScreen(navController = navController)
+                            }
                         }
+
 
                         composable(route = "criatarefascreen") {
                             CriaTarefaScreen(navController = navController)

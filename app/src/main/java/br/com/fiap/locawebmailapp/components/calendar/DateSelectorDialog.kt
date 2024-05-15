@@ -35,7 +35,7 @@ fun DateSelectorDialog(
                     onClick = {
                         openDialogDatePicker.value = false
                         selectedDate.value = millisToLocalDate?.let {
-                            dateToCompleteStringDate(millisToLocalDate.plusDays(1))
+                            dateToCompleteStringDate(millisToLocalDate)
                         } ?: ""
                     }
 
