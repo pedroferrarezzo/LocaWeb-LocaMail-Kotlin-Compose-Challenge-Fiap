@@ -19,6 +19,7 @@ import br.com.fiap.locawebmailapp.screens.calendar.CriaTarefaScreen
 import br.com.fiap.locawebmailapp.screens.calendar.EditaEventoScreen
 import br.com.fiap.locawebmailapp.screens.calendar.EditaTarefaScreen
 import br.com.fiap.locawebmailapp.screens.email.CriaEmailScreen
+import br.com.fiap.locawebmailapp.screens.email.CriaRespostaEmailScreen
 import br.com.fiap.locawebmailapp.screens.email.EMailMainScreen
 import br.com.fiap.locawebmailapp.screens.email.EMailTodasContasScreen
 import br.com.fiap.locawebmailapp.screens.email.EditaEmailScreen
@@ -129,6 +130,11 @@ class MainActivity : ComponentActivity() {
                             val idEmail = it.arguments?.getString("id_email")
                             val todasContasScreen = it.arguments?.getString("is_todas_contas_screen").toBoolean()
                             VisualizaEmailScreen(navController = navController, idEmail!!.toLong(), todasContasScreen)
+                        }
+
+                        composable(route = "criarespostaemailscreen/{id_email}") {
+                            val idEmail = it.arguments?.getString("id_email")
+                            CriaRespostaEmailScreen(navController = navController, idEmail!!.toLong())
                         }
 
                         composable(route = "editaemailscreen/{id_email}") {

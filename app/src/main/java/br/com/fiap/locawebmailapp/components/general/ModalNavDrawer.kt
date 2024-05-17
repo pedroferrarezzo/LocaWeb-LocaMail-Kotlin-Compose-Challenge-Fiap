@@ -78,7 +78,6 @@ fun ModalNavDrawer(
                 modifier = Modifier
                     .width(250.dp)
             ) {
-
                 Image(
                     painter = painterResource(id = R.drawable.locaweb),
                     contentDescription = "",
@@ -89,415 +88,448 @@ fun ModalNavDrawer(
 
                 )
 
-                NavigationDrawerItem(
-                    modifier = Modifier.padding(end = 5.dp),
-                    shape = RoundedCornerShape(bottomEndPercent = 50, topEndPercent = 50),
-                    label = {
+                LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                    item() {
+
+
+                        NavigationDrawerItem(
+                            modifier = Modifier.padding(end = 5.dp),
+                            shape = RoundedCornerShape(
+                                bottomEndPercent = 50,
+                                topEndPercent = 50
+                            ),
+                            label = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Email,
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .width(25.dp)
+                                            .height(25.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.navbar_modal_all_accounts),
+                                        modifier = Modifier.padding(start = 5.dp),
+                                        fontSize = 15.sp
+                                    )
+                                }
+                            },
+                            selected = selectedDrawer.value == "1",
+                            onClick = {
+
+                                if (navController.currentBackStackEntry?.destination?.route != "emailtodascontasscreen") {
+                                    selectedDrawer.value = "1"
+                                    selectedDrawerPasta.value = ""
+                                    navController.navigate("emailtodascontasscreen")
+                                }
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
+                                selectedIconColor = colorResource(id = R.color.lcweb_red_1),
+                                selectedTextColor = colorResource(id = R.color.lcweb_red_1),
+                                unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
+                                unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
+                            )
+                        )
+
+
+                        NavigationDrawerItem(
+                            modifier = Modifier.padding(end = 5.dp),
+                            shape = RoundedCornerShape(
+                                bottomEndPercent = 50,
+                                topEndPercent = 50
+                            ),
+                            label = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.inbox_solid),
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .width(25.dp)
+                                            .height(25.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.navbar_modal_main),
+                                        modifier = Modifier.padding(start = 5.dp),
+                                        fontSize = 15.sp
+                                    )
+                                }
+                            },
+                            selected = selectedDrawer.value == "2",
+                            onClick = {
+                                if (navController.currentBackStackEntry?.destination?.route != "emailmainscreen") {
+                                    selectedDrawer.value = "2"
+                                    selectedDrawerPasta.value = ""
+                                    navController.navigate("emailmainscreen")
+                                }
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
+                                selectedIconColor = colorResource(id = R.color.lcweb_red_1),
+                                selectedTextColor = colorResource(id = R.color.lcweb_red_1),
+                                unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
+                                unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
+                            )
+                        )
+
+                        NavigationDrawerItem(
+                            modifier = Modifier.padding(end = 5.dp),
+                            shape = RoundedCornerShape(
+                                bottomEndPercent = 50,
+                                topEndPercent = 50
+                            ),
+                            label = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Send,
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .width(25.dp)
+                                            .height(25.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.navbar_modal_sent),
+                                        modifier = Modifier.padding(start = 5.dp),
+                                        fontSize = 15.sp
+                                    )
+                                }
+                            },
+                            selected = selectedDrawer.value == "3",
+                            onClick = {
+                                if (navController.currentBackStackEntry?.destination?.route != "emailsenviadosscreen") {
+                                    selectedDrawer.value = "3"
+                                    selectedDrawerPasta.value = ""
+                                    navController.navigate("emailsenviadosscreen")
+                                }
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
+                                selectedIconColor = colorResource(id = R.color.lcweb_red_1),
+                                selectedTextColor = colorResource(id = R.color.lcweb_red_1),
+                                unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
+                                unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
+                            )
+                        )
+
+                        NavigationDrawerItem(
+                            modifier = Modifier.padding(end = 5.dp),
+                            shape = RoundedCornerShape(
+                                bottomEndPercent = 50,
+                                topEndPercent = 50
+                            ),
+                            label = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Favorite,
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .width(25.dp)
+                                            .height(25.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.navbar_modal_favorites),
+                                        modifier = Modifier.padding(start = 5.dp),
+                                        fontSize = 15.sp
+                                    )
+                                }
+                            },
+                            selected = selectedDrawer.value == "4",
+                            onClick = {
+                                if (navController.currentBackStackEntry?.destination?.route != "emailsfavoritosscreen") {
+                                    selectedDrawer.value = "4"
+                                    selectedDrawerPasta.value = ""
+                                    navController.navigate("emailsfavoritosscreen")
+                                }
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
+                                selectedIconColor = colorResource(id = R.color.lcweb_red_1),
+                                selectedTextColor = colorResource(id = R.color.lcweb_red_1),
+                                unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
+                                unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
+                            )
+                        )
+
+                        NavigationDrawerItem(
+                            modifier = Modifier.padding(end = 5.dp),
+                            shape = RoundedCornerShape(
+                                bottomEndPercent = 50,
+                                topEndPercent = 50
+                            ),
+                            label = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.pen_to_square_solid),
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .width(25.dp)
+                                            .height(25.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.navbar_modal_drafts),
+                                        modifier = Modifier.padding(start = 5.dp),
+                                        fontSize = 15.sp
+                                    )
+                                }
+                            },
+                            selected = selectedDrawer.value == "5",
+                            onClick = {
+                                if (navController.currentBackStackEntry?.destination?.route != "emailseditaveisscreen") {
+                                    selectedDrawer.value = "5"
+                                    selectedDrawerPasta.value = ""
+                                    navController.navigate("emailseditaveisscreen")
+                                }
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
+                                selectedIconColor = colorResource(id = R.color.lcweb_red_1),
+                                selectedTextColor = colorResource(id = R.color.lcweb_red_1),
+                                unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
+                                unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
+                            )
+                        )
+
+                        NavigationDrawerItem(
+                            modifier = Modifier.padding(end = 5.dp),
+                            shape = RoundedCornerShape(
+                                bottomEndPercent = 50,
+                                topEndPercent = 50
+                            ),
+                            label = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.calendar_days_regular),
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .width(25.dp)
+                                            .height(25.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.navbar_modal_calendar),
+                                        modifier = Modifier.padding(start = 5.dp),
+                                        fontSize = 15.sp
+                                    )
+                                }
+                            },
+                            selected = selectedDrawer.value == "6",
+                            onClick = {
+                                if (navController.currentBackStackEntry?.destination?.route != "calendarmainscreen") {
+                                    selectedDrawer.value = "6"
+                                    selectedDrawerPasta.value = ""
+                                    navController.navigate("calendarmainscreen")
+                                }
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
+                                selectedIconColor = colorResource(id = R.color.lcweb_red_1),
+                                selectedTextColor = colorResource(id = R.color.lcweb_red_1),
+                                unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
+                                unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
+                            )
+                        )
+
+                        NavigationDrawerItem(
+                            modifier = Modifier.padding(end = 5.dp),
+                            shape = RoundedCornerShape(
+                                bottomEndPercent = 50,
+                                topEndPercent = 50
+                            ),
+                            label = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.folder_open_solid),
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .width(25.dp)
+                                            .height(25.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.navbar_modal_archive),
+                                        modifier = Modifier.padding(start = 5.dp),
+                                        fontSize = 15.sp
+                                    )
+                                }
+                            },
+                            selected = selectedDrawer.value == "7",
+                            onClick = {
+                                if (navController.currentBackStackEntry?.destination?.route != "emailsarquivadosscreen") {
+                                    selectedDrawer.value = "7"
+                                    selectedDrawerPasta.value = ""
+                                    navController.navigate("emailsarquivadosscreen")
+                                }
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
+                                selectedIconColor = colorResource(id = R.color.lcweb_red_1),
+                                selectedTextColor = colorResource(id = R.color.lcweb_red_1),
+                                unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
+                                unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
+                            )
+                        )
+
+                        NavigationDrawerItem(
+                            modifier = Modifier.padding(end = 5.dp),
+                            shape = RoundedCornerShape(
+                                bottomEndPercent = 50,
+                                topEndPercent = 50
+                            ),
+                            label = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.exclamation_mark_filled),
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .width(25.dp)
+                                            .height(25.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.navbar_modal_spam),
+                                        modifier = Modifier.padding(start = 5.dp),
+                                        fontSize = 15.sp
+                                    )
+                                }
+                            },
+                            selected = selectedDrawer.value == "9",
+                            onClick = {
+                                if (navController.currentBackStackEntry?.destination?.route != "emailsspamscreen") {
+                                    selectedDrawer.value = "9"
+                                    selectedDrawerPasta.value = ""
+                                    navController.navigate("emailsspamscreen")
+                                }
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
+                                selectedIconColor = colorResource(id = R.color.lcweb_red_1),
+                                selectedTextColor = colorResource(id = R.color.lcweb_red_1),
+                                unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
+                                unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
+                            )
+                        )
+
+
+
+                        NavigationDrawerItem(
+                            modifier = Modifier.padding(end = 5.dp),
+                            shape = RoundedCornerShape(
+                                bottomEndPercent = 50,
+                                topEndPercent = 50
+                            ),
+                            label = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Delete,
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .width(25.dp)
+                                            .height(25.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.navbar_modal_bin),
+                                        modifier = Modifier.padding(start = 5.dp),
+                                        fontSize = 15.sp
+                                    )
+                                }
+                            },
+                            selected = selectedDrawer.value == "8",
+                            onClick = {
+                                if (navController.currentBackStackEntry?.destination?.route != "emailslixeirascreen") {
+                                    selectedDrawer.value = "8"
+                                    selectedDrawerPasta.value = ""
+                                    navController.navigate("emailslixeirascreen")
+                                }
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
+                                selectedIconColor = colorResource(id = R.color.lcweb_red_1),
+                                selectedTextColor = colorResource(id = R.color.lcweb_red_1),
+                                unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
+                                unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
+                            )
+                        )
+
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .padding(start = 10.dp)
+                                .fillMaxWidth()
                         ) {
-                            Icon(
-                                imageVector = Icons.Filled.Email,
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .width(25.dp)
-                                    .height(25.dp)
-                            )
                             Text(
-                                text = stringResource(id = R.string.navbar_modal_all_accounts),
-                                modifier = Modifier.padding(start = 5.dp),
-                                fontSize = 15.sp
+                                text = "Pastas",
+                                fontSize = 15.sp,
+                                color = colorResource(id = R.color.lcweb_gray_1),
+                                fontWeight = FontWeight.Bold
                             )
-                        }
-                    },
-                    selected = selectedDrawer.value == "1",
-                    onClick = {
 
-                        if (navController.currentBackStackEntry?.destination?.route != "emailtodascontasscreen") {
-                            selectedDrawer.value = "1"
-                            selectedDrawerPasta.value = ""
-                            navController.navigate("emailtodascontasscreen")
-                        }
-                    },
-                    colors = NavigationDrawerItemDefaults.colors(
-                        selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
-                        selectedIconColor = colorResource(id = R.color.lcweb_red_1),
-                        selectedTextColor = colorResource(id = R.color.lcweb_red_1),
-                        unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
-                        unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
-                    )
-                )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                if (listPastaState.isNotEmpty()) {
+                                    IconButton(onClick = {
+                                        expandedPasta.value = !expandedPasta.value
+                                    }) {
+                                        Icon(
+                                            imageVector = if (!expandedPasta.value) Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
+                                            contentDescription = "",
+                                            tint = colorResource(id = R.color.lcweb_gray_1)
+                                        )
+                                    }
+                                }
 
+                                IconButton(onClick = {
+                                    openDialogPastaCreator.value = true
 
-                NavigationDrawerItem(
-                    modifier = Modifier.padding(end = 5.dp),
-                    shape = RoundedCornerShape(bottomEndPercent = 50, topEndPercent = 50),
-                    label = {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.inbox_solid),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .width(25.dp)
-                                    .height(25.dp)
-                            )
-                            Text(
-                                text = stringResource(id = R.string.navbar_modal_main),
-                                modifier = Modifier.padding(start = 5.dp),
-                                fontSize = 15.sp
-                            )
-                        }
-                    },
-                    selected = selectedDrawer.value == "2",
-                    onClick = {
-                        if (navController.currentBackStackEntry?.destination?.route != "emailmainscreen") {
-                            selectedDrawer.value = "2"
-                            selectedDrawerPasta.value = ""
-                            navController.navigate("emailmainscreen")
-                        }
-                    },
-                    colors = NavigationDrawerItemDefaults.colors(
-                        selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
-                        selectedIconColor = colorResource(id = R.color.lcweb_red_1),
-                        selectedTextColor = colorResource(id = R.color.lcweb_red_1),
-                        unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
-                        unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
-                    )
-                )
-
-                NavigationDrawerItem(
-                    modifier = Modifier.padding(end = 5.dp),
-                    shape = RoundedCornerShape(bottomEndPercent = 50, topEndPercent = 50),
-                    label = {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Send,
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .width(25.dp)
-                                    .height(25.dp)
-                            )
-                            Text(
-                                text = stringResource(id = R.string.navbar_modal_sent),
-                                modifier = Modifier.padding(start = 5.dp),
-                                fontSize = 15.sp
-                            )
-                        }
-                    },
-                    selected = selectedDrawer.value == "3",
-                    onClick = {
-                        if (navController.currentBackStackEntry?.destination?.route != "emailsenviadosscreen") {
-                            selectedDrawer.value = "3"
-                            selectedDrawerPasta.value = ""
-                            navController.navigate("emailsenviadosscreen")
-                        }
-                    },
-                    colors = NavigationDrawerItemDefaults.colors(
-                        selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
-                        selectedIconColor = colorResource(id = R.color.lcweb_red_1),
-                        selectedTextColor = colorResource(id = R.color.lcweb_red_1),
-                        unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
-                        unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
-                    )
-                )
-
-                NavigationDrawerItem(
-                    modifier = Modifier.padding(end = 5.dp),
-                    shape = RoundedCornerShape(bottomEndPercent = 50, topEndPercent = 50),
-                    label = {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Favorite,
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .width(25.dp)
-                                    .height(25.dp)
-                            )
-                            Text(
-                                text = stringResource(id = R.string.navbar_modal_favorites),
-                                modifier = Modifier.padding(start = 5.dp),
-                                fontSize = 15.sp
-                            )
-                        }
-                    },
-                    selected = selectedDrawer.value == "4",
-                    onClick = {
-                        if (navController.currentBackStackEntry?.destination?.route != "emailsfavoritosscreen") {
-                            selectedDrawer.value = "4"
-                            selectedDrawerPasta.value = ""
-                            navController.navigate("emailsfavoritosscreen")
-                        }
-                    },
-                    colors = NavigationDrawerItemDefaults.colors(
-                        selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
-                        selectedIconColor = colorResource(id = R.color.lcweb_red_1),
-                        selectedTextColor = colorResource(id = R.color.lcweb_red_1),
-                        unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
-                        unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
-                    )
-                )
-
-                NavigationDrawerItem(
-                    modifier = Modifier.padding(end = 5.dp),
-                    shape = RoundedCornerShape(bottomEndPercent = 50, topEndPercent = 50),
-                    label = {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.pen_to_square_solid),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .width(25.dp)
-                                    .height(25.dp)
-                            )
-                            Text(
-                                text = stringResource(id = R.string.navbar_modal_drafts),
-                                modifier = Modifier.padding(start = 5.dp),
-                                fontSize = 15.sp
-                            )
-                        }
-                    },
-                    selected = selectedDrawer.value == "5",
-                    onClick = {
-                        if (navController.currentBackStackEntry?.destination?.route != "emailseditaveisscreen") {
-                            selectedDrawer.value = "5"
-                            selectedDrawerPasta.value = ""
-                            navController.navigate("emailseditaveisscreen")
-                        }
-                    },
-                    colors = NavigationDrawerItemDefaults.colors(
-                        selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
-                        selectedIconColor = colorResource(id = R.color.lcweb_red_1),
-                        selectedTextColor = colorResource(id = R.color.lcweb_red_1),
-                        unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
-                        unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
-                    )
-                )
-
-                NavigationDrawerItem(
-                    modifier = Modifier.padding(end = 5.dp),
-                    shape = RoundedCornerShape(bottomEndPercent = 50, topEndPercent = 50),
-                    label = {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.calendar_days_regular),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .width(25.dp)
-                                    .height(25.dp)
-                            )
-                            Text(
-                                text = stringResource(id = R.string.navbar_modal_calendar),
-                                modifier = Modifier.padding(start = 5.dp),
-                                fontSize = 15.sp
-                            )
-                        }
-                    },
-                    selected = selectedDrawer.value == "6",
-                    onClick = {
-                        if (navController.currentBackStackEntry?.destination?.route != "calendarmainscreen") {
-                            selectedDrawer.value = "6"
-                            selectedDrawerPasta.value = ""
-                            navController.navigate("calendarmainscreen")
-                        }
-                    },
-                    colors = NavigationDrawerItemDefaults.colors(
-                        selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
-                        selectedIconColor = colorResource(id = R.color.lcweb_red_1),
-                        selectedTextColor = colorResource(id = R.color.lcweb_red_1),
-                        unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
-                        unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
-                    )
-                )
-
-                NavigationDrawerItem(
-                    modifier = Modifier.padding(end = 5.dp),
-                    shape = RoundedCornerShape(bottomEndPercent = 50, topEndPercent = 50),
-                    label = {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.folder_open_solid),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .width(25.dp)
-                                    .height(25.dp)
-                            )
-                            Text(
-                                text = stringResource(id = R.string.navbar_modal_archive),
-                                modifier = Modifier.padding(start = 5.dp),
-                                fontSize = 15.sp
-                            )
-                        }
-                    },
-                    selected = selectedDrawer.value == "7",
-                    onClick = {
-                        if (navController.currentBackStackEntry?.destination?.route != "emailsarquivadosscreen") {
-                            selectedDrawer.value = "7"
-                            selectedDrawerPasta.value = ""
-                            navController.navigate("emailsarquivadosscreen")
-                        }
-                    },
-                    colors = NavigationDrawerItemDefaults.colors(
-                        selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
-                        selectedIconColor = colorResource(id = R.color.lcweb_red_1),
-                        selectedTextColor = colorResource(id = R.color.lcweb_red_1),
-                        unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
-                        unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
-                    )
-                )
-
-                NavigationDrawerItem(
-                    modifier = Modifier.padding(end = 5.dp),
-                    shape = RoundedCornerShape(bottomEndPercent = 50, topEndPercent = 50),
-                    label = {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.exclamation_mark_filled),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .width(25.dp)
-                                    .height(25.dp)
-                            )
-                            Text(
-                                text = stringResource(id = R.string.navbar_modal_spam),
-                                modifier = Modifier.padding(start = 5.dp),
-                                fontSize = 15.sp
-                            )
-                        }
-                    },
-                    selected = selectedDrawer.value == "9",
-                    onClick = {
-                        if (navController.currentBackStackEntry?.destination?.route != "emailsspamscreen") {
-                            selectedDrawer.value = "9"
-                            selectedDrawerPasta.value = ""
-                            navController.navigate("emailsspamscreen")
-                        }
-                    },
-                    colors = NavigationDrawerItemDefaults.colors(
-                        selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
-                        selectedIconColor = colorResource(id = R.color.lcweb_red_1),
-                        selectedTextColor = colorResource(id = R.color.lcweb_red_1),
-                        unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
-                        unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
-                    )
-                )
-
-
-
-                NavigationDrawerItem(
-                    modifier = Modifier.padding(end = 5.dp),
-                    shape = RoundedCornerShape(bottomEndPercent = 50, topEndPercent = 50),
-                    label = {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Delete,
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .width(25.dp)
-                                    .height(25.dp)
-                            )
-                            Text(
-                                text = stringResource(id = R.string.navbar_modal_bin),
-                                modifier = Modifier.padding(start = 5.dp),
-                                fontSize = 15.sp
-                            )
-                        }
-                    },
-                    selected = selectedDrawer.value == "8",
-                    onClick = {
-                        if (navController.currentBackStackEntry?.destination?.route != "emailslixeirascreen") {
-                            selectedDrawer.value = "8"
-                            selectedDrawerPasta.value = ""
-                            navController.navigate("emailslixeirascreen")
-                        }
-                    },
-                    colors = NavigationDrawerItemDefaults.colors(
-                        selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
-                        selectedIconColor = colorResource(id = R.color.lcweb_red_1),
-                        selectedTextColor = colorResource(id = R.color.lcweb_red_1),
-                        unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
-                        unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
-                    )
-                )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .padding(start = 10.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Pastas",
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.lcweb_gray_1),
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ){
-                        if (listPastaState.isNotEmpty()) {
-                            IconButton(onClick = {
-                                expandedPasta.value = !expandedPasta.value
-                            }) {
-                                Icon(
-                                    imageVector = if (!expandedPasta.value) Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
-                                    contentDescription = "",
-                                    tint = colorResource(id = R.color.lcweb_gray_1)
-                                )
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Filled.AddCircle,
+                                        contentDescription = "",
+                                        tint = colorResource(id = R.color.lcweb_gray_1)
+                                    )
+                                }
                             }
                         }
 
-                        IconButton(onClick = {
-                            openDialogPastaCreator.value = true
-
-                        }) {
-                            Icon(
-                                imageVector = Icons.Filled.AddCircle,
-                                contentDescription = "",
-                                tint = colorResource(id = R.color.lcweb_gray_1)
-                            )
-                        }
+                        PastaCreatorDalog(
+                            openDialogPastaCreator = openDialogPastaCreator,
+                            usuarioRepository = usuarioRepository,
+                            pastaRepository = pastaRepository,
+                            textPastaCreator = textPastaCreator,
+                            listPastaState = listPastaState
+                        )
                     }
-                }
 
-                PastaCreatorDalog(
-                    openDialogPastaCreator = openDialogPastaCreator,
-                    usuarioRepository = usuarioRepository,
-                    pastaRepository = pastaRepository,
-                    textPastaCreator = textPastaCreator,
-                    listPastaState = listPastaState
-                )
-
-                if (expandedPasta.value) {
                     if (listPastaState.isNotEmpty()) {
-                        LazyColumn {
+
+                        if (expandedPasta.value) {
+
                             items(listPastaState) {
                                 NavigationDrawerItem(
                                     modifier = Modifier.padding(end = 5.dp),
@@ -528,7 +560,11 @@ fun ModalNavDrawer(
                                             }
 
                                             IconButton(onClick = {
-                                                Toast.makeText(context, "Pasta excluída", Toast.LENGTH_LONG)
+                                                Toast.makeText(
+                                                    context,
+                                                    "Pasta excluída",
+                                                    Toast.LENGTH_LONG
+                                                )
                                                     .show()
 
                                                 if (selectedDrawerPasta.value != "") {
@@ -557,8 +593,12 @@ fun ModalNavDrawer(
                                                 Icon(
                                                     imageVector = Icons.Filled.Clear,
                                                     contentDescription = "",
-                                                    tint = if(selectedDrawerPasta.value == it.id_pasta.toString()) colorResource(id = R.color.lcweb_red_1) else colorResource(id = R.color.lcweb_gray_1),
-                                                    modifier = Modifier.width(15.dp).height(15.dp)
+                                                    tint = if (selectedDrawerPasta.value == it.id_pasta.toString()) colorResource(
+                                                        id = R.color.lcweb_red_1
+                                                    ) else colorResource(id = R.color.lcweb_gray_1),
+                                                    modifier = Modifier
+                                                        .width(15.dp)
+                                                        .height(15.dp)
                                                 )
                                             }
                                         }
@@ -582,13 +622,8 @@ fun ModalNavDrawer(
                             }
                         }
                     }
-
-
                 }
-
-
             }
-
         },
         content = content
     )

@@ -1,5 +1,6 @@
 package br.com.fiap.locawebmailapp.screens.email
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -48,6 +49,7 @@ import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRepository
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
 import br.com.fiap.locawebmailapp.database.repository.PastaRepository
+import br.com.fiap.locawebmailapp.database.repository.RespostaEmailRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.Email
 import br.com.fiap.locawebmailapp.model.Pasta
@@ -78,6 +80,7 @@ fun EmailsEditaveisScreen(navController: NavController) {
     val usuarioRepository = UsuarioRepository(context)
     val pastaRepository = PastaRepository(context)
 
+
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     val scope = rememberCoroutineScope()
@@ -91,7 +94,6 @@ fun EmailsEditaveisScreen(navController: NavController) {
     val usuarioSelecionado = remember {
         mutableStateOf(usuarioRepository.listarUsuarioSelecionado())
     }
-
 
     val editableEmailList =
         emailRepository.listarEmailsEditaveisPorRemetente(usuarioSelecionado.value.email)
@@ -233,6 +235,9 @@ fun EmailsEditaveisScreen(navController: NavController) {
 
                     Button(
                         onClick = {
+                            Toast.makeText(context, "Rascunhos excluídos", Toast.LENGTH_LONG)
+                                .show()
+
                             for (email in editableEmailList) {
                                 anexoRepository.excluirAnexoPorIdEmail(email.id_email)
                                 emailRepository.excluirEmail(email)
