@@ -28,19 +28,33 @@ class AlteracaoRepository(context: Context) {
         return alteracaoDao.listarAlteracaoPorIdEmail(id_email)
     }
 
-    fun atualizarArquivadoPorIdEmail(arquivado: Boolean, id_email: Long, id_usuario: Long) {
+    fun atualizarArquivadoPorIdEmailEIdusuario(arquivado: Boolean, id_email: Long, id_usuario: Long) {
         return alteracaoDao.atualizarArquivadoPorIdEmailEIdUsuario(arquivado, id_email, id_usuario)
     }
 
-    fun atualizarLidoPorIdEmail(lido: Boolean, id_email: Long, id_usuario: Long) {
+    fun atualizarLidoPorIdEmailEIdusuario(lido: Boolean, id_email: Long, id_usuario: Long) {
         return alteracaoDao.atualizarLidoPorIdEmailEIdUsuario(lido, id_email, id_usuario)
     }
-    fun atualizarExcluidoPorIdEmail(excluido: Boolean, id_email: Long, id_usuario: Long) {
+    fun atualizarExcluidoPorIdEmailEIdusuario(excluido: Boolean, id_email: Long, id_usuario: Long) {
         return alteracaoDao.atualizarExcluidoPorIdEmailEIdUsuario(excluido, id_email, id_usuario)
     }
 
-    fun atualizarSpamPorIdEmail(spam: Boolean, id_email: Long, id_usuario: Long) {
+    fun atualizarSpamPorIdEmailEIdusuario(spam: Boolean, id_email: Long, id_usuario: Long) {
         return alteracaoDao.atualizarSpamPorIdEmailEIdUsuario(spam, id_email, id_usuario)
+    }
+
+    fun listarAlteracaoPorIdUsuarioEIdPasta(id_usuario: Long, id_pasta: Long): List<Alteracao> {
+        return alteracaoDao.listarAlteracaoPorIdUsuarioEIdPasta(id_usuario, id_pasta)
+    }
+
+
+
+    fun atualizarPastaPorIdEmailEIdUsuario(pasta: Long?, id_email: Long, id_usuario: Long) {
+        return alteracaoDao.atualizarPastaPorIdEmailEIdUsuario(pasta, id_email, id_usuario)
+    }
+
+    fun atualizarPastaPorIdAlteracao(pasta: Long?, id_alteracao: Long) {
+        return alteracaoDao.atualizarPastaPorIdAlteracao(pasta, id_alteracao)
     }
 
 
@@ -52,6 +66,10 @@ class AlteracaoRepository(context: Context) {
 
     fun verificarImportantePorIdEmailEIdUsuario(id_email: Long, id_usuario: Long): Boolean {
         return alteracaoDao.verificarImportantePorIdEmailEIdUsuario(id_email, id_usuario)
+    }
+
+    fun verificarPastaPorIdEmailEIdUsuario(id_email: Long, id_usuario: Long): Long {
+        return alteracaoDao.verificarPastaPorIdEmailEIdUsuario(id_email, id_usuario)
     }
 
     fun verificarExcluidoPorIdEmailEIdUsuario(id_email: Long, id_usuario: Long): Boolean {

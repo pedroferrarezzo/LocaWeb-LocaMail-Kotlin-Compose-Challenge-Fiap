@@ -27,6 +27,7 @@ import br.com.fiap.locawebmailapp.screens.email.EmailsEditaveisScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsEnviadosScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsExcluidosScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsFavoritosScreen
+import br.com.fiap.locawebmailapp.screens.email.EmailsPastaScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsSpamScreen
 import br.com.fiap.locawebmailapp.screens.email.VisualizaEmailScreen
 import br.com.fiap.locawebmailapp.ui.theme.LocaWebMailAppTheme
@@ -80,6 +81,8 @@ class MainActivity : ComponentActivity() {
                             EditaTarefaScreen(navController = navController, id_agenda = idAgenda!!.toInt())
                         }
 
+
+
                         composable(route = "editaeventoscreen/{id_agenda}") {
                             val idAgenda = it.arguments?.getString("id_agenda")
                             EditaEventoScreen(navController = navController, id_agenda = idAgenda!!.toInt())
@@ -107,6 +110,11 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = "emailslixeirascreen") {
                             EmailsExcluidosScreen(navController = navController)
+                        }
+
+                        composable(route = "emailspastascreen/{id_pasta}") {
+                            val idPasta = it.arguments?.getString("id_pasta")
+                            EmailsPastaScreen(navController = navController, id_pasta = idPasta!!.toLong())
                         }
 
                         composable(route = "emailsspamscreen") {

@@ -1,5 +1,6 @@
 package br.com.fiap.locawebmailapp.screens.email
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,12 +9,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -26,7 +28,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -49,18 +50,21 @@ import br.com.fiap.locawebmailapp.database.repository.AnexoRepository
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
 import br.com.fiap.locawebmailapp.database.repository.PastaRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
-import br.com.fiap.locawebmailapp.model.Email
+import br.com.fiap.locawebmailapp.model.EmailComAlteracao
 import br.com.fiap.locawebmailapp.model.Pasta
 import br.com.fiap.locawebmailapp.utils.convertTo12Hours
 import kotlinx.coroutines.launch
-import java.util.Collections.addAll
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailsEditaveisScreen(navController: NavController) {
+fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
     val selectedDrawer = remember {
-        mutableStateOf("5")
+        mutableStateOf("")
+    }
+
+    val selectedDrawerPasta = remember {
+        mutableStateOf(id_pasta.toString())
     }
 
     val textSearchBar = remember {
@@ -76,6 +80,7 @@ fun EmailsEditaveisScreen(navController: NavController) {
     val emailRepository = EmailRepository(context)
     val anexoRepository = AnexoRepository(context)
     val usuarioRepository = UsuarioRepository(context)
+    val alteracaoRepository = AlteracaoRepository(context)
     val pastaRepository = PastaRepository(context)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -92,12 +97,12 @@ fun EmailsEditaveisScreen(navController: NavController) {
         mutableStateOf(usuarioRepository.listarUsuarioSelecionado())
     }
 
+    val pastaEmailList =
+        emailRepository.listarEmailsPorPastaEIdUsuario(usuarioSelecionado.value.id_usuario, id_pasta)
 
-    val editableEmailList =
-        emailRepository.listarEmailsEditaveisPorRemetente(usuarioSelecionado.value.email)
-    val editableEmailStateList = remember {
-        mutableStateListOf<Email>().apply {
-            addAll(editableEmailList)
+    val pastaStateEmailLst = remember {
+        mutableStateListOf<EmailComAlteracao>().apply {
+            addAll(pastaEmailList)
         }
     }
 
@@ -109,14 +114,8 @@ fun EmailsEditaveisScreen(navController: NavController) {
         mutableStateOf("")
     }
 
-
     val attachEmailList = anexoRepository.listarAnexosIdEmail()
 
-    val selectedDrawerPasta = remember {
-        mutableStateOf("")
-    }
-
-    val alteracaoRepository = AlteracaoRepository(context)
     val listPasta =
         pastaRepository.listarPastasPorIdUsuario(usuarioRepository.listarUsuarioSelecionado().id_usuario)
 
@@ -125,7 +124,6 @@ fun EmailsEditaveisScreen(navController: NavController) {
             addAll(listPasta)
         }
     }
-
 
     ModalNavDrawer(
         selectedDrawer = selectedDrawer,
@@ -215,12 +213,12 @@ fun EmailsEditaveisScreen(navController: NavController) {
                     openDialogUserPicker = openDialogUserPicker,
                     usuarioSelecionado,
                     usuariosExistentes,
-                    editableEmailStateList,
+                    pastaStateEmailLst,
                     applyStateList = {
-
-                        editableEmailStateList.addAll(
-                            emailRepository.listarEmailsEditaveisPorRemetente(
-                                usuarioSelecionado.value.email
+                        pastaStateEmailLst.addAll(
+                            emailRepository.listarEmailsPorPastaEIdUsuario(
+                                usuarioSelecionado.value.id_usuario,
+                                id_pasta
                             )
                         )
 
@@ -229,57 +227,59 @@ fun EmailsEditaveisScreen(navController: NavController) {
                 )
 
 
-                if (editableEmailStateList.isNotEmpty()) {
-
-                    Button(
-                        onClick = {
-                            for (email in editableEmailList) {
-                                anexoRepository.excluirAnexoPorIdEmail(email.id_email)
-                                emailRepository.excluirEmail(email)
-                                editableEmailStateList.remove(email)
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent,
-                            contentColor = colorResource(id = R.color.lcweb_gray_1)
-                        ),
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RectangleShape,
-                    ) {
-                        Text(text = "Limpar tudo")
-                    }
-                    HorizontalDivider(
-                        color = colorResource(id = R.color.lcweb_red_1)
-                    )
-
+                if (pastaStateEmailLst.isNotEmpty()) {
                     LazyColumn(reverseLayout = true) {
-                        items(editableEmailStateList, key = {
-                            it.id_email
+                        items(pastaStateEmailLst, key = {
+                            it.alteracao.id_alteracao
                         }) {
 
                             if (
-                                it.assunto.contains(textSearchBar.value, ignoreCase = true) ||
-                                it.corpo.contains(textSearchBar.value, ignoreCase = true)
+                                it.email.assunto.contains(textSearchBar.value, ignoreCase = true) ||
+                                it.email.corpo.contains(textSearchBar.value, ignoreCase = true)
                             ) {
+                                val isImportant = remember {
+                                    mutableStateOf(it.alteracao.importante)
+                                }
+
+                                val isRead = remember {
+                                    mutableStateOf(it.alteracao.lido)
+                                }
+
                                 val redLcWeb = colorResource(id = R.color.lcweb_red_1)
 
                                 Button(
                                     onClick = {
-                                        navController.navigate("editaemailscreen/${it.id_email}")
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .drawBehind {
-                                            val borderSize = 2.dp.toPx()
-                                            val y = size.height - borderSize / 2
-
-                                            drawLine(
-                                                redLcWeb,
-                                                Offset(0f, y),
-                                                Offset(size.width, y),
-                                                borderSize
+                                        if (!isRead.value) {
+                                            isRead.value = true
+                                            alteracaoRepository.atualizarLidoPorIdEmailEIdusuario(
+                                                isRead.value,
+                                                it.email.id_email,
+                                                it.alteracao.alt_id_usuario
                                             )
-                                        },
+                                        }
+
+                                        navController.navigate("visualizaemailscreen/${it.email.id_email}/false")
+                                    },
+                                    modifier =
+
+                                    if (isRead.value) {
+                                        Modifier
+                                            .fillMaxWidth()
+                                    } else {
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .drawBehind {
+                                                val borderSize = 2.dp.toPx()
+                                                val y = size.height - borderSize / 2
+
+                                                drawLine(
+                                                    redLcWeb,
+                                                    Offset(0f, y),
+                                                    Offset(size.width, y),
+                                                    borderSize
+                                                )
+                                            }
+                                    },
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = Color.Transparent,
                                         contentColor = colorResource(id = R.color.lcweb_gray_1)
@@ -295,13 +295,13 @@ fun EmailsEditaveisScreen(navController: NavController) {
                                         Column(
                                             modifier = Modifier.padding(horizontal = 2.dp)
                                         ) {
-                                            Text(text = "Para: ${it.destinatario}")
-                                            Text(text = it.assunto)
+                                            Text(text = "Para: ${it.email.destinatario}")
+                                            Text(text = it.email.assunto)
                                             Text(
-                                                text = if (it.corpo.length > 25) {
-                                                    "${it.corpo.take(25)}..."
+                                                text = if (it.email.corpo.length > 25) {
+                                                    "${it.email.corpo.take(25)}..."
                                                 } else {
-                                                    it.corpo
+                                                    it.email.corpo
                                                 },
                                                 maxLines = 1
                                             )
@@ -317,7 +317,7 @@ fun EmailsEditaveisScreen(navController: NavController) {
                                             ) {
 
 
-                                                if (attachEmailList.contains(it.id_email)) {
+                                                if (attachEmailList.contains(it.email.id_email)) {
                                                     Icon(
                                                         painter = painterResource(id = R.drawable.paperclip_solid),
                                                         contentDescription = "",
@@ -329,11 +329,59 @@ fun EmailsEditaveisScreen(navController: NavController) {
                                                 }
 
                                                 Text(
-                                                    text = if (timeState.is24hour) it.horario else convertTo12Hours(
-                                                        it.horario
+                                                    text = if (timeState.is24hour) it.email.horario else convertTo12Hours(
+                                                        it.email.horario
                                                     )
                                                 )
                                             }
+
+
+                                            Row {
+                                                IconButton(onClick = {
+                                                    alteracaoRepository.atualizarPastaPorIdEmailEIdUsuario(
+                                                        null,
+                                                        it.email.id_email,
+                                                        it.alteracao.alt_id_usuario
+                                                    )
+
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Email movido da pasta",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
+
+                                                    pastaStateEmailLst.remove(it)
+                                                }) {
+                                                    Icon(
+                                                        painter = painterResource(id = R.drawable.turn_up_solid),
+                                                        contentDescription = "",
+                                                        modifier = Modifier
+                                                            .width(20.dp)
+                                                            .height(20.dp)
+                                                    )
+                                                }
+
+                                                IconButton(onClick = {
+                                                    isImportant.value = !isImportant.value
+                                                    alteracaoRepository.atualizarImportantePorIdEmail(
+                                                        isImportant.value,
+                                                        it.email.id_email,
+                                                        it.alteracao.alt_id_usuario
+                                                    )
+
+
+                                                }) {
+                                                    Icon(
+                                                        imageVector = if (isImportant.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                                                        contentDescription = "",
+                                                        modifier = Modifier
+                                                            .width(20.dp)
+                                                            .height(20.dp)
+                                                    )
+                                                }
+                                            }
+
+
                                         }
                                     }
                                 }

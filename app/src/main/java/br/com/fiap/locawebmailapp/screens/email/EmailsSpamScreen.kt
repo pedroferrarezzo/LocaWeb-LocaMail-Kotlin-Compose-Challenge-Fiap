@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -54,8 +55,10 @@ import br.com.fiap.locawebmailapp.components.user.UserSelectorDalog
 import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRepository
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
+import br.com.fiap.locawebmailapp.database.repository.PastaRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.EmailComAlteracao
+import br.com.fiap.locawebmailapp.model.Pasta
 import br.com.fiap.locawebmailapp.utils.convertTo12Hours
 import kotlinx.coroutines.launch
 
@@ -71,12 +74,17 @@ fun EmailsSpamScreen(navController: NavController) {
         mutableStateOf("")
     }
 
+    val expandedPasta = remember {
+        mutableStateOf(true)
+    }
+
     val context = LocalContext.current
 
     val emailRepository = EmailRepository(context)
     val anexoRepository = AnexoRepository(context)
     val usuarioRepository = UsuarioRepository(context)
     val alteracaoRepository = AlteracaoRepository(context)
+    val pastaRepository = PastaRepository(context)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -101,11 +109,42 @@ fun EmailsSpamScreen(navController: NavController) {
     }
     val attachEmailList = anexoRepository.listarAnexosIdEmail()
 
+    val textPastaCreator = remember {
+        mutableStateOf("")
+    }
+
+    val openDialogPastaCreator = remember {
+        mutableStateOf(false)
+    }
+
+    val selectedDrawerPasta = remember {
+        mutableStateOf("")
+    }
+
+    val listPasta =
+        pastaRepository.listarPastasPorIdUsuario(usuarioRepository.listarUsuarioSelecionado().id_usuario)
+
+    val listPastaState = remember {
+        mutableStateListOf<Pasta>().apply {
+            addAll(listPasta)
+        }
+    }
+
 
     ModalNavDrawer(
         selectedDrawer = selectedDrawer,
         navController = navController,
-        drawerState = drawerState
+        drawerState = drawerState,
+        usuarioRepository = usuarioRepository,
+        pastaRepository = pastaRepository,
+        scrollState = rememberScrollState(),
+        expandedPasta = expandedPasta,
+        openDialogPastaCreator = openDialogPastaCreator,
+        textPastaCreator = textPastaCreator,
+        selectedDrawerPasta = selectedDrawerPasta,
+        alteracaoRepository = alteracaoRepository,
+        context = context,
+        listPastaState = listPastaState
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
@@ -198,7 +237,7 @@ fun EmailsSpamScreen(navController: NavController) {
                     Button(
                         onClick = {
                             for (email in spamEmailList) {
-                                alteracaoRepository.atualizarExcluidoPorIdEmail(
+                                alteracaoRepository.atualizarExcluidoPorIdEmailEIdusuario(
                                     true,
                                     email.email.id_email,
                                     email.alteracao.alt_id_usuario
@@ -245,7 +284,7 @@ fun EmailsSpamScreen(navController: NavController) {
                                     onClick = {
                                         if (!isRead.value) {
                                             isRead.value = true
-                                            alteracaoRepository.atualizarLidoPorIdEmail(
+                                            alteracaoRepository.atualizarLidoPorIdEmailEIdusuario(
                                                 isRead.value,
                                                 it.email.id_email,
                                                 it.alteracao.alt_id_usuario

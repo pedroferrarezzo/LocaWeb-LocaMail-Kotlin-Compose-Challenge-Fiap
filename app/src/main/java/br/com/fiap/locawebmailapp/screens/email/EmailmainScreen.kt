@@ -1,5 +1,6 @@
 package br.com.fiap.locawebmailapp.screens.email
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -30,6 +32,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -48,13 +51,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
+import br.com.fiap.locawebmailapp.components.email.PastaPickerDalog
 import br.com.fiap.locawebmailapp.components.general.ModalNavDrawer
 import br.com.fiap.locawebmailapp.components.user.UserSelectorDalog
 import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRepository
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
+import br.com.fiap.locawebmailapp.database.repository.PastaRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.EmailComAlteracao
+import br.com.fiap.locawebmailapp.model.Pasta
 import br.com.fiap.locawebmailapp.model.Usuario
 import br.com.fiap.locawebmailapp.utils.convertTo12Hours
 import kotlinx.coroutines.launch
@@ -67,7 +73,15 @@ fun EMailMainScreen(navController: NavController) {
         mutableStateOf("2")
     }
 
+    val selectedDrawerPasta = remember {
+        mutableStateOf("")
+    }
+
     val textSearchBar = remember {
+        mutableStateOf("")
+    }
+
+    val textPastaCreator = remember {
         mutableStateOf("")
     }
 
@@ -77,6 +91,7 @@ fun EMailMainScreen(navController: NavController) {
     val anexoRepository = AnexoRepository(context)
     val usuarioRepository = UsuarioRepository(context)
     val alteracaoRepository = AlteracaoRepository(context)
+    val pastaRepository = PastaRepository(context)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -85,6 +100,10 @@ fun EMailMainScreen(navController: NavController) {
     val timeState = rememberTimePickerState()
 
     val openDialogUserPicker = remember {
+        mutableStateOf(false)
+    }
+
+    val openDialogPastaPicker = remember {
         mutableStateOf(false)
     }
 
@@ -119,7 +138,13 @@ fun EMailMainScreen(navController: NavController) {
         )
     }
 
+    val expandedPasta = remember {
+        mutableStateOf(true)
+    }
 
+    val openDialogPastaCreator = remember {
+        mutableStateOf(false)
+    }
 
 
     val usuarioSelecionado = remember {
@@ -127,8 +152,27 @@ fun EMailMainScreen(navController: NavController) {
     }
 
     val receivedEmailList =
-        emailRepository.listarEmailsPorDestinatario(usuarioSelecionado.value.email, usuarioSelecionado.value.id_usuario)
+        emailRepository.listarEmailsPorDestinatario(
+            usuarioSelecionado.value.email,
+            usuarioSelecionado.value.id_usuario
+        )
+
+    val receivedStateEmailList = remember {
+        mutableStateListOf<EmailComAlteracao>().apply {
+            addAll(receivedEmailList)
+        }
+    }
+
+    val listPastaState = remember {
+        mutableStateListOf<Pasta>().apply {
+            addAll(pastaRepository.listarPastasPorIdUsuario(usuarioSelecionado.value.id_usuario))
+        }
+    }
+
+
     val attachEmailList = anexoRepository.listarAnexosIdEmail()
+
+    val redLcWeb = colorResource(id = R.color.lcweb_red_1)
 
 
 
@@ -136,7 +180,25 @@ fun EMailMainScreen(navController: NavController) {
     ModalNavDrawer(
         selectedDrawer = selectedDrawer,
         navController = navController,
-        drawerState = drawerState
+        drawerState = drawerState,
+        usuarioRepository = usuarioRepository,
+        pastaRepository = pastaRepository,
+        scrollState = rememberScrollState(),
+        expandedPasta = expandedPasta,
+        openDialogPastaCreator = openDialogPastaCreator,
+        textPastaCreator = textPastaCreator,
+        selectedDrawerPasta = selectedDrawerPasta,
+        alteracaoRepository = alteracaoRepository,
+        receivedEmailStateListRecompose = {
+            receivedStateEmailList.addAll(
+                emailRepository.listarEmailsPorDestinatario(
+                    usuarioSelecionado.value.email,
+                    usuarioSelecionado.value.id_usuario
+                )
+            )
+        },
+        context = context,
+        listPastaState = listPastaState
     ) {
 
         Box(
@@ -212,13 +274,22 @@ fun EMailMainScreen(navController: NavController) {
                     openDialogUserPicker = openDialogUserPicker,
                     usuarioSelecionado,
                     usuariosExistentes,
+                    receivedStateEmailList,
+                    applyStateList = {
+                        receivedStateEmailList.addAll(
+                            emailRepository.listarEmailsPorDestinatario(
+                                usuarioSelecionado.value.email,
+                                usuarioSelecionado.value.id_usuario
+                            )
+                        )
+                    },
                     usuarioRepository = usuarioRepository
                 )
 
-                if (receivedEmailList.isNotEmpty()) {
+                if (receivedStateEmailList.isNotEmpty()) {
 
                     LazyColumn(reverseLayout = true) {
-                        items(receivedEmailList, key = {
+                        items(receivedStateEmailList, key = {
                             it.alteracao.id_alteracao
                         }) {
 
@@ -234,13 +305,13 @@ fun EMailMainScreen(navController: NavController) {
                                     mutableStateOf(it.alteracao.lido)
                                 }
 
-                                val redLcWeb = colorResource(id = R.color.lcweb_red_1)
+
 
                                 Button(
                                     onClick = {
                                         if (!isRead.value) {
                                             isRead.value = true
-                                            alteracaoRepository.atualizarLidoPorIdEmail(
+                                            alteracaoRepository.atualizarLidoPorIdEmailEIdusuario(
                                                 isRead.value,
                                                 it.email.id_email,
                                                 it.alteracao.alt_id_usuario
@@ -324,25 +395,66 @@ fun EMailMainScreen(navController: NavController) {
                                                 )
                                             }
 
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
 
-                                            IconButton(onClick = {
-                                                isImportant.value = !isImportant.value
-                                                alteracaoRepository.atualizarImportantePorIdEmail(
-                                                    isImportant.value,
-                                                    it.email.id_email,
-                                                    it.alteracao.alt_id_usuario
-                                                )
+                                                if (listPastaState.isNotEmpty()) {
+                                                    IconButton(onClick = {
+                                                        openDialogPastaPicker.value =
+                                                            !openDialogPastaPicker.value
+                                                    }) {
+                                                        Icon(
+                                                            painter = painterResource(id = R.drawable.box_archive_solid),
+                                                            contentDescription = "",
+                                                            modifier = Modifier
+                                                                .width(20.dp)
+                                                                .height(20.dp)
+                                                        )
+                                                    }
+
+                                                    PastaPickerDalog(
+                                                        openDialogPastaPicker = openDialogPastaPicker,
+                                                        listPasta = listPastaState,
+                                                        color = redLcWeb,
+                                                        onClickPasta = { pasta ->
+
+                                                            Toast.makeText(context, "Email movido para a pasta ${pasta.nome}", Toast.LENGTH_LONG)
+                                                                .show()
+
+                                                            alteracaoRepository.atualizarPastaPorIdEmailEIdUsuario(
+                                                                pasta = pasta.id_pasta,
+                                                                id_email = it.alteracao.alt_id_email,
+                                                                id_usuario = usuarioSelecionado.value.id_usuario
+
+                                                            )
+
+                                                            receivedStateEmailList.remove(it)
+
+                                                            openDialogPastaPicker.value = false
+                                                        }
+                                                    )
+                                                }
+
+                                                IconButton(onClick = {
+                                                    isImportant.value = !isImportant.value
+                                                    alteracaoRepository.atualizarImportantePorIdEmail(
+                                                        isImportant.value,
+                                                        it.email.id_email,
+                                                        it.alteracao.alt_id_usuario
+                                                    )
 
 
-                                            }) {
-                                                Icon(
-                                                    imageVector = if (isImportant.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                                                    contentDescription = "",
-                                                    modifier = Modifier
-                                                        .width(20.dp)
-                                                        .height(20.dp)
-                                                )
+                                                }) {
+                                                    Icon(
+                                                        imageVector = if (isImportant.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                                                        contentDescription = "",
+                                                        modifier = Modifier
+                                                            .width(20.dp)
+                                                            .height(20.dp)
+                                                    )
+                                                }
                                             }
+
+
                                         }
                                     }
                                 }

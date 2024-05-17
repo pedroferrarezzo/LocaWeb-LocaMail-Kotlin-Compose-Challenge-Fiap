@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 import br.com.fiap.locawebmailapp.model.Email
 import br.com.fiap.locawebmailapp.model.EmailComAlteracao
+import br.com.fiap.locawebmailapp.model.Pasta
 
 @Dao
 interface EmailDao {
@@ -25,7 +26,7 @@ interface EmailDao {
     fun listarEmailsEnviadosPorRemetente(remetente: String, id_usuario: Long): List<EmailComAlteracao>
 
 
-    @Query("SELECT * FROM T_LCW_EMAIL INNER JOIN T_LCW_ALTERACAO ON T_LCW_EMAIL.id_email = T_LCW_ALTERACAO.alt_id_email where T_LCW_ALTERACAO.alt_id_usuario = :id_usuario AND editavel = 0 AND arquivado = 0 AND excluido = 0 AND spam = 0")
+    @Query("SELECT * FROM T_LCW_EMAIL INNER JOIN T_LCW_ALTERACAO ON T_LCW_EMAIL.id_email = T_LCW_ALTERACAO.alt_id_email where T_LCW_ALTERACAO.alt_id_usuario = :id_usuario AND editavel = 0 AND arquivado = 0 AND excluido = 0 AND spam = 0 AND id_pasta IS NULL")
     fun listarEmailsPorDestinatario(id_usuario: Long): List<EmailComAlteracao>
 
 
@@ -48,4 +49,7 @@ interface EmailDao {
 
     @Query("SELECT * FROM T_LCW_EMAIL INNER JOIN T_LCW_ALTERACAO ON T_LCW_EMAIL.id_email = T_LCW_ALTERACAO.alt_id_email where T_LCW_ALTERACAO.alt_id_usuario = :id_usuario AND excluido = 1 AND editavel = 0")
     fun listarEmailsLixeiraPorIdUsuario(id_usuario: Long): List<EmailComAlteracao>
+
+    @Query("SELECT * FROM T_LCW_EMAIL INNER JOIN T_LCW_ALTERACAO ON T_LCW_EMAIL.id_email = T_LCW_ALTERACAO.alt_id_email where T_LCW_ALTERACAO.alt_id_usuario = :id_usuario AND id_pasta = :id_pasta AND arquivado = 0 AND excluido = 0 AND spam = 0 AND editavel = 0")
+    fun listarEmailsPorPastaEIdUsuario(id_usuario: Long, id_pasta: Long): List<EmailComAlteracao>
 }

@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import br.com.fiap.locawebmailapp.model.Alteracao
-import br.com.fiap.locawebmailapp.model.Email
 
 @Dao
 interface AlteracaoDao {
@@ -12,10 +11,11 @@ interface AlteracaoDao {
     @Insert
     fun criarAlteracao(alteracao: Alteracao)
 
-
-
     @Query("SELECT * FROM T_LCW_ALTERACAO where alt_id_email = :id_email AND alt_id_usuario = :id_usuario")
     fun listarAlteracaoPorIdEmailEIdUsuario(id_email: Long, id_usuario: Long): Alteracao
+
+    @Query("SELECT * FROM T_LCW_ALTERACAO where alt_id_usuario = :id_usuario and id_pasta = :id_pasta")
+    fun listarAlteracaoPorIdUsuarioEIdPasta(id_usuario: Long, id_pasta: Long): List<Alteracao>
 
     @Query("SELECT * FROM T_LCW_ALTERACAO where alt_id_email = :id_email")
     fun listarAlteracaoPorIdEmail(id_email: Long): Alteracao
@@ -35,6 +35,12 @@ interface AlteracaoDao {
     @Query("SELECT spam FROM T_LCW_ALTERACAO where alt_id_email = :id_email AND alt_id_usuario = :id_usuario")
     fun verificarSpamPorIdEmailEIdUsuario(id_email: Long, id_usuario: Long): Boolean
 
+    @Query("SELECT id_pasta FROM T_LCW_ALTERACAO where alt_id_email = :id_email AND alt_id_usuario = :id_usuario")
+    fun verificarPastaPorIdEmailEIdUsuario(id_email: Long, id_usuario: Long): Long
+
+
+
+
 
     @Query("UPDATE T_LCW_ALTERACAO SET importante = :importante where alt_id_email = :id_email AND alt_id_usuario = :id_usuario")
     fun atualizarImportantePorIdEmailEIdUsuario(importante: Boolean, id_email: Long, id_usuario: Long)
@@ -50,6 +56,12 @@ interface AlteracaoDao {
 
     @Query("UPDATE T_LCW_ALTERACAO SET lido = :lido where alt_id_email = :id_email AND alt_id_usuario = :id_usuario")
     fun atualizarLidoPorIdEmailEIdUsuario(lido: Boolean, id_email: Long, id_usuario: Long)
+
+    @Query("UPDATE T_LCW_ALTERACAO SET id_pasta = :pasta where alt_id_email = :id_email AND alt_id_usuario = :id_usuario")
+    fun atualizarPastaPorIdEmailEIdUsuario(pasta: Long?, id_email: Long, id_usuario: Long)
+
+    @Query("UPDATE T_LCW_ALTERACAO SET id_pasta = :pasta where id_alteracao = :id_alteracao")
+    fun atualizarPastaPorIdAlteracao(pasta: Long?, id_alteracao: Long)
 
 
     @Query("DELETE FROM T_LCW_ALTERACAO where alt_id_email = :id_email AND alt_id_usuario = :id_usuario")

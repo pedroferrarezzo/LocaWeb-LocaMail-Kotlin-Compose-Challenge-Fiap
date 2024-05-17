@@ -1,7 +1,6 @@
 package br.com.fiap.locawebmailapp.database.repository
 
 import android.content.Context
-import android.util.Log
 import br.com.fiap.locawebmailapp.database.dao.InstanceDatabase
 import br.com.fiap.locawebmailapp.model.Email
 import br.com.fiap.locawebmailapp.model.EmailComAlteracao
@@ -64,6 +63,11 @@ class EmailRepository(context: Context) {
     }
     fun listarEmailsEditaveisPorRemetente(remetente: String): List<Email> {
         return emailDao.listarEmailsEditaveisPorRemetente(remetente)
+    }
+
+
+    fun listarEmailsPorPastaEIdUsuario(id_usuario: Long, id_pasta: Long): List<EmailComAlteracao> {
+        return emailDao.listarEmailsPorPastaEIdUsuario(id_usuario, id_pasta)
     }
 
     fun listarEmailsImportantesPorIdUsuario(id_usuario: Long): List<EmailComAlteracao> {

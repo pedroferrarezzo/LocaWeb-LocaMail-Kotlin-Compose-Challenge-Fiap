@@ -3,6 +3,7 @@ package br.com.fiap.locawebmailapp.screens.email
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -22,6 +23,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -45,8 +47,10 @@ import br.com.fiap.locawebmailapp.components.user.UserSelectorDalog
 import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRepository
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
+import br.com.fiap.locawebmailapp.database.repository.PastaRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.EmailComAlteracao
+import br.com.fiap.locawebmailapp.model.Pasta
 import br.com.fiap.locawebmailapp.utils.convertTo12Hours
 import kotlinx.coroutines.launch
 
@@ -62,12 +66,17 @@ fun EmailsEnviadosScreen(navController: NavController) {
         mutableStateOf("")
     }
 
+    val expandedPasta = remember {
+        mutableStateOf(true)
+    }
+
     val context = LocalContext.current
 
     val emailRepository = EmailRepository(context)
     val anexoRepository = AnexoRepository(context)
     val usuarioRepository = UsuarioRepository(context)
     val alteracaoRepository = AlteracaoRepository(context)
+    val pastaRepository = PastaRepository(context)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -83,14 +92,45 @@ fun EmailsEnviadosScreen(navController: NavController) {
         mutableStateOf(usuarioRepository.listarUsuarioSelecionado())
     }
 
+    val openDialogPastaCreator = remember {
+        mutableStateOf(false)
+    }
+
+    val textPastaCreator = remember {
+        mutableStateOf("")
+    }
+
     val sentEmailList = emailRepository.listarEmailsEnviadosPorRemetente(usuarioSelecionado.value.email, usuarioSelecionado.value.id_usuario)
     val attachEmailList = anexoRepository.listarAnexosIdEmail()
+
+    val selectedDrawerPasta = remember {
+        mutableStateOf("")
+    }
+
+    val listPasta =
+        pastaRepository.listarPastasPorIdUsuario(usuarioRepository.listarUsuarioSelecionado().id_usuario)
+
+    val listPastaState = remember {
+        mutableStateListOf<Pasta>().apply {
+            addAll(listPasta)
+        }
+    }
 
 
     ModalNavDrawer(
         selectedDrawer = selectedDrawer,
         navController = navController,
-        drawerState = drawerState
+        drawerState = drawerState,
+        usuarioRepository = usuarioRepository,
+        pastaRepository = pastaRepository,
+        scrollState = rememberScrollState(),
+        expandedPasta = expandedPasta,
+        openDialogPastaCreator = openDialogPastaCreator,
+        textPastaCreator = textPastaCreator,
+        selectedDrawerPasta = selectedDrawerPasta,
+        alteracaoRepository = alteracaoRepository,
+        context = context,
+        listPastaState = listPastaState
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
@@ -193,7 +233,7 @@ fun EmailsEnviadosScreen(navController: NavController) {
                                     onClick = {
                                         if (!isRead.value) {
                                             isRead.value = true
-                                            alteracaoRepository.atualizarLidoPorIdEmail(
+                                            alteracaoRepository.atualizarLidoPorIdEmailEIdusuario(
                                                 isRead.value,
                                                 it.email.id_email,
                                                 it.alteracao.alt_id_usuario

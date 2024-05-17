@@ -304,7 +304,7 @@ fun VisualizaEmailScreen(
                                             if (usuario != null) usuario.id_usuario else null
 
                                         if (idDestinatario != null) {
-                                            alteracaoRepository.atualizarExcluidoPorIdEmail(
+                                            alteracaoRepository.atualizarExcluidoPorIdEmailEIdusuario(
                                                 true,
                                                 email.id_email,
                                                 idDestinatario
@@ -318,7 +318,7 @@ fun VisualizaEmailScreen(
                                     Toast.LENGTH_LONG
                                 ).show()
                             } else {
-                                alteracaoRepository.atualizarExcluidoPorIdEmail(
+                                alteracaoRepository.atualizarExcluidoPorIdEmailEIdusuario(
                                     true,
                                     email.id_email,
                                     usuarioSelecionado.value.id_usuario
@@ -360,7 +360,7 @@ fun VisualizaEmailScreen(
                                             if (usuario != null) usuario.id_usuario else null
 
                                         if (idDestinatario != null) {
-                                            alteracaoRepository.atualizarSpamPorIdEmail(
+                                            alteracaoRepository.atualizarSpamPorIdEmailEIdusuario(
                                                 isSpam.value,
                                                 email.id_email,
                                                 idDestinatario
@@ -370,7 +370,7 @@ fun VisualizaEmailScreen(
                                 }
                             } else {
                                 isSpam.value = !isSpam.value
-                                alteracaoRepository.atualizarSpamPorIdEmail(
+                                alteracaoRepository.atualizarSpamPorIdEmailEIdusuario(
                                     isSpam.value,
                                     email.id_email,
                                     usuarioSelecionado.value.id_usuario
@@ -405,7 +405,7 @@ fun VisualizaEmailScreen(
                                             if (usuario != null) usuario.id_usuario else null
 
                                         if (idDestinatario != null) {
-                                            alteracaoRepository.atualizarArquivadoPorIdEmail(
+                                            alteracaoRepository.atualizarArquivadoPorIdEmailEIdusuario(
                                                 isArchive.value,
                                                 email.id_email,
                                                 idDestinatario
@@ -415,7 +415,7 @@ fun VisualizaEmailScreen(
                                 }
                             } else {
                                 isArchive.value = !isArchive.value
-                                alteracaoRepository.atualizarArquivadoPorIdEmail(
+                                alteracaoRepository.atualizarArquivadoPorIdEmailEIdusuario(
                                     isArchive.value,
                                     email.id_email,
                                     usuarioSelecionado.value.id_usuario

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -29,6 +30,7 @@ import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -52,9 +54,12 @@ import br.com.fiap.locawebmailapp.components.general.ModalNavDrawer
 import br.com.fiap.locawebmailapp.components.general.ShadowBox
 import br.com.fiap.locawebmailapp.components.user.UserSelectorDalog
 import br.com.fiap.locawebmailapp.database.repository.AgendaRepository
+import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
+import br.com.fiap.locawebmailapp.database.repository.PastaRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.Agenda
 import br.com.fiap.locawebmailapp.model.AgendaCor
+import br.com.fiap.locawebmailapp.model.Pasta
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.daysOfWeek
@@ -93,8 +98,13 @@ fun CalendarMainScreen(navController: NavController, data: LocalDate = LocalDate
     }
 
     val usuarioRepository = UsuarioRepository(LocalContext.current)
+    val pastaRepository = PastaRepository(LocalContext.current)
     val usuarioSelecionado = remember {
         mutableStateOf(usuarioRepository.listarUsuarioSelecionado())
+    }
+
+    val expandedPasta = remember {
+        mutableStateOf(true)
     }
 
     val currentMonth = remember { YearMonth.now() }
@@ -119,16 +129,49 @@ fun CalendarMainScreen(navController: NavController, data: LocalDate = LocalDate
         usuarioSelecionado.value.id_usuario
     )
 
+    val openDialogPastaCreator = remember {
+        mutableStateOf(false)
+    }
+
+    val textPastaCreator = remember {
+        mutableStateOf("")
+    }
+
     val usuariosExistentes = usuarioRepository.listarUsuariosNaoSelecionados()
 
     val openDialogUserPicker = remember {
         mutableStateOf(false)
     }
 
+    val selectedDrawerPasta = remember {
+        mutableStateOf("")
+    }
+
+    val listPasta =
+        pastaRepository.listarPastasPorIdUsuario(usuarioRepository.listarUsuarioSelecionado().id_usuario)
+
+    val listPastaState = remember {
+        mutableStateListOf<Pasta>().apply {
+            addAll(listPasta)
+        }
+    }
+
+    val alteracaoRepository = AlteracaoRepository(context)
+
     ModalNavDrawer(
         selectedDrawer = selectedDrawer,
         navController = navController,
-        drawerState = drawerState
+        drawerState = drawerState,
+        usuarioRepository = usuarioRepository,
+        pastaRepository = pastaRepository,
+        scrollState = rememberScrollState(),
+        expandedPasta = expandedPasta,
+        openDialogPastaCreator = openDialogPastaCreator,
+        textPastaCreator = textPastaCreator,
+        selectedDrawerPasta = selectedDrawerPasta,
+        alteracaoRepository = alteracaoRepository,
+        context = context,
+        listPastaState = listPastaState
     ) {
 
         Box(modifier = Modifier.fillMaxSize()) {

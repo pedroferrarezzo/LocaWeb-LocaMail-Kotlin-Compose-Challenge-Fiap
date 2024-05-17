@@ -10,9 +10,10 @@ import br.com.fiap.locawebmailapp.model.Alteracao
 import br.com.fiap.locawebmailapp.model.Anexo
 import br.com.fiap.locawebmailapp.model.Convidado
 import br.com.fiap.locawebmailapp.model.Email
+import br.com.fiap.locawebmailapp.model.Pasta
 import br.com.fiap.locawebmailapp.model.Usuario
 
-@Database(entities = [Agenda::class, Convidado::class, AgendaConvidado::class, Email::class, Anexo::class, Usuario::class, Alteracao::class], version = 21)
+@Database(entities = [Agenda::class, Convidado::class, AgendaConvidado::class, Email::class, Anexo::class, Usuario::class, Alteracao::class, Pasta::class], version = 24)
 abstract class InstanceDatabase : RoomDatabase() {
 
     abstract fun agendaDao(): AgendaDao
@@ -22,6 +23,7 @@ abstract class InstanceDatabase : RoomDatabase() {
     abstract fun anexoDao(): AnexoDao
     abstract fun usuarioDao(): UsuarioDao
     abstract fun alteracaoDao(): AlteracaoDao
+    abstract fun pastaDao(): PastaDao
 
     // Padrão Singleton
     companion object {
