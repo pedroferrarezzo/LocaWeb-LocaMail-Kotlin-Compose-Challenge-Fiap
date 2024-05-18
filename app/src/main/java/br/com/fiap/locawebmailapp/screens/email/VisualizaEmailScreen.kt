@@ -81,7 +81,7 @@ fun VisualizaEmailScreen(
     val todosDestinatarios = arrayListOf<String>()
 
 
-    val respostasEmail = respostaEmailRepository.listarRespostasEmailPortIdEmail(idEmail)
+    val respostasEmail = respostaEmailRepository.listarRespostasEmailPorIdEmail(idEmail)
 
 
     val anexoArrayByteList = anexoRepository.listarAnexosArraybytePorIdEmail(idEmail);
@@ -620,10 +620,12 @@ fun VisualizaEmailScreen(
                         )
                     }
 
-
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(30.dp)
+                    )
                 }
-
-
 
                 items(respostasEmail) { respostaEmail ->
 
@@ -642,13 +644,13 @@ fun VisualizaEmailScreen(
                         stringParaLista(respostaEmail.cc).contains(usuarioSelecionado.value.email) ||
                         stringParaLista(respostaEmail.cco).contains(usuarioSelecionado.value.email)
                     ) {
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(20.dp)
+                        )
 
                         if (respostaEmail.editavel && usuarioSelecionado.value.id_usuario == respostaEmail.id_usuario) {
-                            Spacer(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(20.dp)
-                            )
                             Button(
                                 onClick = {
 
@@ -672,8 +674,6 @@ fun VisualizaEmailScreen(
                                     modifier = Modifier.padding(5.dp)
                                 )
                             }
-
-
 
                             LazyRow(modifier = Modifier.padding(bottom = 5.dp)) {
                                 items(anexoRespostaEmailBitMapList) {
@@ -873,6 +873,10 @@ fun VisualizaEmailScreen(
                                     color = colorResource(id = R.color.lcweb_gray_1),
                                     modifier = Modifier.padding(5.dp),
                                     textAlign = TextAlign.Justify
+                                )
+
+                                HorizontalDivider(
+                                    color = colorResource(id = R.color.lcweb_red_1)
                                 )
                             }
                         }

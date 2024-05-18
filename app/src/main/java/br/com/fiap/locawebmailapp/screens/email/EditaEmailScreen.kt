@@ -452,7 +452,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = destinatario)
+                            Text(text = destinatario, fontSize = 10.sp)
                             Icon(
                                 imageVector = Icons.Filled.Clear,
                                 contentDescription = "",
@@ -539,7 +539,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = cc)
+                                Text(text = cc, fontSize = 10.sp)
                                 Icon(
                                     imageVector = Icons.Filled.Clear,
                                     contentDescription = "",
@@ -625,7 +625,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = cco)
+                                Text(text = cco, fontSize = 10.sp)
                                 Icon(
                                     imageVector = Icons.Filled.Clear,
                                     contentDescription = "",

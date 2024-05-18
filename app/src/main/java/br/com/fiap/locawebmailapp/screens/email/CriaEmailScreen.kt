@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -518,7 +519,7 @@ fun CriaEmailScreen(navController: NavController) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = cc)
+                            Text(text = cc,fontSize = 10.sp)
                             Icon(
                                 imageVector = Icons.Filled.Clear,
                                 contentDescription = "",
@@ -604,7 +605,7 @@ fun CriaEmailScreen(navController: NavController) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = cco)
+                            Text(text = cco, fontSize = 10.sp)
                             Icon(
                                 imageVector = Icons.Filled.Clear,
                                 contentDescription = "",

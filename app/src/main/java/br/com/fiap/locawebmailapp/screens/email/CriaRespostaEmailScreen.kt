@@ -193,9 +193,10 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                                 respostaEmail.editavel = true
                                 respostaEmail.id_email = idEmail
                                 respostaEmail.id_usuario = usuarioSelecionado.value.id_usuario
-                                anexoRespostaEmail.id_resposta_email = respostaEmail.id_email
 
-                                respostaEmailRepository.criarRespostaEmail(respostaEmail)
+                                val rowId = respostaEmailRepository.criarRespostaEmail(respostaEmail)
+
+                                anexoRespostaEmail.id_resposta_email = rowId
 
                                 if (bitmapList.isNotEmpty()) {
                                     for (bitmap in bitmapList) {
@@ -298,9 +299,9 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                                 LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
                             respostaEmail.id_email = idEmail
                             respostaEmail.id_usuario = usuarioSelecionado.value.id_usuario
-                            anexoRespostaEmail.id_resposta_email = respostaEmail.id_email
+                            val rowId = respostaEmailRepository.criarRespostaEmail(respostaEmail)
 
-                            respostaEmailRepository.criarRespostaEmail(respostaEmail)
+                            anexoRespostaEmail.id_resposta_email = rowId
 
 
                             val convidadoExistente =
@@ -485,7 +486,7 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = destinatario)
+                            Text(text = destinatario, fontSize = 10.sp)
                             if (!stringParaLista(emailResponder.destinatario).contains(destinatario) && !emailResponder.remetente.equals(
                                     destinatario
                                 )
@@ -582,7 +583,7 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = cc)
+                                Text(text = cc, fontSize = 10.sp)
                                 Icon(
                                     imageVector = Icons.Filled.Clear,
                                     contentDescription = "",
@@ -673,7 +674,7 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = cco)
+                                Text(text = cco, fontSize = 10.sp)
                                 Icon(
                                     imageVector = Icons.Filled.Clear,
                                     contentDescription = "",

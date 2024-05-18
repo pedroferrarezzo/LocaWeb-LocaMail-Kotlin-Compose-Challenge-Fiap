@@ -58,6 +58,7 @@ import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRepository
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
 import br.com.fiap.locawebmailapp.database.repository.PastaRepository
+import br.com.fiap.locawebmailapp.database.repository.RespostaEmailRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.EmailComAlteracao
 import br.com.fiap.locawebmailapp.model.Pasta
@@ -92,6 +93,7 @@ fun EMailMainScreen(navController: NavController) {
     val usuarioRepository = UsuarioRepository(context)
     val alteracaoRepository = AlteracaoRepository(context)
     val pastaRepository = PastaRepository(context)
+    val respostaEmailRepository = RespostaEmailRepository(context)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -154,7 +156,8 @@ fun EMailMainScreen(navController: NavController) {
     val receivedEmailList =
         emailRepository.listarEmailsPorDestinatario(
             usuarioSelecionado.value.email,
-            usuarioSelecionado.value.id_usuario
+            usuarioSelecionado.value.id_usuario,
+            respostaEmailRepository
         )
 
     val receivedStateEmailList = remember {
@@ -193,7 +196,8 @@ fun EMailMainScreen(navController: NavController) {
             receivedStateEmailList.addAll(
                 emailRepository.listarEmailsPorDestinatario(
                     usuarioSelecionado.value.email,
-                    usuarioSelecionado.value.id_usuario
+                    usuarioSelecionado.value.id_usuario,
+                    respostaEmailRepository
                 )
             )
         },
@@ -279,7 +283,8 @@ fun EMailMainScreen(navController: NavController) {
                         receivedStateEmailList.addAll(
                             emailRepository.listarEmailsPorDestinatario(
                                 usuarioSelecionado.value.email,
-                                usuarioSelecionado.value.id_usuario
+                                usuarioSelecionado.value.id_usuario,
+                                respostaEmailRepository
                             )
                         )
                     },

@@ -32,9 +32,9 @@ class RespostaEmailRepository(context: Context) {
 
     }
 
-    fun listarRespostasEmailPortIdEmail(id_email: Long): List<RespostaEmail> {
+    fun listarRespostasEmailPorIdEmail(id_email: Long): List<RespostaEmail> {
 
-        return respostaEmailDao.listarRespostasEmailPortIdEmail(id_email)
+        return respostaEmailDao.listarRespostasEmailPorIdEmail(id_email)
 
     }
 }

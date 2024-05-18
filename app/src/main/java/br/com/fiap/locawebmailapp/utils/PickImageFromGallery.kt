@@ -17,15 +17,16 @@ fun pickImageFromGallery(
     bitmapList: SnapshotStateList<Bitmap>
 ) {
     imageUri?.let {
-        if (Build.VERSION.SDK_INT < 28) {
-            bitmap.value = MediaStore.Images
-                .Media.getBitmap(context.contentResolver, it)
-
-            bitmapList.add(bitmap.value!!)
+        val originalBitmap = if (Build.VERSION.SDK_INT < 28) {
+            MediaStore.Images.Media.getBitmap(context.contentResolver, it)
         } else {
             val source = ImageDecoder.createSource(context.contentResolver, it)
-            bitmap.value = ImageDecoder.decodeBitmap(source)
-            bitmapList.add(bitmap.value!!)
+            ImageDecoder.decodeBitmap(source)
         }
+
+        val resizedBitmap = resizeBitmap(originalBitmap, 70, 70)
+
+        bitmap.value = resizedBitmap
+        bitmapList.add(resizedBitmap)
     }
 }
