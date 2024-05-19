@@ -310,6 +310,9 @@ fun EMailMainScreen(navController: NavController) {
                                     mutableStateOf(it.alteracao.lido)
                                 }
 
+                                val respostasEmail =
+                                    respostaEmailRepository.listarRespostasEmailPorIdEmail(id_email = it.email.id_email)
+
 
 
                                 Button(
@@ -360,7 +363,29 @@ fun EMailMainScreen(navController: NavController) {
                                         Column(
                                             modifier = Modifier.padding(horizontal = 2.dp)
                                         ) {
-                                            Text(text = "Para: ${it.email.destinatario}")
+                                            Row {
+                                                if (respostasEmail.isNotEmpty()) {
+                                                    Icon(
+                                                        painter = painterResource(id = R.drawable.reply_solid),
+                                                        contentDescription = "",
+                                                        modifier = Modifier
+                                                            .width(20.dp)
+                                                            .height(20.dp)
+                                                            .padding(horizontal = 5.dp)
+                                                    )
+                                                }
+
+                                                Text(
+                                                    text = if (it.email.destinatario.length > 25) {
+                                                        "Para: ${it.email.destinatario.take(25)}..."
+                                                    } else {
+                                                        "Para: ${it.email.destinatario}"
+                                                    },
+                                                    maxLines = 1
+                                                )
+                                            }
+
+
                                             Text(text = it.email.assunto)
                                             Text(
                                                 text = if (it.email.corpo.length > 25) {
@@ -422,7 +447,11 @@ fun EMailMainScreen(navController: NavController) {
                                                         color = redLcWeb,
                                                         onClickPasta = { pasta ->
 
-                                                            Toast.makeText(context, "Email movido para a pasta ${pasta.nome}", Toast.LENGTH_LONG)
+                                                            Toast.makeText(
+                                                                context,
+                                                                "Email movido para a pasta ${pasta.nome}",
+                                                                Toast.LENGTH_LONG
+                                                            )
                                                                 .show()
 
                                                             alteracaoRepository.atualizarPastaPorIdEmailEIdUsuario(

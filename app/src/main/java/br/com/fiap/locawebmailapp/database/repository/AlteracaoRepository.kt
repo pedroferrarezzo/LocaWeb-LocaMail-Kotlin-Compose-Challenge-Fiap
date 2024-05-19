@@ -28,6 +28,10 @@ class AlteracaoRepository(context: Context) {
         return alteracaoDao.listarAlteracaoPorIdEmail(id_email)
     }
 
+    fun listarAltIdUsuarioPorIdEmail(id_email: Long): List<Long> {
+        return alteracaoDao.listarAltIdUsuarioPorIdEmail(id_email)
+    }
+
     fun atualizarArquivadoPorIdEmailEIdusuario(arquivado: Boolean, id_email: Long, id_usuario: Long) {
         return alteracaoDao.atualizarArquivadoPorIdEmailEIdUsuario(arquivado, id_email, id_usuario)
     }

@@ -20,6 +20,9 @@ interface AlteracaoDao {
     @Query("SELECT * FROM T_LCW_ALTERACAO where alt_id_email = :id_email")
     fun listarAlteracaoPorIdEmail(id_email: Long): Alteracao
 
+    @Query("SELECT alt_id_usuario FROM T_LCW_ALTERACAO where alt_id_email = :id_email")
+    fun listarAltIdUsuarioPorIdEmail(id_email: Long): List<Long>
+
     @Query("SELECT importante FROM T_LCW_ALTERACAO where alt_id_email = :id_email AND alt_id_usuario = :id_usuario")
     fun verificarImportantePorIdEmailEIdUsuario(id_email: Long, id_usuario: Long): Boolean
 

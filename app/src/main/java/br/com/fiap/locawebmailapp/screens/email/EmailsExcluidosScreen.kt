@@ -1,7 +1,15 @@
 package br.com.fiap.locawebmailapp.screens.email
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -48,6 +56,7 @@ import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRepository
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
 import br.com.fiap.locawebmailapp.database.repository.PastaRepository
+import br.com.fiap.locawebmailapp.database.repository.RespostaEmailRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.EmailComAlteracao
 import br.com.fiap.locawebmailapp.model.Pasta
@@ -77,6 +86,7 @@ fun EmailsExcluidosScreen(navController: NavController) {
     val usuarioRepository = UsuarioRepository(context)
     val alteracaoRepository = AlteracaoRepository(context)
     val pastaRepository = PastaRepository(context)
+    val respostaEmailRepository = RespostaEmailRepository(context)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -279,6 +289,9 @@ fun EmailsExcluidosScreen(navController: NavController) {
 
                                 val redLcWeb = colorResource(id = R.color.lcweb_red_1)
 
+                                val respostasEmail =
+                                    respostaEmailRepository.listarRespostasEmailPorIdEmail(id_email = it.email.id_email)
+
                                 Button(
                                     onClick = {
                                         if (!isRead.value) {
@@ -327,7 +340,27 @@ fun EmailsExcluidosScreen(navController: NavController) {
                                         Column(
                                             modifier = Modifier.padding(horizontal = 2.dp)
                                         ) {
-                                            Text(text = "Para: ${it.email.destinatario}")
+                                            Row {
+                                                if (respostasEmail.isNotEmpty()) {
+                                                    Icon(
+                                                        painter = painterResource(id = R.drawable.reply_solid),
+                                                        contentDescription = "",
+                                                        modifier = Modifier
+                                                            .width(20.dp)
+                                                            .height(20.dp)
+                                                            .padding(horizontal = 5.dp)
+                                                    )
+                                                }
+
+                                                Text(
+                                                    text = if (it.email.destinatario.length > 25) {
+                                                        "Para: ${it.email.destinatario.take(25)}..."
+                                                    } else {
+                                                        "Para: ${it.email.destinatario}"
+                                                    },
+                                                    maxLines = 1
+                                                )
+                                            }
                                             Text(text = it.email.assunto)
                                             Text(
                                                 text = if (it.email.corpo.length > 25) {

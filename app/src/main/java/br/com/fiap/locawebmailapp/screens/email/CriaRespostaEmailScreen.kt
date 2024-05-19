@@ -54,11 +54,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
+import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRespostaEmailRepository
 import br.com.fiap.locawebmailapp.database.repository.ConvidadoRepository
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
 import br.com.fiap.locawebmailapp.database.repository.RespostaEmailRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
+import br.com.fiap.locawebmailapp.model.Alteracao
 import br.com.fiap.locawebmailapp.model.AnexoRespostaEmail
 import br.com.fiap.locawebmailapp.model.Convidado
 import br.com.fiap.locawebmailapp.model.RespostaEmail
@@ -83,6 +85,8 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
     val anexoRespostaEmailRepository = AnexoRespostaEmailRepository(context)
     val convidadoRepository = ConvidadoRepository(context)
     val usuarioRepository = UsuarioRepository(context)
+    val alteracaoRepository = AlteracaoRepository(context)
+
 
     val respostaEmail = RespostaEmail()
     val emailResponder = emailRepository.listarEmailPorId(idEmail)
@@ -92,6 +96,8 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
     val usuarioSelecionado = remember {
         mutableStateOf(usuarioRepository.listarUsuarioSelecionado())
     }
+
+    val alteracoesEmailAltIdUsuarioList = alteracaoRepository.listarAltIdUsuarioPorIdEmail(idEmail)
 
     val bitmapList = remember {
         mutableStateListOf<Bitmap>()
@@ -194,7 +200,8 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                                 respostaEmail.id_email = idEmail
                                 respostaEmail.id_usuario = usuarioSelecionado.value.id_usuario
 
-                                val rowId = respostaEmailRepository.criarRespostaEmail(respostaEmail)
+                                val rowId =
+                                    respostaEmailRepository.criarRespostaEmail(respostaEmail)
 
                                 anexoRespostaEmail.id_resposta_email = rowId
 
@@ -241,6 +248,7 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                                         anexoRespostaEmailRepository.criarAnexo(anexoRespostaEmail)
                                     }
                                 }
+
                                 Toast.makeText(context, "Rascunho salvo", Toast.LENGTH_LONG).show()
                                 navController.popBackStack()
                             } else {
@@ -320,7 +328,35 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                                 }
 
                             }
-                            Toast.makeText(context, "Email enviado", Toast.LENGTH_LONG).show()
+
+                            val todosDestinatarios = arrayListOf<String>()
+                            todosDestinatarios.addAll(destinatarios)
+                            todosDestinatarios.addAll(ccos)
+                            todosDestinatarios.addAll(ccs)
+
+                            if (!todosDestinatarios.contains(respostaEmail.remetente)) todosDestinatarios.add(
+                                respostaEmail.remetente
+                            )
+
+                            for (usuario in usuarioRepository.listarUsuarios()) {
+
+                                if (todosDestinatarios.contains(usuario.email) && !alteracoesEmailAltIdUsuarioList.contains(usuario.id_usuario)) {
+                                    alteracaoRepository.criarAlteracao(
+                                        Alteracao(
+                                            alt_id_email = idEmail,
+                                            alt_id_usuario = usuario.id_usuario
+                                        )
+                                    )
+                                }
+
+                                if (todosDestinatarios.contains(usuario.email) && alteracoesEmailAltIdUsuarioList.contains(usuario.id_usuario) && usuario.id_usuario != usuarioSelecionado.value.id_usuario) {
+                                    alteracaoRepository.atualizarLidoPorIdEmailEIdusuario(false, id_email = idEmail, id_usuario = usuario.id_usuario)
+                                }
+                            }
+
+
+
+                            Toast.makeText(context, "Resposta enviada", Toast.LENGTH_LONG).show()
                             navController.popBackStack()
                         } else {
                             Toast.makeText(
