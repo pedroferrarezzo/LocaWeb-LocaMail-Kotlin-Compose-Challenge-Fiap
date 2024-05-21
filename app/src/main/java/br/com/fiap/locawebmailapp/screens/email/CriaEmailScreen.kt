@@ -69,12 +69,10 @@ import br.com.fiap.locawebmailapp.utils.listaParaString
 import br.com.fiap.locawebmailapp.utils.pickImageFromGallery
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CriaEmailScreen(navController: NavController) {
 
     val context = LocalContext.current
-
 
     val email = Email()
     val anexo = Anexo()

@@ -1,5 +1,6 @@
 package br.com.fiap.locawebmailapp.utils
 
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -49,4 +50,42 @@ fun localDateToMillis(localDate: LocalDate): Long {
 
 fun stringToLocalDate(dateString: String): LocalDate {
     return LocalDate.parse(dateString)
+}
+
+fun convertTo12Hours(time24: String): String {
+    if(validateIfAllDay(time24)) {
+        return "Todo dia"
+    }
+
+    val format24 = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+    val date = format24.parse(time24)
+
+    val format12 = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+    return format12.format(date!!)
+}
+
+fun returnHourAndMinuteSeparate(time: String): List<Int> {
+    val initialHour = time.substring(startIndex = 0, endIndex = 2).toInt()
+    val initialMinute = time.substring(startIndex = 3, endIndex = 5).toInt()
+
+    return listOf(initialHour, initialMinute)
+
+
+}
+
+fun returnOneMonthFromDate(data: String): List<String> {
+    var startDate = LocalDate.parse(data, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    val endDate = startDate.plusMonths(1)
+    val dates = mutableListOf<String>()
+
+    while (!startDate.isEqual(endDate)) {
+        dates.add(startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+        startDate = startDate.plusDays(1)
+    }
+
+    return dates
+}
+
+fun validateIfAllDay(hour: String): Boolean {
+    return hour.equals("1")
 }
