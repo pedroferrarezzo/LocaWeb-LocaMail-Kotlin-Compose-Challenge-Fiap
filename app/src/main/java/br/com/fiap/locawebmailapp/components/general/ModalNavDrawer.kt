@@ -565,13 +565,6 @@ fun ModalNavDrawer(
                                                 )
                                                     .show()
 
-                                                if (selectedDrawerPasta.value != "") {
-                                                    selectedDrawer.value = "2"
-                                                    selectedDrawerPasta.value = ""
-
-                                                    navController.navigate("emailmainscreen")
-                                                }
-
                                                 for (alteracao in alteracaoRepository.listarAlteracaoPorIdUsuarioEIdPasta(
                                                     id_usuario = it.id_usuario,
                                                     id_pasta = it.id_pasta
@@ -583,8 +576,12 @@ fun ModalNavDrawer(
                                                 }
 
 
+                                                if (selectedDrawerPasta.value != "") {
+                                                    selectedDrawerPasta.value = ""
+                                                    navController.popBackStack()
+                                                }
+
                                                 receivedEmailStateListRecompose()
-                                                listPastaState.remove(it)
                                                 pastaRepository.excluirPasta(it)
                                                 listPastaState.remove(it)
                                             }) {

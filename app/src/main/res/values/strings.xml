@@ -94,6 +94,7 @@
     <string name="toast_mail_moved_folder">Email moved to folder:</string>
     <string name="toast_mail_moved_from_trash">Email moved from trash</string>
     <string name="toast_mail_moved_from_folder">Email moved from folder</string>
+    <string name="toast_mails_moved_from_folder">Emails moved from folder</string>
     <string name="toast_mail_moved_trash_bin">Emails moved to the trash bins</string>
     <string name="mail_generic_date">Date:</string>
     <string name="calendar_event_draft_invite">Invitation to event:</string>
@@ -103,4 +104,5 @@
     <string name="calendar_event_draft_everydayuntil">every day until:</string>
     <string name="calendar_event_draft_hourtext">Event time:</string>
     <string name="calendar_event_draft_allday">All day</string>
+    <string name="mail_generic_move_all">Mover all</string>
 </resources>

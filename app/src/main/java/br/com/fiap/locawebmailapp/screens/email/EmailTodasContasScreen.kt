@@ -50,6 +50,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
+import br.com.fiap.locawebmailapp.components.email.EmailCreateButton
+import br.com.fiap.locawebmailapp.components.email.EmailViewButton
+import br.com.fiap.locawebmailapp.components.email.RowSearchBar
 import br.com.fiap.locawebmailapp.components.general.ModalNavDrawer
 import br.com.fiap.locawebmailapp.components.user.UserSelectorDalog
 import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
@@ -150,78 +153,17 @@ fun EMailTodasContasScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize()
         ) {
             Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    TextField(
-                        value = textSearchBar.value,
-                        onValueChange = {
-                            textSearchBar.value = it
-                        },
-                        modifier = Modifier.weight(1f),
-                        placeholder = {
-                            Text(
-                                text = stringResource(id = R.string.mail_main_searchbar)
-                            )
-                        },
-                        leadingIcon = {
-                            IconButton(onClick = {
-                                scope.launch {
-                                    drawerState.apply {
-                                        if (isClosed) open() else close()
-                                    }
-                                }
-                            }) {
-                                Icon(imageVector = Icons.Filled.Menu, contentDescription = stringResource(
-                                    id = R.string.content_desc_menu
-                                ))
-                            }
-                        },
-                        trailingIcon = {
-                            IconButton(
-                                onClick = {
-                                    openDialogUserPicker.value = !openDialogUserPicker.value
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.AccountCircle,
-                                    contentDescription = stringResource(id = R.string.content_desc_user)
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = colorResource(id = R.color.lcweb_red_1),
-                            unfocusedContainerColor = colorResource(id = R.color.lcweb_red_1),
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            focusedLeadingIconColor = colorResource(id = R.color.white),
-                            unfocusedLeadingIconColor = colorResource(id = R.color.white),
-                            focusedPlaceholderColor = colorResource(id = R.color.white),
-                            unfocusedPlaceholderColor = colorResource(id = R.color.white),
-                            cursorColor = colorResource(id = R.color.white),
-                            focusedTextColor = colorResource(id = R.color.white),
-                            unfocusedTextColor = colorResource(id = R.color.white),
-                            focusedSupportingTextColor = Color.Transparent,
-                            unfocusedSupportingTextColor = Color.Transparent,
-                            focusedTrailingIconColor = colorResource(id = R.color.white),
-                            unfocusedTrailingIconColor = colorResource(id = R.color.white)
-                        ),
-                        textStyle = TextStyle(
-                            textDecoration = TextDecoration.None
-                        ),
-                        singleLine = true,
-                        shape = RoundedCornerShape(5.dp)
-                    )
-                }
-
-                UserSelectorDalog<EmailComAlteracao>(
+                RowSearchBar(
+                    drawerState = drawerState,
+                    scope = scope,
                     openDialogUserPicker = openDialogUserPicker,
-                    usuarioSelecionado,
-                    usuariosExistentes,
-                    usuarioRepository = usuarioRepository
+                    textSearchBar = textSearchBar,
+                    usuarioSelecionado = usuarioSelecionado,
+                    usuariosExistentes = usuariosExistentes,
+                    usuarioRepository = usuarioRepository,
+                    placeholderTextFieldSearch = stringResource(id = R.string.mail_main_searchbar),
+                    selectedDrawerPasta = selectedDrawerPasta,
+                    navController = navController
                 )
 
                 if (receivedEmailList.isNotEmpty()) {
@@ -313,8 +255,8 @@ fun EMailTodasContasScreen(navController: NavController) {
                                 val respostasEmail =
                                     respostaEmailRepository.listarRespostasEmailPorIdEmail(id_email = it.email.id_email)
 
-                                Button(
-                                    onClick = {
+                                EmailViewButton(
+                                    onClickButton = {
                                         if (!isRead.value) {
                                             isRead.value = true
                                             for (destinatario in (stringParaLista(it.email.destinatario) + stringParaLista(
@@ -343,175 +285,55 @@ fun EMailTodasContasScreen(navController: NavController) {
 
                                         navController.navigate("visualizaemailscreen/${it.email.id_email}/true")
                                     },
-                                    modifier =
+                                    isRead = isRead,
+                                    redLcWeb = redLcWeb,
+                                    respostasEmail = respostasEmail,
+                                    onClickImportantButton = {
+                                        isImportant.value = !isImportant.value
 
-                                    if (isRead.value) {
-                                        Modifier
-                                            .fillMaxWidth()
-                                    } else {
-                                        Modifier
-                                            .fillMaxWidth()
-                                            .drawBehind {
-                                                val borderSize = 2.dp.toPx()
-                                                val y = size.height - borderSize / 2
+                                        for (destinatario in (stringParaLista(it.email.destinatario) + stringParaLista(
+                                            it.email.cc
+                                        ) + stringParaLista(it.email.cco))) {
+                                            if (destinatario.isNotBlank()) {
 
-                                                drawLine(
-                                                    redLcWeb,
-                                                    Offset(0f, y),
-                                                    Offset(size.width, y),
-                                                    borderSize
-                                                )
+
+                                                val usuario =
+                                                    usuarioRepository.retornaUsarioPorEmail(
+                                                        destinatario
+                                                    )
+                                                val idDestinatario =
+                                                    if (usuario != null) usuario.id_usuario else null
+
+                                                if (idDestinatario != null) {
+                                                    alteracaoRepository.atualizarImportantePorIdEmail(
+                                                        isImportant.value,
+                                                        it.email.id_email,
+                                                        idDestinatario
+                                                    )
+                                                }
+
                                             }
+                                        }
                                     },
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color.Transparent,
-                                        contentColor = colorResource(id = R.color.lcweb_gray_1)
-                                    ),
-                                    shape = RectangleShape,
-                                ) {
-
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Column(
-                                            modifier = Modifier.padding(horizontal = 2.dp)
-                                        ) {
-                                            Row {
-                                                if (respostasEmail.isNotEmpty()) {
-                                                    Icon(
-                                                        painter = painterResource(id = R.drawable.reply_solid),
-                                                        contentDescription = stringResource(id = R.string.content_desc_lcweb_reply),
-                                                        modifier = Modifier
-                                                            .width(20.dp)
-                                                            .height(20.dp)
-                                                            .padding(horizontal = 5.dp)
-                                                    )
-                                                }
-
-                                                Text(
-                                                    text = if (it.email.destinatario.length > 25) {
-                                                        "${stringResource(id = R.string.mail_generic_to)} ${it.email.destinatario.take(25)}..."
-                                                    } else {
-                                                        "${stringResource(id = R.string.mail_generic_to)} ${it.email.destinatario}"
-                                                    },
-                                                    maxLines = 1
-                                                )
-                                            }
-                                            Text(text = it.email.assunto)
-                                            Text(
-                                                text = if (it.email.corpo.length > 25) {
-                                                    "${it.email.corpo.take(25)}..."
-                                                } else {
-                                                    it.email.corpo
-                                                },
-                                                maxLines = 1
-                                            )
-                                        }
-
-                                        Column(
-                                            modifier = Modifier.padding(horizontal = 2.dp),
-                                            horizontalAlignment = Alignment.CenterHorizontally
-                                        ) {
-
-                                            Row(
-                                                verticalAlignment = Alignment.CenterVertically
-                                            ) {
-
-
-                                                if (attachEmailList.contains(it.email.id_email)) {
-                                                    Icon(
-                                                        painter = painterResource(id = R.drawable.paperclip_solid),
-                                                        contentDescription = stringResource(id = R.string.content_desc_clips),
-                                                        modifier = Modifier
-                                                            .width(20.dp)
-                                                            .height(20.dp)
-                                                            .padding(horizontal = 5.dp)
-                                                    )
-                                                }
-
-                                                Text(
-                                                    text = if (timeState.is24hour) it.email.horario else convertTo12Hours(
-                                                        it.email.horario
-                                                    )
-                                                )
-                                            }
-
-
-                                            IconButton(onClick = {
-                                                isImportant.value = !isImportant.value
-
-                                                for (destinatario in (stringParaLista(it.email.destinatario) + stringParaLista(
-                                                    it.email.cc
-                                                ) + stringParaLista(it.email.cco))) {
-                                                    if (destinatario.isNotBlank()) {
-
-
-                                                        val usuario =
-                                                            usuarioRepository.retornaUsarioPorEmail(
-                                                                destinatario
-                                                            )
-                                                        val idDestinatario =
-                                                            if (usuario != null) usuario.id_usuario else null
-
-                                                        if (idDestinatario != null) {
-                                                            alteracaoRepository.atualizarImportantePorIdEmail(
-                                                                isImportant.value,
-                                                                it.email.id_email,
-                                                                idDestinatario
-                                                            )
-                                                        }
-
-                                                    }
-                                                }
-                                            }) {
-                                                Icon(
-                                                    imageVector = if (isImportant.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                                                    contentDescription = stringResource(id = R.string.content_desc_favorite),
-                                                    modifier = Modifier
-                                                        .width(20.dp)
-                                                        .height(20.dp)
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
+                                    isImportant = isImportant,
+                                    attachEmailList = attachEmailList,
+                                    timeState = timeState,
+                                    email = it
+                                )
                             }
                         }
-
-
                     }
                 }
             }
 
-
-
-            Column(
+            EmailCreateButton(
                 modifier = Modifier
                     .padding(8.dp)
-                    .align(Alignment.BottomEnd)
-            ) {
-
-                Button(
-                    onClick = {
-                        navController.navigate("criaemailscreen")
-                    },
-                    elevation = ButtonDefaults.buttonElevation(4.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.lcweb_red_1)),
-                    modifier = Modifier
-                        .width(70.dp)
-                        .height(70.dp)
-                        .padding(vertical = 5.dp),
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Email,
-                        contentDescription = stringResource(id = R.string.content_desc_mail_box),
-                        tint = colorResource(id = R.color.white)
-                    )
+                    .align(Alignment.BottomEnd),
+                onClick = {
+                    navController.navigate("criaemailscreen")
                 }
-            }
+            )
         }
 
     }

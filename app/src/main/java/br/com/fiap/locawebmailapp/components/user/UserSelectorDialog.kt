@@ -40,8 +40,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
+import br.com.fiap.locawebmailapp.database.repository.PastaRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.EmailComAlteracao
 import br.com.fiap.locawebmailapp.model.Usuario
@@ -54,8 +56,11 @@ fun <T> UserSelectorDalog(
     listaUsuario: List<Usuario>,
     stateList: SnapshotStateList<T> = mutableStateListOf(),
     applyStateList: () -> Unit = {},
-    usuarioRepository: UsuarioRepository
-) {
+    usuarioRepository: UsuarioRepository,
+    navController: NavController,
+    selectedDrawerPasta: MutableState<String>
+
+    ) {
     if (openDialogUserPicker.value) {
         Dialog(onDismissRequest = { openDialogUserPicker.value = false }) {
             Card(
@@ -108,6 +113,9 @@ fun <T> UserSelectorDalog(
                                     stateList.clear()
                                     applyStateList()
 
+                                    if (selectedDrawerPasta.value != "") {
+                                        navController.popBackStack()
+                                    }
 
                                     openDialogUserPicker.value = false
                                 },

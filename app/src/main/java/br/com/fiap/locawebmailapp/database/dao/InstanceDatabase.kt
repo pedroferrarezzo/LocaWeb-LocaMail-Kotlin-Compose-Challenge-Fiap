@@ -15,7 +15,10 @@ import br.com.fiap.locawebmailapp.model.Pasta
 import br.com.fiap.locawebmailapp.model.RespostaEmail
 import br.com.fiap.locawebmailapp.model.Usuario
 
-@Database(entities = [Agenda::class, Convidado::class, AgendaConvidado::class, Email::class, Anexo::class, Usuario::class, Alteracao::class, Pasta::class, RespostaEmail::class, AnexoRespostaEmail::class], version = 29)
+@Database(
+    entities = [Agenda::class, Convidado::class, AgendaConvidado::class, Email::class, Anexo::class, Usuario::class, Alteracao::class, Pasta::class, RespostaEmail::class, AnexoRespostaEmail::class],
+    version = 30
+)
 abstract class InstanceDatabase : RoomDatabase() {
 
     abstract fun agendaDao(): AgendaDao

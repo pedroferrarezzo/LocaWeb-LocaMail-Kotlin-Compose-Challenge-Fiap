@@ -42,6 +42,8 @@
     <string name="mail_generic_subject">Assunto:</string>
     <string name="mail_generic_body">Escreva o email</string>
     <string name="mail_generic_clean_all">Limpar tudo</string>
+    <string name="mail_generic_move_all">Mover todos</string>
+    <string name="toast_mails_moved_from_folder">Emails movidos da pasta</string>
     <string name="mail_generic_delete">Excluir</string>
     <string name="mail_generic_edit">Editar</string>
     <string name="calendar_event_mark">Marcar como concluído</string>
@@ -104,4 +106,5 @@
     <string name="calendar_event_draft_everydayuntil">todos os dias até:</string>
     <string name="calendar_event_draft_hourtext">Horário do evento:</string>
     <string name="calendar_event_draft_allday">Todo o dia</string>
+
 </resources>
