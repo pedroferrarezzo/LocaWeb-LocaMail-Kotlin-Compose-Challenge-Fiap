@@ -54,6 +54,7 @@ import br.com.fiap.locawebmailapp.components.general.ModalNavDrawer
 import br.com.fiap.locawebmailapp.components.user.UserSelectorDalog
 import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRepository
+import br.com.fiap.locawebmailapp.database.repository.AnexoRespostaEmailRepository
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
 import br.com.fiap.locawebmailapp.database.repository.PastaRepository
 import br.com.fiap.locawebmailapp.database.repository.RespostaEmailRepository
@@ -83,6 +84,7 @@ fun EmailsExcluidosScreen(navController: NavController) {
 
     val emailRepository = EmailRepository(context)
     val anexoRepository = AnexoRepository(context)
+    val anexoRespostaEmailRepository = AnexoRespostaEmailRepository(context)
     val usuarioRepository = UsuarioRepository(context)
     val alteracaoRepository = AlteracaoRepository(context)
     val pastaRepository = PastaRepository(context)
@@ -134,6 +136,9 @@ fun EmailsExcluidosScreen(navController: NavController) {
         }
     }
 
+    val toastMessageMailsDeleted = stringResource(id = R.string.toast_mails_delete)
+    val toastMessageMailMovedFromTrash = stringResource(id = R.string.toast_mail_moved_from_trash)
+
 
     ModalNavDrawer(
         selectedDrawer = selectedDrawer,
@@ -179,7 +184,9 @@ fun EmailsExcluidosScreen(navController: NavController) {
                                     }
                                 }
                             }) {
-                                Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
+                                Icon(imageVector = Icons.Filled.Menu, contentDescription = stringResource(
+                                    id = R.string.content_desc_menu
+                                ))
                             }
                         },
                         trailingIcon = {
@@ -190,7 +197,7 @@ fun EmailsExcluidosScreen(navController: NavController) {
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.AccountCircle,
-                                    contentDescription = ""
+                                    contentDescription = stringResource(id = R.string.content_desc_user)
                                 )
                             }
                         },
@@ -240,23 +247,31 @@ fun EmailsExcluidosScreen(navController: NavController) {
                     Button(
                         onClick = {
                             for (email in lixeiraEmailList) {
-                                anexoRepository.excluirAnexoPorIdEmail(email.email.id_email)
 
                                 alteracaoRepository.excluiAlteracaoPorIdEmailEIdUsuario(
                                     email.email.id_email,
                                     usuarioSelecionado.value.id_usuario
                                 )
 
-                                lixeiraStateEmailLst.remove(email)
-
                                 val alteracao =
-                                    alteracaoRepository.listarAlteracaoPorIdEmail(email.email.id_email)
+                                        alteracaoRepository.listarAlteracaoPorIdEmail(email.email.id_email)
 
-                                if (alteracao == null) {
+                                if (alteracao.isEmpty()) {
+                                    anexoRepository.excluirAnexoPorIdEmail(email.email.id_email)
+
+                                    for (respostaEmail in respostaEmailRepository.listarRespostasEmailPorIdEmail(email.email.id_email)) {
+                                        anexoRespostaEmailRepository.excluirAnexoPorIdRespostaEmail(respostaEmail.id_resposta_email)
+                                    }
+
+                                    respostaEmailRepository.excluirRespostaEmailPorIdEmail(email.email.id_email)
+
+
                                     emailRepository.excluirEmail(email = email.email)
                                 }
 
-                                Toast.makeText(context, "Emails excluídos", Toast.LENGTH_LONG)
+                                lixeiraStateEmailLst.remove(email)
+
+                                Toast.makeText(context, toastMessageMailsDeleted, Toast.LENGTH_LONG)
                                     .show()
                             }
                         },
@@ -267,7 +282,7 @@ fun EmailsExcluidosScreen(navController: NavController) {
                         modifier = Modifier.fillMaxWidth(),
                         shape = RectangleShape,
                     ) {
-                        Text(text = "Limpar tudo")
+                        Text(text = stringResource(id = R.string.mail_generic_clean_all))
                     }
                     HorizontalDivider(
                         color = colorResource(id = R.color.lcweb_red_1)
@@ -344,7 +359,7 @@ fun EmailsExcluidosScreen(navController: NavController) {
                                                 if (respostasEmail.isNotEmpty()) {
                                                     Icon(
                                                         painter = painterResource(id = R.drawable.reply_solid),
-                                                        contentDescription = "",
+                                                        contentDescription = stringResource(id = R.string.content_desc_lcweb_reply),
                                                         modifier = Modifier
                                                             .width(20.dp)
                                                             .height(20.dp)
@@ -354,9 +369,9 @@ fun EmailsExcluidosScreen(navController: NavController) {
 
                                                 Text(
                                                     text = if (it.email.destinatario.length > 25) {
-                                                        "Para: ${it.email.destinatario.take(25)}..."
+                                                        "${stringResource(id = R.string.mail_generic_to)} ${it.email.destinatario.take(25)}..."
                                                     } else {
-                                                        "Para: ${it.email.destinatario}"
+                                                        "${stringResource(id = R.string.mail_generic_to)} ${it.email.destinatario}"
                                                     },
                                                     maxLines = 1
                                                 )
@@ -385,7 +400,7 @@ fun EmailsExcluidosScreen(navController: NavController) {
                                                 if (attachEmailList.contains(it.email.id_email)) {
                                                     Icon(
                                                         painter = painterResource(id = R.drawable.paperclip_solid),
-                                                        contentDescription = "",
+                                                        contentDescription = stringResource(id = R.string.content_desc_clips),
                                                         modifier = Modifier
                                                             .width(20.dp)
                                                             .height(20.dp)
@@ -410,7 +425,7 @@ fun EmailsExcluidosScreen(navController: NavController) {
 
                                                 Toast.makeText(
                                                     context,
-                                                    "Email movido da lixeira",
+                                                    toastMessageMailMovedFromTrash,
                                                     Toast.LENGTH_LONG
                                                 ).show()
 
@@ -418,10 +433,10 @@ fun EmailsExcluidosScreen(navController: NavController) {
                                             }) {
                                                 Icon(
                                                     painter = painterResource(id = R.drawable.turn_up_solid),
-                                                    contentDescription = "",
+                                                    contentDescription = stringResource(id = R.string.content_desc_up),
                                                     modifier = Modifier
-                                                        .width(20.dp)
-                                                        .height(20.dp)
+                                                            .width(20.dp)
+                                                            .height(20.dp)
                                                 )
                                             }
                                         }
@@ -439,8 +454,8 @@ fun EmailsExcluidosScreen(navController: NavController) {
 
             Column(
                 modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.BottomEnd)
+                        .padding(8.dp)
+                        .align(Alignment.BottomEnd)
             ) {
 
                 Button(
@@ -450,14 +465,14 @@ fun EmailsExcluidosScreen(navController: NavController) {
                     elevation = ButtonDefaults.buttonElevation(4.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.lcweb_red_1)),
                     modifier = Modifier
-                        .width(70.dp)
-                        .height(70.dp)
-                        .padding(vertical = 5.dp),
+                            .width(70.dp)
+                            .height(70.dp)
+                            .padding(vertical = 5.dp),
                     shape = RoundedCornerShape(10.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Email,
-                        contentDescription = "",
+                        contentDescription = stringResource(id = R.string.content_desc_mail_box),
                         tint = colorResource(id = R.color.white)
                     )
                 }

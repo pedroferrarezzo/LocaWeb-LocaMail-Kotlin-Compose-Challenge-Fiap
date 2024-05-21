@@ -41,7 +41,7 @@ fun ExpandedShadowDropdown(
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.CheckCircle,
-                        contentDescription = "", tint = colorResource(id = R.color.white)
+                        contentDescription = stringResource(id = R.string.content_desc_task), tint = colorResource(id = R.color.white)
                     )
                 }
             )
@@ -54,7 +54,7 @@ fun ExpandedShadowDropdown(
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.DateRange,
-                        contentDescription = "", tint = colorResource(id = R.color.white)
+                        contentDescription = stringResource(id = R.string.content_desc_event), tint = colorResource(id = R.color.white)
                     )
                 }
             )

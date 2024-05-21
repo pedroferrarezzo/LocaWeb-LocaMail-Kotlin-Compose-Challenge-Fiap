@@ -20,5 +20,8 @@ interface RespostaEmailDao {
     fun listarRespostasEmailPorIdEmail(id_email: Long): List<RespostaEmail>
 
     @Query("SELECT * FROM T_LCW_RESPOSTA_EMAIL  WHERE id_resposta_email = :id_resposta_email")
-    fun listarRespostasEmailPorIdRespostaEmail(id_resposta_email: Long): RespostaEmail
+    fun listarRespostaEmailPorIdRespostaEmail(id_resposta_email: Long): RespostaEmail
+
+    @Query("DELETE FROM T_LCW_RESPOSTA_EMAIL WHERE id_email = :id_email")
+    fun excluirRespostaEmailPorIdEmail(id_email: Long)
 }

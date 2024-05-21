@@ -347,15 +347,15 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
             ) {
                 Icon(
                     modifier = Modifier
-                        .width(30.dp)
-                        .height(30.dp),
+                            .width(30.dp)
+                            .height(30.dp),
                     imageVector = Icons.Filled.AccountCircle,
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.content_desc_user),
                     tint = colorResource(id = R.color.lcweb_gray_1)
                 )
 
                 Text(
-                    text = "${stringResource(id = R.string.calendar_organizer_text)}: ${if (agenda != null) returnOrganizer(organizer = agenda.proprietario) else "" }",
+                    text = "${stringResource(id = R.string.calendar_organizer_text)}: ${if (agenda != null) agenda.proprietario else "" }",
                     modifier = Modifier.padding(5.dp),
                     color = colorResource(id = R.color.lcweb_gray_1),
                     fontSize = 20.sp
@@ -377,10 +377,10 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
             ) {
                 Icon(
                     modifier = Modifier
-                        .width(30.dp)
-                        .height(30.dp),
+                            .width(30.dp)
+                            .height(30.dp),
                     painter = painterResource(id = R.drawable.user_group),
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.content_desc_group_user),
                     tint = colorResource(id = R.color.lcweb_gray_1)
                 )
 
@@ -401,8 +401,8 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
 
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp),
+                        .fillMaxWidth()
+                        .padding(20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -411,10 +411,10 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
                 ) {
                     Icon(
                         modifier = Modifier
-                            .width(30.dp)
-                            .height(30.dp),
+                                .width(30.dp)
+                                .height(30.dp),
                         painter = painterResource(id = R.drawable.clock_solid),
-                        contentDescription = "",
+                        contentDescription = stringResource(id = R.string.content_desc_clock),
                         tint = colorResource(id = R.color.lcweb_gray_1)
                     )
 
@@ -528,10 +528,10 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
                 ) {
                     Box(
                         modifier = Modifier
-                            .clip(CircleShape)
-                            .width(30.dp)
-                            .height(30.dp)
-                            .background(returnColor(option = selectedColor.value))
+                                .clip(CircleShape)
+                                .width(30.dp)
+                                .height(30.dp)
+                                .background(returnColor(option = selectedColor.value))
                     )
                     Text(
                         text = stringResource(id = R.string.calendar_choose_color),
@@ -567,10 +567,10 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Refresh,
-                        contentDescription = "",
+                        contentDescription = stringResource(id = R.string.content_desc_calendar_repeat),
                         modifier = Modifier
-                            .width(30.dp)
-                            .height(30.dp),
+                                .width(30.dp)
+                                .height(30.dp),
                         tint = colorResource(id = R.color.lcweb_gray_1)
                     )
                     Text(
@@ -606,9 +606,9 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
 
         Button(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .align(Alignment.BottomCenter),
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .align(Alignment.BottomCenter),
             onClick = {
                 agendaConvidadoRepository.excluirPorIdAgenda(agenda.id_agenda)
 
@@ -627,8 +627,8 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Marcar como concluído")
-                Icon(imageVector = Icons.Filled.CheckCircle, contentDescription = "")
+                Text(text = stringResource(id = R.string.calendar_event_mark))
+                Icon(imageVector = Icons.Filled.CheckCircle, contentDescription = stringResource(id = R.string.content_desc_event))
             }
 
         }

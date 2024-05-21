@@ -16,8 +16,8 @@ class RespostaEmailRepository(context: Context) {
 
     }
 
-    fun listarRespostasEmailPorIdRespostaEmail(id_resposta_email: Long): RespostaEmail {
-        return listarRespostasEmailPorIdRespostaEmail(id_resposta_email)
+    fun listarRespostaEmailPorIdRespostaEmail(id_resposta_email: Long): RespostaEmail {
+        return respostaEmailDao.listarRespostaEmailPorIdRespostaEmail(id_resposta_email)
     }
 
     fun atualizarRespostaEmail(respostaEmail: RespostaEmail) {
@@ -36,5 +36,9 @@ class RespostaEmailRepository(context: Context) {
 
         return respostaEmailDao.listarRespostasEmailPorIdEmail(id_email)
 
+    }
+
+    fun excluirRespostaEmailPorIdEmail(id_email: Long) {
+        return respostaEmailDao.excluirRespostaEmailPorIdEmail(id_email)
     }
 }

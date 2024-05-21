@@ -24,7 +24,7 @@ class AlteracaoRepository(context: Context) {
         return alteracaoDao.verificarLidoPorIdEmailEIdUsuario(id_email, id_usuario)
     }
 
-    fun listarAlteracaoPorIdEmail(id_email: Long): Alteracao {
+    fun listarAlteracaoPorIdEmail(id_email: Long): List<Alteracao> {
         return alteracaoDao.listarAlteracaoPorIdEmail(id_email)
     }
 

@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -161,6 +162,11 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
         mutableStateOf(false)
     }
 
+    val toastMessageDraftSaved = stringResource(id = R.string.toast_maildraft_saved)
+    val toastMessageDraftDeleted = stringResource(id = R.string.toast_maildraft_deleted)
+    val toastMessageMailSent = stringResource(id = R.string.toast_mail_sent)
+    val toastMessageMailDest = stringResource(id = R.string.toast_mail_dest)
+
     if (email != null) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -173,7 +179,14 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
             ) {
                 IconButton(
                     onClick = {
-                        if (destinatarios.isNotEmpty() || ccos.isNotEmpty() || ccs.isNotEmpty()) {
+                        if (listaParaString(destinatarios) != email.destinatario
+                                || listaParaString(ccos) != email.cco
+                                || listaParaString(ccs) != email.cc
+                                || assuntoText.value != email.assunto
+                                || coporMailText.value != email.corpo
+                                || bitmapList.isNotEmpty()
+                                || anexoArrayByteList.isNotEmpty()
+                                ) {
                             email.destinatario = if (destinatarios.isNotEmpty()) listaParaString(destinatarios) else ""
                             email.cc = if (ccs.isNotEmpty()) listaParaString(ccs) else ""
                             email.cco = if (ccos.isNotEmpty()) listaParaString(ccos) else ""
@@ -193,18 +206,19 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                                     anexoRepository.criarAnexo(anexo)
                                 }
                             }
-                            Toast.makeText(context, "Rascunho salvo", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, toastMessageDraftSaved, Toast.LENGTH_LONG).show()
                             navController.popBackStack()
+
                         }
                         else {
-                            Toast.makeText(context, "Ao menos um destinatário deve ser especificado", Toast.LENGTH_LONG).show()
+                            navController.popBackStack()
                         }
                     }
 
                 ) {
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowLeft,
-                        contentDescription = "",
+                        contentDescription = stringResource(id = R.string.content_desc_key_left),
                         modifier = Modifier
                             .width(45.dp)
                             .height(45.dp),
@@ -214,7 +228,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
 
                 Image(
                     painter = painterResource(id = R.drawable.locaweb),
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.content_desc_lcweb_logo),
                     modifier = Modifier
                         .width(100.dp)
                         .height(100.dp)
@@ -226,14 +240,14 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                         navController.popBackStack()
                         anexoRepository.excluirAnexoPorIdEmail(email.id_email)
                         emailRepository.excluirEmail(email = email)
-                        Toast.makeText(context, "Rascunho excluído", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, toastMessageDraftDeleted, Toast.LENGTH_LONG).show()
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
-                            contentDescription = "",
+                            contentDescription = stringResource(id = R.string.content_desc_trash),
                             modifier = Modifier
-                                .width(25.dp)
-                                .height(25.dp),
+                                    .width(25.dp)
+                                    .height(25.dp),
                             tint = colorResource(id = R.color.lcweb_gray_1)
                         )
                     }
@@ -242,10 +256,10 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.paperclip_solid),
-                            contentDescription = "",
+                            contentDescription = stringResource(id = R.string.content_desc_clips),
                             modifier = Modifier
-                                .width(25.dp)
-                                .height(25.dp),
+                                    .width(25.dp)
+                                    .height(25.dp),
                             tint = colorResource(id = R.color.lcweb_gray_1)
                         )
                     }
@@ -280,12 +294,15 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                                 }
                             }
 
-                            val convidadoExistente =
-                                convidadoRepository.verificarConvidadoExiste(email.destinatario)
+                            for (destinatario in todosDestinatarios) {
+                                val convidadoExistente =
+                                    convidadoRepository.verificarConvidadoExiste(destinatario)
 
-                            if (convidadoExistente != email.destinatario) {
-                                convidado.email = email.destinatario
-                                convidadoRepository.criarConvidado(convidado)
+                                if (convidadoExistente != destinatario) {
+                                    convidado.email = destinatario
+                                    convidadoRepository.criarConvidado(convidado)
+                                }
+
                             }
 
                             if (bitmapList.isNotEmpty()) {
@@ -296,19 +313,19 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                                 }
 
                             }
-                            Toast.makeText(context, "Email enviado", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, toastMessageMailSent, Toast.LENGTH_LONG).show()
                             navController.popBackStack()
                         }
                         else {
-                            Toast.makeText(context, "Ao menos um destinatário deve ser especificado", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, toastMessageMailDest, Toast.LENGTH_LONG).show()
                         }
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Send,
-                            contentDescription = "",
+                            contentDescription = stringResource(id = R.string.content_desc_mail_send),
                             modifier = Modifier
-                                .width(25.dp)
-                                .height(25.dp),
+                                    .width(25.dp)
+                                    .height(25.dp),
                             tint = colorResource(id = R.color.lcweb_gray_1)
                         )
                     }
@@ -324,10 +341,10 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                     ) {
                         Image(
                             bitmap = it.asImageBitmap(),
-                            contentDescription = null,
+                            contentDescription = stringResource(id = R.string.content_desc_img_selected),
                             modifier = Modifier
-                                .width(70.dp)
-                                .height(70.dp)
+                                    .width(70.dp)
+                                    .height(70.dp)
                         )
                         IconButton(
                             onClick = {
@@ -337,7 +354,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.Clear,
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_clear),
                                 tint = colorResource(id = R.color.lcweb_gray_1)
                             )
                         }
@@ -347,7 +364,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
 
             Row {
                 Text(
-                    text = "De:",
+                    text = stringResource(id = R.string.mail_generic_from),
                     fontSize = 15.sp,
                     color = colorResource(id = R.color.lcweb_red_1),
                     modifier = Modifier.padding(5.dp)
@@ -371,7 +388,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                 },
                 leadingIcon = {
                     Text(
-                        text = "Para",
+                        text = stringResource(id = R.string.mail_generic_to),
                         modifier = Modifier.padding(10.dp),
                         color = colorResource(id = R.color.lcweb_red_1)
                     )
@@ -384,7 +401,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                         }) {
                             Icon(
                                 imageVector = if (!expandedCc.value) Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_expand_area),
                                 tint = colorResource(id = R.color.lcweb_gray_1)
                             )
                         }
@@ -403,7 +420,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                         }) {
                             Icon(
                                 imageVector = Icons.Filled.AddCircle,
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_add),
                                 tint = colorResource(id = R.color.lcweb_gray_1)
                             )
                         }
@@ -455,8 +472,11 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                             Text(text = destinatario, fontSize = 10.sp)
                             Icon(
                                 imageVector = Icons.Filled.Clear,
-                                contentDescription = "",
-                                modifier = Modifier.padding(start = 2.dp).width(15.dp).height(15.dp)
+                                contentDescription = stringResource(id = R.string.content_desc_clear),
+                                modifier = Modifier
+                                        .padding(start = 2.dp)
+                                        .width(15.dp)
+                                        .height(15.dp)
                             )
                         }
                     }
@@ -472,7 +492,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                     },
                     leadingIcon = {
                         Text(
-                            text = "Cc",
+                            text = stringResource(id = R.string.mail_generic_cc),
                             modifier = Modifier.padding(10.dp),
                             color = colorResource(id = R.color.lcweb_red_1)
                         )
@@ -491,7 +511,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                         }) {
                             Icon(
                                 imageVector = Icons.Filled.AddCircle,
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_add),
                                 tint = colorResource(id = R.color.lcweb_gray_1)
                             )
                         }
@@ -542,8 +562,11 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                                 Text(text = cc, fontSize = 10.sp)
                                 Icon(
                                     imageVector = Icons.Filled.Clear,
-                                    contentDescription = "",
-                                    modifier = Modifier.padding(start = 2.dp).width(15.dp).height(15.dp)
+                                    contentDescription = stringResource(id = R.string.content_desc_clear),
+                                    modifier = Modifier
+                                            .padding(start = 2.dp)
+                                            .width(15.dp)
+                                            .height(15.dp)
                                 )
                             }
                         }
@@ -560,7 +583,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                     },
                     leadingIcon = {
                         Text(
-                            text = "Cco",
+                            text = stringResource(id = R.string.mail_generic_cco),
                             modifier = Modifier.padding(10.dp),
                             color = colorResource(id = R.color.lcweb_red_1)
                         )
@@ -577,7 +600,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                         }) {
                             Icon(
                                 imageVector = Icons.Filled.AddCircle,
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_add),
                                 tint = colorResource(id = R.color.lcweb_gray_1)
                             )
                         }
@@ -628,8 +651,11 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                                 Text(text = cco, fontSize = 10.sp)
                                 Icon(
                                     imageVector = Icons.Filled.Clear,
-                                    contentDescription = "",
-                                    modifier = Modifier.padding(start = 2.dp).width(15.dp).height(15.dp)
+                                    contentDescription = stringResource(id = R.string.content_desc_clear),
+                                    modifier = Modifier
+                                            .padding(start = 2.dp)
+                                            .width(15.dp)
+                                            .height(15.dp)
                                 )
                             }
 
@@ -645,7 +671,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                 onValueChange = { assuntoText.value = it },
                 leadingIcon = {
                     Text(
-                        text = "Assunto",
+                        text = stringResource(id = R.string.mail_generic_subject),
                         color = colorResource(id = R.color.lcweb_red_1),
                         modifier = Modifier.padding(10.dp)
                     )
@@ -680,7 +706,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
             TextField(
                 value = coporMailText.value,
                 onValueChange = { coporMailText.value = it },
-                placeholder = { Text(text = "Escreva o e-email") },
+                placeholder = { Text(text = stringResource(id = R.string.mail_generic_body)) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = Color.Transparent,

@@ -175,7 +175,9 @@ fun EMailTodasContasScreen(navController: NavController) {
                                     }
                                 }
                             }) {
-                                Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
+                                Icon(imageVector = Icons.Filled.Menu, contentDescription = stringResource(
+                                    id = R.string.content_desc_menu
+                                ))
                             }
                         },
                         trailingIcon = {
@@ -186,7 +188,7 @@ fun EMailTodasContasScreen(navController: NavController) {
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.AccountCircle,
-                                    contentDescription = ""
+                                    contentDescription = stringResource(id = R.string.content_desc_user)
                                 )
                             }
                         },
@@ -380,7 +382,7 @@ fun EMailTodasContasScreen(navController: NavController) {
                                                 if (respostasEmail.isNotEmpty()) {
                                                     Icon(
                                                         painter = painterResource(id = R.drawable.reply_solid),
-                                                        contentDescription = "",
+                                                        contentDescription = stringResource(id = R.string.content_desc_lcweb_reply),
                                                         modifier = Modifier
                                                             .width(20.dp)
                                                             .height(20.dp)
@@ -390,9 +392,9 @@ fun EMailTodasContasScreen(navController: NavController) {
 
                                                 Text(
                                                     text = if (it.email.destinatario.length > 25) {
-                                                        "Para: ${it.email.destinatario.take(25)}..."
+                                                        "${stringResource(id = R.string.mail_generic_to)} ${it.email.destinatario.take(25)}..."
                                                     } else {
-                                                        "Para: ${it.email.destinatario}"
+                                                        "${stringResource(id = R.string.mail_generic_to)} ${it.email.destinatario}"
                                                     },
                                                     maxLines = 1
                                                 )
@@ -421,7 +423,7 @@ fun EMailTodasContasScreen(navController: NavController) {
                                                 if (attachEmailList.contains(it.email.id_email)) {
                                                     Icon(
                                                         painter = painterResource(id = R.drawable.paperclip_solid),
-                                                        contentDescription = "",
+                                                        contentDescription = stringResource(id = R.string.content_desc_clips),
                                                         modifier = Modifier
                                                             .width(20.dp)
                                                             .height(20.dp)
@@ -466,7 +468,7 @@ fun EMailTodasContasScreen(navController: NavController) {
                                             }) {
                                                 Icon(
                                                     imageVector = if (isImportant.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                                                    contentDescription = "",
+                                                    contentDescription = stringResource(id = R.string.content_desc_favorite),
                                                     modifier = Modifier
                                                         .width(20.dp)
                                                         .height(20.dp)
@@ -505,7 +507,7 @@ fun EMailTodasContasScreen(navController: NavController) {
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Email,
-                        contentDescription = "",
+                        contentDescription = stringResource(id = R.string.content_desc_mail_box),
                         tint = colorResource(id = R.color.white)
                     )
                 }

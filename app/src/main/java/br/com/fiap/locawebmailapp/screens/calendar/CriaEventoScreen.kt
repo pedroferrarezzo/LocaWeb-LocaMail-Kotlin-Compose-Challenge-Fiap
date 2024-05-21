@@ -1,5 +1,6 @@
 package br.com.fiap.locawebmailapp.screens.calendar
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,16 +56,23 @@ import br.com.fiap.locawebmailapp.components.general.RowIconButton
 import br.com.fiap.locawebmailapp.database.repository.AgendaConvidadoRepository
 import br.com.fiap.locawebmailapp.database.repository.AgendaRepository
 import br.com.fiap.locawebmailapp.database.repository.ConvidadoRepository
+import br.com.fiap.locawebmailapp.database.repository.EmailRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.Agenda
 import br.com.fiap.locawebmailapp.model.AgendaConvidado
 import br.com.fiap.locawebmailapp.model.Convidado
+import br.com.fiap.locawebmailapp.model.Email
+import br.com.fiap.locawebmailapp.utils.bitmapToByteArray
+import br.com.fiap.locawebmailapp.utils.completeStringDateToDate
 import br.com.fiap.locawebmailapp.utils.convertMillisToLocalDate
+import br.com.fiap.locawebmailapp.utils.convertTo12Hours
 import br.com.fiap.locawebmailapp.utils.dateToCompleteStringDate
+import br.com.fiap.locawebmailapp.utils.listaParaString
 import br.com.fiap.locawebmailapp.utils.localDateToMillis
 import br.com.fiap.locawebmailapp.utils.returnColor
 import br.com.fiap.locawebmailapp.utils.returnOneMonthFromDate
 import br.com.fiap.locawebmailapp.utils.returnStringRepeatOption
+import br.com.fiap.locawebmailapp.utils.stringToLocalDate
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -82,6 +90,9 @@ fun CriaEventoScreen(navController: NavController) {
     val allDay = remember {
         mutableStateOf(false)
     }
+
+    val context = LocalContext.current
+    val emailRepository = EmailRepository(context)
 
     val timePickerState = rememberTimePickerState(
         initialHour = LocalDateTime.now().hour,
@@ -144,7 +155,19 @@ fun CriaEventoScreen(navController: NavController) {
         mutableStateOf("")
     }
 
+    val toastMessageMailDraftSaved = stringResource(id = R.string.toast_maildraft_saved)
+
+    val email = Email()
+
     listConvidado.value = convidadoRepository.listarConvidado()
+
+    val calendarEventDraftInvite = stringResource(R.string.calendar_event_draft_invite)
+    val calendarEventDraftInviteText = stringResource(R.string.calendar_event_draft_invitetext)
+    val calendarEventDraftDescribeText = stringResource(R.string.calendar_event_draft_describetext)
+    val calendarEventDraftDateText = stringResource(R.string.calendar_event_draft_datetext)
+    val calendarEventDraftEverydayUntil = stringResource(R.string.calendar_event_draft_everydayuntil)
+    val calendarEventDraftHourText = stringResource(R.string.calendar_event_draft_hourtext)
+    val calendarEventDraftAllDay = stringResource(R.string.calendar_event_draft_allday)
 
 
 
@@ -161,7 +184,7 @@ fun CriaEventoScreen(navController: NavController) {
                     previousBackStackEntry.savedStateHandle.set("data", LocalDate.now().toString())
                 }
                 navController.popBackStack()
-                                 },
+            },
             onClickSecondButton = {
                 if (taskTitle.value.isEmpty()) {
                     isErrorTitle.value = true
@@ -169,8 +192,7 @@ fun CriaEventoScreen(navController: NavController) {
                 } else {
                     agenda.nome = taskTitle.value
                     agenda.descritivo = taskDescription.value
-                    agenda.proprietario = "1"
-                    agenda.tarefa = true
+                    agenda.proprietario = usuarioSelecionado.value.nome
                     agenda.data = if (millisToLocalDate.toString().equals("null")) LocalDate.now()
                         .toString() else millisToLocalDate!!.toString()
                     agenda.horario = time.value
@@ -188,7 +210,8 @@ fun CriaEventoScreen(navController: NavController) {
                         for (day in returnOneMonthFromDate(agenda.data)) {
                             agenda.data = day
                             agendaRepository.criarAgenda(agenda)
-                            agendaConvidado.id_agenda = agendaRepository.retornaValorAtualSeqPrimayKey()
+                            agendaConvidado.id_agenda =
+                                agendaRepository.retornaValorAtualSeqPrimayKey()
                             agendaConvidado.grupo_repeticao = agenda.grupo_repeticao
 
                             for (convidado in listConvidadoSelected) {
@@ -197,9 +220,7 @@ fun CriaEventoScreen(navController: NavController) {
                             }
                         }
 
-                    }
-
-                    else {
+                    } else {
                         agendaRepository.criarAgenda(agenda)
                         agendaConvidado.id_agenda = agendaRepository.retornaValorAtualSeqPrimayKey()
                         for (convidado in listConvidadoSelected) {
@@ -210,8 +231,53 @@ fun CriaEventoScreen(navController: NavController) {
 
                     val previousBackStackEntry = navController.previousBackStackEntry
                     if (previousBackStackEntry != null) {
-                        previousBackStackEntry.savedStateHandle.set("data", if (millisToLocalDate.toString().equals("null")) LocalDate.now()
-                            .toString() else millisToLocalDate!!.toString())
+                        previousBackStackEntry.savedStateHandle.set(
+                            "data", if (millisToLocalDate.toString().equals("null")) LocalDate.now()
+                                .toString() else millisToLocalDate!!.toString()
+                        )
+                    }
+
+
+                    if (listConvidadoSelected.isNotEmpty()) {
+                        email.remetente = usuarioSelecionado.value.email
+                        email.destinatario = listaParaString(listConvidadoSelected.map { it.email })
+                        email.cc = ""
+                        email.cco = ""
+                        email.assunto = "$calendarEventDraftInvite ${agenda.nome}"
+                        email.corpo =
+                            "${agenda.proprietario} $calendarEventDraftInviteText ${agenda.nome}! \n" +
+                                    "$calendarEventDraftDescribeText ${agenda.descritivo}\n" +
+                                    "$calendarEventDraftDateText ${
+                                        if (agenda.repeticao == 2) dateToCompleteStringDate(
+                                            completeStringDateToDate(selectedDate.value)
+                                        ) +
+                                                " $calendarEventDraftEverydayUntil ${
+                                                    dateToCompleteStringDate(
+                                                        stringToLocalDate(agenda.data)
+                                                    )
+                                                }" else dateToCompleteStringDate(
+                                            stringToLocalDate(
+                                                agenda.data
+                                            )
+                                        )
+                                    }\n" +
+                                    "$calendarEventDraftHourText ${
+
+                                        if (allDay.value) {
+                                            calendarEventDraftAllDay
+                                        } else {
+                                            if (timePickerState.is24hour) agenda.horario else convertTo12Hours(
+                                                agenda.horario
+                                            )
+                                        }
+                                    }"
+                        email.enviado = false
+                        email.editavel = true
+                        email.id_usuario = usuarioSelecionado.value.id_usuario
+                        emailRepository.criarEmail(email = email)
+
+                        Toast.makeText(context, toastMessageMailDraftSaved, Toast.LENGTH_LONG)
+                            .show()
                     }
                     navController.popBackStack()
                 }
@@ -253,12 +319,14 @@ fun CriaEventoScreen(navController: NavController) {
                     .width(30.dp)
                     .height(30.dp),
                 imageVector = Icons.Filled.AccountCircle,
-                contentDescription = "",
+                contentDescription = stringResource(id = R.string.content_desc_user),
                 tint = colorResource(id = R.color.lcweb_gray_1)
             )
 
             Text(
-                text = "${stringResource(id = R.string.calendar_organizer_text)}: ${stringResource(id = R.string.calendar_organizer_you)}",
+                text = "${stringResource(id = R.string.calendar_organizer_text)}: ${
+                    usuarioSelecionado.value.nome
+                }",
                 modifier = Modifier.padding(5.dp),
                 color = colorResource(id = R.color.lcweb_gray_1),
                 fontSize = 20.sp
@@ -279,7 +347,7 @@ fun CriaEventoScreen(navController: NavController) {
                     .width(30.dp)
                     .height(30.dp),
                 painter = painterResource(id = R.drawable.user_group),
-                contentDescription = "",
+                contentDescription = stringResource(id = R.string.content_desc_group_user),
                 tint = colorResource(id = R.color.lcweb_gray_1)
             )
 
@@ -313,7 +381,7 @@ fun CriaEventoScreen(navController: NavController) {
                         .width(30.dp)
                         .height(30.dp),
                     painter = painterResource(id = R.drawable.clock_solid),
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.content_desc_clock),
                     tint = colorResource(id = R.color.lcweb_gray_1)
                 )
 
@@ -443,7 +511,7 @@ fun CriaEventoScreen(navController: NavController) {
             ) {
                 Icon(
                     imageVector = Icons.Filled.Refresh,
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.content_desc_calendar_repeat),
                     modifier = Modifier
                         .width(30.dp)
                         .height(30.dp),

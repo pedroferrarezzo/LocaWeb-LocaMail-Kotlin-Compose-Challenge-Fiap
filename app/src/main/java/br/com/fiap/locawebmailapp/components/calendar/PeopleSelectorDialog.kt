@@ -106,7 +106,9 @@ fun PeopleSelectorDalog(
 
                                             if (listConvidadoSelected.contains(it)) {
                                                 Icon(
-                                                    imageVector = Icons.Filled.Check, contentDescription = "", tint = colorResource(
+                                                    imageVector = Icons.Filled.Check, contentDescription = stringResource(
+                                                        id = R.string.content_desc_check
+                                                    ), tint = colorResource(
                                                         id = R.color.lcweb_gray_1
                                                     ))
                                             }

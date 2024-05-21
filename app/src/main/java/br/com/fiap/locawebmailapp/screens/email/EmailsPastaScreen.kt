@@ -127,6 +127,8 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
         }
     }
 
+    val toastMessageMailMovedFromFolder = stringResource(id = R.string.toast_mail_moved_from_folder)
+
     ModalNavDrawer(
         selectedDrawer = selectedDrawer,
         navController = navController,
@@ -171,7 +173,9 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
                                     }
                                 }
                             }) {
-                                Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
+                                Icon(imageVector = Icons.Filled.Menu, contentDescription = stringResource(
+                                    id = R.string.content_desc_menu
+                                ))
                             }
                         },
                         trailingIcon = {
@@ -182,7 +186,7 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.AccountCircle,
-                                    contentDescription = ""
+                                    contentDescription = stringResource(id = R.string.content_desc_user)
                                 )
                             }
                         },
@@ -306,7 +310,7 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
                                                 if (respostasEmail.isNotEmpty()) {
                                                     Icon(
                                                         painter = painterResource(id = R.drawable.reply_solid),
-                                                        contentDescription = "",
+                                                        contentDescription = stringResource(id = R.string.content_desc_lcweb_reply),
                                                         modifier = Modifier
                                                             .width(20.dp)
                                                             .height(20.dp)
@@ -316,9 +320,9 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
 
                                                 Text(
                                                     text = if (it.email.destinatario.length > 25) {
-                                                        "Para: ${it.email.destinatario.take(25)}..."
+                                                        "${stringResource(id = R.string.mail_generic_to)} ${it.email.destinatario.take(25)}..."
                                                     } else {
-                                                        "Para: ${it.email.destinatario}"
+                                                        "${stringResource(id = R.string.mail_generic_to)} ${it.email.destinatario}"
                                                     },
                                                     maxLines = 1
                                                 )
@@ -347,7 +351,7 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
                                                 if (attachEmailList.contains(it.email.id_email)) {
                                                     Icon(
                                                         painter = painterResource(id = R.drawable.paperclip_solid),
-                                                        contentDescription = "",
+                                                        contentDescription = stringResource(id = R.string.content_desc_clips),
                                                         modifier = Modifier
                                                             .width(20.dp)
                                                             .height(20.dp)
@@ -373,7 +377,7 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
 
                                                     Toast.makeText(
                                                         context,
-                                                        "Email movido da pasta",
+                                                        toastMessageMailMovedFromFolder,
                                                         Toast.LENGTH_LONG
                                                     ).show()
 
@@ -381,7 +385,7 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
                                                 }) {
                                                     Icon(
                                                         painter = painterResource(id = R.drawable.turn_up_solid),
-                                                        contentDescription = "",
+                                                        contentDescription = stringResource(id = R.string.content_desc_up),
                                                         modifier = Modifier
                                                             .width(20.dp)
                                                             .height(20.dp)
@@ -400,7 +404,7 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
                                                 }) {
                                                     Icon(
                                                         imageVector = if (isImportant.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                                                        contentDescription = "",
+                                                        contentDescription = stringResource(id = R.string.content_desc_favorite),
                                                         modifier = Modifier
                                                             .width(20.dp)
                                                             .height(20.dp)
@@ -442,7 +446,7 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Email,
-                        contentDescription = "",
+                        contentDescription = stringResource(id = R.string.content_desc_mail_box),
                         tint = colorResource(id = R.color.white)
                     )
                 }

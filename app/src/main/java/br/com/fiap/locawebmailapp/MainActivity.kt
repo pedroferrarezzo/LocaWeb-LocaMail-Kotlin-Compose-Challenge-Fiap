@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import br.com.fiap.locawebmailapp.screens.email.CriaRespostaEmailScreen
 import br.com.fiap.locawebmailapp.screens.email.EMailMainScreen
 import br.com.fiap.locawebmailapp.screens.email.EMailTodasContasScreen
 import br.com.fiap.locawebmailapp.screens.email.EditaEmailScreen
+import br.com.fiap.locawebmailapp.screens.email.EditaRespostaEmailScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsArquivadosScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsEditaveisScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsEnviadosScreen
@@ -35,35 +37,36 @@ import br.com.fiap.locawebmailapp.ui.theme.LocaWebMailAppTheme
 import br.com.fiap.locawebmailapp.utils.stringToLocalDate
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             LocaWebMailAppTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
 
                     NavHost(
-                        navController = navController,
-                        startDestination = "emailmainscreen"
+                            navController = navController,
+                            startDestination = "emailmainscreen"
                     ) {
 
                         composable(
-                            route = "calendarmainscreen?data={data}",
-                            arguments = listOf(
-                                navArgument("data") {
-                                    type = NavType.StringType
-                                    nullable = true
-                                },
-                            ),) {
+                                route = "calendarmainscreen?data={data}",
+                                arguments = listOf(
+                                        navArgument("data") {
+                                            type = NavType.StringType
+                                            nullable = true
+                                        },
+                                ),
+                        ) {
                             val data = it.savedStateHandle.get<String>("data")
 
                             if (data != null) {
                                 CalendarMainScreen(navController = navController, stringToLocalDate(data))
-                            }
-                            else {
+                            } else {
                                 CalendarMainScreen(navController = navController)
                             }
                         }
@@ -81,8 +84,6 @@ class MainActivity : ComponentActivity() {
                             val idAgenda = it.arguments?.getString("id_agenda")
                             EditaTarefaScreen(navController = navController, id_agenda = idAgenda!!.toInt())
                         }
-
-
 
                         composable(route = "editaeventoscreen/{id_agenda}") {
                             val idAgenda = it.arguments?.getString("id_agenda")
@@ -129,7 +130,7 @@ class MainActivity : ComponentActivity() {
                         composable(route = "visualizaemailscreen/{id_email}/{is_todas_contas_screen}") {
                             val idEmail = it.arguments?.getString("id_email")
                             val todasContasScreen = it.arguments?.getString("is_todas_contas_screen").toBoolean()
-                            VisualizaEmailScreen(navController = navController, idEmail!!.toLong(), todasContasScreen)
+                            VisualizaEmailScreen(navController = navController, idEmail = idEmail!!.toLong(), isTodasContasScreen = todasContasScreen)
                         }
 
                         composable(route = "criarespostaemailscreen/{id_email}") {
@@ -137,15 +138,19 @@ class MainActivity : ComponentActivity() {
                             CriaRespostaEmailScreen(navController = navController, idEmail!!.toLong())
                         }
 
+                        composable(route = "editarespostaemailscreen/{id_resposta_email}") {
+                            val idRespostaEmail = it.arguments?.getString("id_resposta_email")
+                            EditaRespostaEmailScreen(navController = navController, idRespostaEmail!!.toLong())
+                        }
+
                         composable(route = "editaemailscreen/{id_email}") {
-                            val  idEmail = it.arguments?.getString("id_email")
+                            val idEmail = it.arguments?.getString("id_email")
                             EditaEmailScreen(navController = navController, idEmail!!.toLong())
                         }
 
                         composable(route = "emailsarquivadosscreen") {
                             EmailsArquivadosScreen(navController = navController)
                         }
-
                     }
                 }
             }

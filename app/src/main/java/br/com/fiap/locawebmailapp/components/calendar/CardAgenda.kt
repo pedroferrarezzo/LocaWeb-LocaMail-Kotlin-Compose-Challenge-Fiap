@@ -127,11 +127,11 @@ fun CardAgenda(
                     }
 
                     if (isTask) Icon(
-                        Icons.Outlined.CheckCircle, contentDescription = "", tint = colorResource(
+                        Icons.Outlined.CheckCircle, contentDescription = stringResource(id = R.string.content_desc_task), tint = colorResource(
                             id = R.color.white
                         )
                     ) else Icon(
-                        Icons.Outlined.DateRange, contentDescription = "", tint = colorResource(
+                        Icons.Outlined.DateRange, contentDescription = stringResource(id = R.string.content_desc_event), tint = colorResource(
                             id = R.color.white
                         )
                     )

@@ -31,6 +31,11 @@ fun dateToCompleteStringDate(date: LocalDate): String {
     return dateFormatter.format(dateInMillis)
 }
 
+fun completeStringDateToDate(dateString: String): LocalDate {
+    val dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy", Locale.getDefault())
+    return LocalDate.parse(dateString, dateFormatter)
+}
+
 fun stringToDate(dateString: String): String {
     val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val outputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy", Locale.getDefault())

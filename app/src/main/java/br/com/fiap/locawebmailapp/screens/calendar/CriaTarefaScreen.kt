@@ -141,7 +141,7 @@ fun CriaTarefaScreen(navController: NavController) {
                 } else {
                     agenda.nome = taskTitle.value
                     agenda.descritivo = taskDescription.value
-                    agenda.proprietario = "1"
+                    agenda.proprietario = usuarioSelecionado.value.nome
                     agenda.tarefa = true
                     agenda.data = if (millisToLocalDate.toString().equals("null")) LocalDate.now()
                         .toString() else millisToLocalDate!!.toString()
@@ -214,7 +214,7 @@ fun CriaTarefaScreen(navController: NavController) {
                         .width(30.dp)
                         .height(30.dp),
                     painter = painterResource(id = R.drawable.clock_solid),
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.content_desc_clock),
                     tint = colorResource(id = R.color.lcweb_gray_1)
                 )
 
@@ -344,7 +344,7 @@ fun CriaTarefaScreen(navController: NavController) {
             ) {
                 Icon(
                     imageVector = Icons.Filled.Refresh,
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.content_desc_calendar_repeat),
                     modifier = Modifier
                         .width(30.dp)
                         .height(30.dp),

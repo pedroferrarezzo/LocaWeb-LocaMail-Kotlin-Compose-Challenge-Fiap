@@ -278,7 +278,7 @@ fun EditaTarefaScreen(navController: NavController, id_agenda: Int) {
                             .width(30.dp)
                             .height(30.dp),
                         painter = painterResource(id = R.drawable.clock_solid),
-                        contentDescription = "",
+                        contentDescription = stringResource(id = R.string.content_desc_clock),
                         tint = colorResource(id = R.color.lcweb_gray_1)
                     )
 
@@ -431,7 +431,7 @@ fun EditaTarefaScreen(navController: NavController, id_agenda: Int) {
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Refresh,
-                        contentDescription = "",
+                        contentDescription = stringResource(id = R.string.content_desc_calendar_repeat),
                         modifier = Modifier
                             .width(30.dp)
                             .height(30.dp),
@@ -489,8 +489,8 @@ fun EditaTarefaScreen(navController: NavController, id_agenda: Int) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Marcar como concluído")
-                Icon(imageVector = Icons.Filled.CheckCircle, contentDescription = "")
+                Text(text = stringResource(id = R.string.calendar_task_mark))
+                Icon(imageVector = Icons.Filled.CheckCircle, contentDescription = stringResource(id = R.string.content_desc_task))
             }
 
         }

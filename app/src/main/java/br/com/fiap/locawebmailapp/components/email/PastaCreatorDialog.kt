@@ -1,8 +1,6 @@
 package br.com.fiap.locawebmailapp.components.email
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,16 +8,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -36,13 +27,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.database.repository.PastaRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.Pasta
-import br.com.fiap.locawebmailapp.utils.isValidEmail
 
 @Composable
 fun PastaCreatorDalog(
@@ -81,11 +70,11 @@ fun PastaCreatorDalog(
                                 modifier = Modifier
                                     .width(15.dp)
                                     .height(15.dp),
-                                contentDescription = ""
+                                contentDescription = stringResource(id = R.string.content_desc_box_archived)
                             )
                         },
                         placeholder = {
-                            Text(text = "Digite o nome da pasta")
+                            Text(text = stringResource(id = R.string.mail_pasta_creator_folder_name))
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -120,7 +109,7 @@ fun PastaCreatorDalog(
                         modifier = Modifier.align(Alignment.BottomEnd)
                     ) {
                         TextButton(onClick = { openDialogPastaCreator.value = false }) {
-                            Text(text = "Cancelar", color = colorResource(id = R.color.lcweb_red_1))
+                            Text(text = stringResource(id = R.string.mail_pasta_creator_cancel), color = colorResource(id = R.color.lcweb_red_1))
 
                         }
 
@@ -140,7 +129,7 @@ fun PastaCreatorDalog(
                             openDialogPastaCreator.value = false
                             textPastaCreator.value = ""
                         }) {
-                            Text(text = "Criar", color = colorResource(id = R.color.lcweb_red_1))
+                            Text(text = stringResource(id = R.string.mail_pasta_creator_create), color = colorResource(id = R.color.lcweb_red_1))
                         }
                     }
                 }

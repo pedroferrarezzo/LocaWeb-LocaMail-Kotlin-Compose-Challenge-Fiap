@@ -132,6 +132,8 @@ fun EmailsSpamScreen(navController: NavController) {
         }
     }
 
+    val toastMessageMailMovedTrash = stringResource(id = R.string.toast_mail_moved_trash)
+
 
     ModalNavDrawer(
         selectedDrawer = selectedDrawer,
@@ -177,7 +179,9 @@ fun EmailsSpamScreen(navController: NavController) {
                                     }
                                 }
                             }) {
-                                Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
+                                Icon(imageVector = Icons.Filled.Menu, contentDescription = stringResource(
+                                    id = R.string.content_desc_menu
+                                ))
                             }
                         },
                         trailingIcon = {
@@ -188,7 +192,7 @@ fun EmailsSpamScreen(navController: NavController) {
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.AccountCircle,
-                                    contentDescription = ""
+                                    contentDescription = stringResource(id = R.string.content_desc_user)
                                 )
                             }
                         },
@@ -247,7 +251,7 @@ fun EmailsSpamScreen(navController: NavController) {
                                 spamEmailStateList.remove(email)
                             }
 
-                            Toast.makeText(context, "Email movido para lixeira", Toast.LENGTH_LONG)
+                            Toast.makeText(context, toastMessageMailMovedTrash, Toast.LENGTH_LONG)
                                 .show()
                         },
                         colors = ButtonDefaults.buttonColors(
@@ -257,7 +261,7 @@ fun EmailsSpamScreen(navController: NavController) {
                         modifier = Modifier.fillMaxWidth(),
                         shape = RectangleShape,
                     ) {
-                        Text(text = "Limpar tudo")
+                        Text(text = stringResource(id = R.string.mail_generic_clean_all))
                     }
                     HorizontalDivider(
                         color = colorResource(id = R.color.lcweb_red_1)
@@ -337,19 +341,19 @@ fun EmailsSpamScreen(navController: NavController) {
                                                 if (respostasEmail.isNotEmpty()) {
                                                     Icon(
                                                         painter = painterResource(id = R.drawable.reply_solid),
-                                                        contentDescription = "",
+                                                        contentDescription = stringResource(id = R.string.content_desc_lcweb_reply),
                                                         modifier = Modifier
-                                                            .width(20.dp)
-                                                            .height(20.dp)
-                                                            .padding(horizontal = 5.dp)
+                                                                .width(20.dp)
+                                                                .height(20.dp)
+                                                                .padding(horizontal = 5.dp)
                                                     )
                                                 }
 
                                                 Text(
                                                     text = if (it.email.destinatario.length > 25) {
-                                                        "Para: ${it.email.destinatario.take(25)}..."
+                                                        "${stringResource(id = R.string.mail_generic_to)} ${it.email.destinatario.take(25)}..."
                                                     } else {
-                                                        "Para: ${it.email.destinatario}"
+                                                        "${stringResource(id = R.string.mail_generic_to)} ${it.email.destinatario}"
                                                     },
                                                     maxLines = 1
                                                 )
@@ -378,11 +382,11 @@ fun EmailsSpamScreen(navController: NavController) {
                                                 if (attachEmailList.contains(it.email.id_email)) {
                                                     Icon(
                                                         painter = painterResource(id = R.drawable.paperclip_solid),
-                                                        contentDescription = "",
+                                                        contentDescription = stringResource(id = R.string.content_desc_clips),
                                                         modifier = Modifier
-                                                            .width(20.dp)
-                                                            .height(20.dp)
-                                                            .padding(horizontal = 5.dp)
+                                                                .width(20.dp)
+                                                                .height(20.dp)
+                                                                .padding(horizontal = 5.dp)
                                                     )
                                                 }
 
@@ -407,8 +411,8 @@ fun EmailsSpamScreen(navController: NavController) {
 
             Column(
                 modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.BottomEnd)
+                        .padding(8.dp)
+                        .align(Alignment.BottomEnd)
             ) {
 
                 Button(
@@ -418,14 +422,14 @@ fun EmailsSpamScreen(navController: NavController) {
                     elevation = ButtonDefaults.buttonElevation(4.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.lcweb_red_1)),
                     modifier = Modifier
-                        .width(70.dp)
-                        .height(70.dp)
-                        .padding(vertical = 5.dp),
+                            .width(70.dp)
+                            .height(70.dp)
+                            .padding(vertical = 5.dp),
                     shape = RoundedCornerShape(10.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Email,
-                        contentDescription = "",
+                        contentDescription = stringResource(id = R.string.content_desc_mail_box),
                         tint = colorResource(id = R.color.white)
                     )
                 }

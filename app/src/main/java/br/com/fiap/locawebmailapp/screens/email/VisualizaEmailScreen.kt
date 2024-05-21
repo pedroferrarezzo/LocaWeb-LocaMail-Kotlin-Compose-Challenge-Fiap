@@ -21,13 +21,17 @@ import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TimePickerState
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +40,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,13 +53,18 @@ import br.com.fiap.locawebmailapp.database.repository.EmailRepository
 import br.com.fiap.locawebmailapp.database.repository.RespostaEmailRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.utils.byteArrayToBitmap
+import br.com.fiap.locawebmailapp.utils.convertTo12Hours
+import br.com.fiap.locawebmailapp.utils.dateToCompleteStringDate
 import br.com.fiap.locawebmailapp.utils.stringParaLista
+import br.com.fiap.locawebmailapp.utils.stringToLocalDate
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VisualizaEmailScreen(
+    timeState: TimePickerState = rememberTimePickerState(),
     navController: NavController,
     idEmail: Long,
-    isTodasContasScreen: Boolean
+    isTodasContasScreen: Boolean,
 ) {
 
     val context = LocalContext.current
@@ -81,7 +91,8 @@ fun VisualizaEmailScreen(
     val todosDestinatarios = arrayListOf<String>()
 
 
-    val respostasEmail = respostaEmailRepository.listarRespostasEmailPorIdEmail(idEmail)
+    val respostasEmailList = respostaEmailRepository.listarRespostasEmailPorIdEmail(idEmail)
+    val respostasEmailStateList = respostasEmailList.toMutableStateList()
 
 
     val anexoArrayByteList = anexoRepository.listarAnexosArraybytePorIdEmail(idEmail);
@@ -247,6 +258,12 @@ fun VisualizaEmailScreen(
     }
 
 
+    val toastMessageMailDeleted = stringResource(id = R.string.toast_mail_delete)
+    val toastMessageDraftMailDeleted = stringResource(id = R.string.toast_maildraftresp_delete)
+    val toastMessageMailMovedToTrashBin = stringResource(id = R.string.toast_mail_moved_trash_bin)
+    val toastMessageMailMovedToTrash = stringResource(id = R.string.toast_mail_moved_trash)
+
+
 
     if (email != null) {
         Column(
@@ -264,7 +281,7 @@ fun VisualizaEmailScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowLeft,
-                        contentDescription = "",
+                        contentDescription = stringResource(id = R.string.content_desc_key_left),
                         modifier = Modifier
                             .width(45.dp)
                             .height(45.dp),
@@ -274,7 +291,7 @@ fun VisualizaEmailScreen(
 
                 Image(
                     painter = painterResource(id = R.drawable.locaweb),
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.content_desc_lcweb_logo),
                     modifier = Modifier
                         .width(100.dp)
                         .height(100.dp)
@@ -286,9 +303,6 @@ fun VisualizaEmailScreen(
 
                     IconButton(onClick = {
                         if (isExcluido.value) {
-                            navController.popBackStack()
-
-                            anexoRepository.excluirAnexoPorIdEmail(email.id_email)
 
                             alteracaoRepository.excluiAlteracaoPorIdEmailEIdUsuario(
                                 email.id_email,
@@ -298,11 +312,27 @@ fun VisualizaEmailScreen(
                             val alteracao =
                                 alteracaoRepository.listarAlteracaoPorIdEmail(email.id_email)
 
-                            if (alteracao == null) {
+                            if (alteracao.isEmpty()) {
+                                anexoRepository.excluirAnexoPorIdEmail(email.id_email)
+
+                                for (respostaEmail in respostaEmailRepository.listarRespostasEmailPorIdEmail(
+                                    email.id_email
+                                )) {
+                                    anexoRespostaEmailRepository.excluirAnexoPorIdRespostaEmail(
+                                        respostaEmail.id_resposta_email
+                                    )
+                                }
+
+                                respostaEmailRepository.excluirRespostaEmailPorIdEmail(email.id_email)
+
+
                                 emailRepository.excluirEmail(email = email)
                             }
 
-                            Toast.makeText(context, "Email excluído", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, toastMessageMailDeleted, Toast.LENGTH_LONG)
+                                .show()
+
+                            navController.popBackStack()
 
                         } else {
                             if (isTodasContasScreen) {
@@ -327,7 +357,7 @@ fun VisualizaEmailScreen(
                                 }
                                 Toast.makeText(
                                     context,
-                                    "Email movido para as lixeiras",
+                                    toastMessageMailMovedToTrashBin,
                                     Toast.LENGTH_LONG
                                 ).show()
                             } else {
@@ -339,7 +369,7 @@ fun VisualizaEmailScreen(
 
                                 Toast.makeText(
                                     context,
-                                    "Email movido para a lixeira",
+                                    toastMessageMailMovedToTrash,
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
@@ -349,7 +379,7 @@ fun VisualizaEmailScreen(
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
-                            contentDescription = "",
+                            contentDescription = stringResource(id = R.string.content_desc_trash),
                             modifier = Modifier
                                 .width(25.dp)
                                 .height(25.dp),
@@ -366,7 +396,7 @@ fun VisualizaEmailScreen(
                             }) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.reply_solid),
-                                    contentDescription = "",
+                                    contentDescription = stringResource(id = R.string.content_desc_lcweb_reply),
                                     modifier = Modifier
                                         .width(25.dp)
                                         .height(25.dp),
@@ -412,7 +442,7 @@ fun VisualizaEmailScreen(
                                 painter = if (isSpam.value) painterResource(id = R.drawable.exclamation_mark_filled) else painterResource(
                                     id = R.drawable.exclamation_mark_outlined
                                 ),
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_spam),
                                 modifier = Modifier
                                     .width(25.dp)
                                     .height(25.dp),
@@ -456,7 +486,7 @@ fun VisualizaEmailScreen(
                                 painter = if (isArchive.value) painterResource(id = R.drawable.folder_open_solid) else painterResource(
                                     id = R.drawable.folder_open_regular
                                 ),
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_folder),
                                 modifier = Modifier
                                     .width(20.dp)
                                     .height(20.dp),
@@ -499,7 +529,7 @@ fun VisualizaEmailScreen(
                         }) {
                             Icon(
                                 imageVector = if (isImportant.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_favorite),
                                 modifier = Modifier
                                     .width(25.dp)
                                     .height(25.dp),
@@ -532,7 +562,7 @@ fun VisualizaEmailScreen(
                             ) {
                                 Image(
                                     bitmap = it.asImageBitmap(),
-                                    contentDescription = null,
+                                    contentDescription = stringResource(id = R.string.content_desc_img_selected),
                                     modifier = Modifier
                                         .width(70.dp)
                                         .height(70.dp)
@@ -548,7 +578,7 @@ fun VisualizaEmailScreen(
 
                     Row {
                         Text(
-                            text = "De:",
+                            text = stringResource(id = R.string.mail_generic_from),
                             fontSize = 15.sp,
                             color = colorResource(id = R.color.lcweb_red_1),
                             modifier = Modifier.padding(5.dp)
@@ -568,7 +598,7 @@ fun VisualizaEmailScreen(
 
                     Row {
                         Text(
-                            text = "Para:",
+                            text = stringResource(id = R.string.mail_generic_to),
                             fontSize = 15.sp,
                             color = colorResource(id = R.color.lcweb_red_1),
                             modifier = Modifier.padding(5.dp)
@@ -589,7 +619,7 @@ fun VisualizaEmailScreen(
                     if (email.cc.isNotBlank()) {
                         Row {
                             Text(
-                                text = "Cc:",
+                                text = stringResource(id = R.string.mail_generic_cc),
                                 fontSize = 15.sp,
                                 color = colorResource(id = R.color.lcweb_red_1),
                                 modifier = Modifier.padding(5.dp)
@@ -605,6 +635,26 @@ fun VisualizaEmailScreen(
                             color = colorResource(id = R.color.lcweb_red_1)
                         )
                     }
+
+                    Row {
+                        Text(
+                            text = stringResource(id = R.string.mail_generic_date),
+                            fontSize = 15.sp,
+                            color = colorResource(id = R.color.lcweb_red_1),
+                            modifier = Modifier.padding(5.dp)
+                        )
+                        Text(
+                            text = dateToCompleteStringDate(stringToLocalDate(email.data)) + " " + if (timeState.is24hour) email.horario else convertTo12Hours(
+                                email.horario
+                            ),
+                            fontSize = 15.sp,
+                            color = colorResource(id = R.color.lcweb_gray_1),
+                            modifier = Modifier.padding(5.dp)
+                        )
+                    }
+                    HorizontalDivider(
+                        color = colorResource(id = R.color.lcweb_red_1)
+                    )
 
                     if (email.corpo.isNotBlank()) {
                         Text(
@@ -623,11 +673,11 @@ fun VisualizaEmailScreen(
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(30.dp)
+                            .height(25.dp)
                     )
                 }
 
-                items(respostasEmail) { respostaEmail ->
+                items(respostasEmailStateList) { respostaEmail ->
 
                     val anexoRespostaEmailArrayByteList =
                         anexoRespostaEmailRepository.listarAnexosArrayBytePorIdRespostaEmail(
@@ -651,18 +701,50 @@ fun VisualizaEmailScreen(
                         )
 
                         if (respostaEmail.editavel && usuarioSelecionado.value.id_usuario == respostaEmail.id_usuario) {
-                            Button(
-                                onClick = {
 
-                                },
+                            Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color.Transparent,
-                                    contentColor = colorResource(id = R.color.lcweb_gray_1)
-                                ),
-                                shape = RectangleShape
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = "Editar")
+
+                                Button(
+                                    onClick = {
+                                        anexoRespostaEmailRepository.excluirAnexoPorIdRespostaEmail(
+                                            respostaEmail.id_resposta_email
+                                        )
+                                        respostaEmailRepository.excluirRespostaEmail(respostaEmail)
+                                        respostasEmailStateList.remove(respostaEmail)
+                                        Toast.makeText(
+                                            context,
+                                            toastMessageDraftMailDeleted,
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color.Transparent,
+                                        contentColor = colorResource(id = R.color.lcweb_gray_1)
+                                    ),
+                                    shape = RectangleShape
+                                ) {
+                                    Text(text = stringResource(id = R.string.mail_generic_delete))
+                                }
+
+
+                                Button(
+                                    onClick = {
+                                        navController.navigate("editarespostaemailscreen/${respostaEmail.id_resposta_email}")
+
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color.Transparent,
+                                        contentColor = colorResource(id = R.color.lcweb_gray_1)
+                                    ),
+                                    shape = RectangleShape
+                                ) {
+                                    Text(text = stringResource(id = R.string.mail_generic_edit))
+                                }
+
                             }
 
                             if (respostaEmail.assunto.isNotBlank()) {
@@ -686,7 +768,7 @@ fun VisualizaEmailScreen(
                                     ) {
                                         Image(
                                             bitmap = it.asImageBitmap(),
-                                            contentDescription = null,
+                                            contentDescription = stringResource(id = R.string.content_desc_img_selected),
                                             modifier = Modifier
                                                 .width(70.dp)
                                                 .height(70.dp)
@@ -702,7 +784,7 @@ fun VisualizaEmailScreen(
 
                             Row {
                                 Text(
-                                    text = "De:",
+                                    text = stringResource(id = R.string.mail_generic_from),
                                     fontSize = 15.sp,
                                     color = colorResource(id = R.color.lcweb_red_1),
                                     modifier = Modifier.padding(5.dp)
@@ -722,7 +804,7 @@ fun VisualizaEmailScreen(
 
                             Row {
                                 Text(
-                                    text = "Para:",
+                                    text = stringResource(id = R.string.mail_generic_to),
                                     fontSize = 15.sp,
                                     color = colorResource(id = R.color.lcweb_red_1),
                                     modifier = Modifier.padding(5.dp)
@@ -743,7 +825,7 @@ fun VisualizaEmailScreen(
                             if (respostaEmail.cc.isNotBlank()) {
                                 Row {
                                     Text(
-                                        text = "Cc:",
+                                        text = stringResource(id = R.string.mail_generic_cc),
                                         fontSize = 15.sp,
                                         color = colorResource(id = R.color.lcweb_red_1),
                                         modifier = Modifier.padding(5.dp)
@@ -759,6 +841,27 @@ fun VisualizaEmailScreen(
                                     color = colorResource(id = R.color.lcweb_red_1)
                                 )
                             }
+
+                            Row {
+                                Text(
+                                    text = stringResource(id = R.string.mail_generic_date),
+                                    fontSize = 15.sp,
+                                    color = colorResource(id = R.color.lcweb_red_1),
+                                    modifier = Modifier.padding(5.dp)
+                                )
+                                Text(
+                                    text = dateToCompleteStringDate(stringToLocalDate(email.data)) + " " + if (timeState.is24hour) email.horario else convertTo12Hours(
+                                        email.horario
+                                    ),
+                                    fontSize = 15.sp,
+                                    color = colorResource(id = R.color.lcweb_gray_1),
+                                    modifier = Modifier.padding(5.dp)
+                                )
+                            }
+                            HorizontalDivider(
+                                color = colorResource(id = R.color.lcweb_red_1)
+                            )
+
 
                             if (respostaEmail.corpo.isNotBlank()) {
                                 Text(
@@ -792,7 +895,7 @@ fun VisualizaEmailScreen(
                                     ) {
                                         Image(
                                             bitmap = it.asImageBitmap(),
-                                            contentDescription = null,
+                                            contentDescription = stringResource(id = R.string.content_desc_img_selected),
                                             modifier = Modifier
                                                 .width(70.dp)
                                                 .height(70.dp)
@@ -808,7 +911,7 @@ fun VisualizaEmailScreen(
 
                             Row {
                                 Text(
-                                    text = "De:",
+                                    text = stringResource(id = R.string.mail_generic_from),
                                     fontSize = 15.sp,
                                     color = colorResource(id = R.color.lcweb_red_1),
                                     modifier = Modifier.padding(5.dp)
@@ -828,7 +931,7 @@ fun VisualizaEmailScreen(
 
                             Row {
                                 Text(
-                                    text = "Para:",
+                                    text = stringResource(id = R.string.mail_generic_to),
                                     fontSize = 15.sp,
                                     color = colorResource(id = R.color.lcweb_red_1),
                                     modifier = Modifier.padding(5.dp)
@@ -849,7 +952,7 @@ fun VisualizaEmailScreen(
                             if (respostaEmail.cc.isNotBlank()) {
                                 Row {
                                     Text(
-                                        text = "Cc:",
+                                        text = stringResource(id = R.string.mail_generic_cc),
                                         fontSize = 15.sp,
                                         color = colorResource(id = R.color.lcweb_red_1),
                                         modifier = Modifier.padding(5.dp)
@@ -865,6 +968,26 @@ fun VisualizaEmailScreen(
                                     color = colorResource(id = R.color.lcweb_red_1)
                                 )
                             }
+
+                            Row {
+                                Text(
+                                    text = stringResource(id = R.string.mail_generic_date),
+                                    fontSize = 15.sp,
+                                    color = colorResource(id = R.color.lcweb_red_1),
+                                    modifier = Modifier.padding(5.dp)
+                                )
+                                Text(
+                                    text = dateToCompleteStringDate(stringToLocalDate(email.data)) + " " + if (timeState.is24hour) email.horario else convertTo12Hours(
+                                        email.horario
+                                    ),
+                                    fontSize = 15.sp,
+                                    color = colorResource(id = R.color.lcweb_gray_1),
+                                    modifier = Modifier.padding(5.dp)
+                                )
+                            }
+                            HorizontalDivider(
+                                color = colorResource(id = R.color.lcweb_red_1)
+                            )
 
                             if (respostaEmail.corpo.isNotBlank()) {
                                 Text(

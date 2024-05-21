@@ -18,7 +18,7 @@ interface AlteracaoDao {
     fun listarAlteracaoPorIdUsuarioEIdPasta(id_usuario: Long, id_pasta: Long): List<Alteracao>
 
     @Query("SELECT * FROM T_LCW_ALTERACAO where alt_id_email = :id_email")
-    fun listarAlteracaoPorIdEmail(id_email: Long): Alteracao
+    fun listarAlteracaoPorIdEmail(id_email: Long): List<Alteracao>
 
     @Query("SELECT alt_id_usuario FROM T_LCW_ALTERACAO where alt_id_email = :id_email")
     fun listarAltIdUsuarioPorIdEmail(id_email: Long): List<Long>

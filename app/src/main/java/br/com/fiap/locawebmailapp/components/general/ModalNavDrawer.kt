@@ -32,12 +32,9 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,7 +47,6 @@ import br.com.fiap.locawebmailapp.components.email.PastaCreatorDalog
 import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.PastaRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
-import br.com.fiap.locawebmailapp.model.EmailComAlteracao
 import br.com.fiap.locawebmailapp.model.Pasta
 
 @Composable
@@ -69,7 +65,9 @@ fun ModalNavDrawer(
     listPastaState: SnapshotStateList<Pasta>,
     receivedEmailStateListRecompose: () -> Unit = {},
     context: Context,
+    toastMessageFolderDeleted: String = stringResource(id = R.string.toast_folder_deleted),
     content: @Composable () -> Unit
+
 ) {
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -80,7 +78,7 @@ fun ModalNavDrawer(
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.locaweb),
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.content_desc_lcweb_logo),
                     modifier = Modifier
                         .width(120.dp)
                         .height(120.dp)
@@ -105,7 +103,7 @@ fun ModalNavDrawer(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Email,
-                                        contentDescription = "",
+                                        contentDescription = stringResource(id = R.string.content_desc_mail_box),
                                         modifier = Modifier
                                             .width(25.dp)
                                             .height(25.dp)
@@ -149,7 +147,7 @@ fun ModalNavDrawer(
                                 ) {
                                     Icon(
                                         painter = painterResource(id = R.drawable.inbox_solid),
-                                        contentDescription = "",
+                                        contentDescription = stringResource(id = R.string.content_desc_inbox),
                                         modifier = Modifier
                                             .width(25.dp)
                                             .height(25.dp)
@@ -191,7 +189,7 @@ fun ModalNavDrawer(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Send,
-                                        contentDescription = "",
+                                        contentDescription = stringResource(id = R.string.content_desc_mail_send),
                                         modifier = Modifier
                                             .width(25.dp)
                                             .height(25.dp)
@@ -233,7 +231,7 @@ fun ModalNavDrawer(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Favorite,
-                                        contentDescription = "",
+                                        contentDescription = stringResource(id = R.string.content_desc_favorite),
                                         modifier = Modifier
                                             .width(25.dp)
                                             .height(25.dp)
@@ -275,7 +273,7 @@ fun ModalNavDrawer(
                                 ) {
                                     Icon(
                                         painter = painterResource(id = R.drawable.pen_to_square_solid),
-                                        contentDescription = "",
+                                        contentDescription = stringResource(id = R.string.content_desc_drafts),
                                         modifier = Modifier
                                             .width(25.dp)
                                             .height(25.dp)
@@ -317,7 +315,7 @@ fun ModalNavDrawer(
                                 ) {
                                     Icon(
                                         painter = painterResource(id = R.drawable.calendar_days_regular),
-                                        contentDescription = "",
+                                        contentDescription = stringResource(id = R.string.content_desc_calendar),
                                         modifier = Modifier
                                             .width(25.dp)
                                             .height(25.dp)
@@ -359,7 +357,7 @@ fun ModalNavDrawer(
                                 ) {
                                     Icon(
                                         painter = painterResource(id = R.drawable.folder_open_solid),
-                                        contentDescription = "",
+                                        contentDescription = stringResource(id = R.string.content_desc_folder),
                                         modifier = Modifier
                                             .width(25.dp)
                                             .height(25.dp)
@@ -401,7 +399,7 @@ fun ModalNavDrawer(
                                 ) {
                                     Icon(
                                         painter = painterResource(id = R.drawable.exclamation_mark_filled),
-                                        contentDescription = "",
+                                        contentDescription = stringResource(id = R.string.content_desc_spam),
                                         modifier = Modifier
                                             .width(25.dp)
                                             .height(25.dp)
@@ -445,7 +443,7 @@ fun ModalNavDrawer(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Delete,
-                                        contentDescription = "",
+                                        contentDescription = stringResource(id = R.string.content_desc_trash),
                                         modifier = Modifier
                                             .width(25.dp)
                                             .height(25.dp)
@@ -482,7 +480,7 @@ fun ModalNavDrawer(
                                 .fillMaxWidth()
                         ) {
                             Text(
-                                text = "Pastas",
+                                text = stringResource(id = R.string.navbar_modal_folders),
                                 fontSize = 15.sp,
                                 color = colorResource(id = R.color.lcweb_gray_1),
                                 fontWeight = FontWeight.Bold
@@ -498,7 +496,7 @@ fun ModalNavDrawer(
                                     }) {
                                         Icon(
                                             imageVector = if (!expandedPasta.value) Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
-                                            contentDescription = "",
+                                            contentDescription = stringResource(id = R.string.content_desc_expand_area),
                                             tint = colorResource(id = R.color.lcweb_gray_1)
                                         )
                                     }
@@ -510,7 +508,7 @@ fun ModalNavDrawer(
                                 }) {
                                     Icon(
                                         imageVector = Icons.Filled.AddCircle,
-                                        contentDescription = "",
+                                        contentDescription = stringResource(id = R.string.content_desc_add),
                                         tint = colorResource(id = R.color.lcweb_gray_1)
                                     )
                                 }
@@ -547,7 +545,7 @@ fun ModalNavDrawer(
                                             Row(verticalAlignment = Alignment.CenterVertically) {
                                                 Icon(
                                                     painter = painterResource(id = R.drawable.box_archive_solid),
-                                                    contentDescription = "",
+                                                    contentDescription = stringResource(id = R.string.content_desc_box_archived),
                                                     modifier = Modifier
                                                         .width(15.dp)
                                                         .height(15.dp)
@@ -562,7 +560,7 @@ fun ModalNavDrawer(
                                             IconButton(onClick = {
                                                 Toast.makeText(
                                                     context,
-                                                    "Pasta excluída",
+                                                    toastMessageFolderDeleted,
                                                     Toast.LENGTH_LONG
                                                 )
                                                     .show()
@@ -592,7 +590,7 @@ fun ModalNavDrawer(
                                             }) {
                                                 Icon(
                                                     imageVector = Icons.Filled.Clear,
-                                                    contentDescription = "",
+                                                    contentDescription = stringResource(id = R.string.content_desc_clear),
                                                     tint = if (selectedDrawerPasta.value == it.id_pasta.toString()) colorResource(
                                                         id = R.color.lcweb_red_1
                                                     ) else colorResource(id = R.color.lcweb_gray_1),

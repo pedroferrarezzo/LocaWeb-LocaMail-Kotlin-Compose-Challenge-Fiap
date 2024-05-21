@@ -64,8 +64,8 @@ import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.Alteracao
 import br.com.fiap.locawebmailapp.model.AnexoRespostaEmail
 import br.com.fiap.locawebmailapp.model.Convidado
-import br.com.fiap.locawebmailapp.model.RespostaEmail
 import br.com.fiap.locawebmailapp.utils.bitmapToByteArray
+import br.com.fiap.locawebmailapp.utils.byteArrayToBitmap
 import br.com.fiap.locawebmailapp.utils.isValidEmail
 import br.com.fiap.locawebmailapp.utils.listaParaString
 import br.com.fiap.locawebmailapp.utils.pickImageFromGallery
@@ -74,10 +74,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
+fun EditaRespostaEmailScreen(navController: NavController, idRespostaEmail: Long) {
 
     val context = LocalContext.current
 
@@ -89,8 +87,9 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
     val alteracaoRepository = AlteracaoRepository(context)
 
 
-    val respostaEmail = RespostaEmail()
-    val emailResponder = emailRepository.listarEmailPorId(idEmail)
+    val respostaEmail =
+        respostaEmailRepository.listarRespostaEmailPorIdRespostaEmail(idRespostaEmail)
+    val emailResponder = emailRepository.listarEmailPorId(respostaEmail.id_email)
 
     val anexoRespostaEmail = AnexoRespostaEmail()
     val convidado = Convidado()
@@ -98,17 +97,22 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
         mutableStateOf(usuarioRepository.listarUsuarioSelecionado())
     }
 
-    val alteracoesEmailAltIdUsuarioList = alteracaoRepository.listarAltIdUsuarioPorIdEmail(idEmail)
+    val alteracoesEmailAltIdUsuarioList =
+        alteracaoRepository.listarAltIdUsuarioPorIdEmail(respostaEmail.id_email)
 
+    val anexoRespostaEmailArrayByteList =
+        anexoRespostaEmailRepository.listarAnexosArrayBytePorIdRespostaEmail(respostaEmail.id_resposta_email)
     val bitmapList = remember {
-        mutableStateListOf<Bitmap>()
+        anexoRespostaEmailArrayByteList.map {
+            byteArrayToBitmap(it)
+        }.toMutableStateList()
     }
 
     val destinatarios =
         remember {
-            if (emailResponder.id_usuario == usuarioSelecionado.value.id_usuario) stringParaLista(
-                emailResponder.destinatario
-            ).toMutableStateList() else stringParaLista(emailResponder.remetente).toMutableStateList()
+            if (respostaEmail.destinatario.equals("")) mutableStateListOf<String>() else stringParaLista(
+                respostaEmail.destinatario
+            ).toMutableStateList()
         }
 
     val destinatarioText = remember {
@@ -119,11 +123,11 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
     val bitmap = remember { mutableStateOf<Bitmap?>(null) }
 
     val assuntoText = remember {
-        mutableStateOf("")
+        mutableStateOf(respostaEmail.assunto)
     }
 
     val coporMailText = remember {
-        mutableStateOf("")
+        mutableStateOf(respostaEmail.corpo)
     }
 
     val cc = remember {
@@ -131,14 +135,18 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
     }
     val ccs =
         remember {
-            mutableStateListOf<String>()
+            if (respostaEmail.cc.equals("")) mutableStateListOf<String>() else stringParaLista(
+                respostaEmail.cc
+            ).toMutableStateList()
         }
 
     val cco = remember {
         mutableStateOf("")
     }
     val ccos = remember {
-        mutableStateListOf<String>()
+        if (respostaEmail.cco.equals("")) mutableStateListOf<String>() else stringParaLista(
+            respostaEmail.cco
+        ).toMutableStateList()
     }
 
 
@@ -186,12 +194,14 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
             ) {
                 IconButton(
                     onClick = {
-                        if (ccs.isNotEmpty() ||
-                            ccos.isNotEmpty() || bitmapList.isNotEmpty() ||
-                            assuntoText.value != "" ||
-                            coporMailText.value != ""
+                        if (listaParaString(destinatarios) != respostaEmail.destinatario
+                            || listaParaString(ccos) != respostaEmail.cco
+                            || listaParaString(ccs) != respostaEmail.cc
+                            || assuntoText.value != respostaEmail.assunto
+                            || coporMailText.value != respostaEmail.corpo
+                            || bitmapList.isNotEmpty()
+                            || anexoRespostaEmailArrayByteList.isNotEmpty()
                         ) {
-                            respostaEmail.remetente = usuarioSelecionado.value.email
                             respostaEmail.destinatario =
                                 if (destinatarios.isNotEmpty()) listaParaString(destinatarios) else ""
                             respostaEmail.cc =
@@ -202,13 +212,12 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                             respostaEmail.corpo = coporMailText.value
                             respostaEmail.enviado = false
                             respostaEmail.editavel = true
-                            respostaEmail.id_email = idEmail
-                            respostaEmail.id_usuario = usuarioSelecionado.value.id_usuario
+                            anexoRespostaEmail.id_resposta_email = respostaEmail.id_resposta_email
 
-                            val rowId =
-                                respostaEmailRepository.criarRespostaEmail(respostaEmail)
-
-                            anexoRespostaEmail.id_resposta_email = rowId
+                            respostaEmailRepository.atualizarRespostaEmail(respostaEmail)
+                            anexoRespostaEmailRepository.excluirAnexoPorIdRespostaEmail(
+                                anexoRespostaEmail.id_resposta_email
+                            )
 
                             if (bitmapList.isNotEmpty()) {
                                 for (bitmap in bitmapList) {
@@ -228,7 +237,6 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                             navController.popBackStack()
                         }
                     }
-
                 ) {
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowLeft,
@@ -265,7 +273,6 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
 
                     IconButton(onClick = {
                         if (destinatarios.isNotEmpty() || ccos.isNotEmpty() || ccs.isNotEmpty()) {
-                            respostaEmail.remetente = usuarioSelecionado.value.email
                             respostaEmail.destinatario =
                                 if (destinatarios.isNotEmpty()) listaParaString(destinatarios) else ""
                             respostaEmail.cc = if (ccs.isNotEmpty()) listaParaString(ccs) else ""
@@ -277,11 +284,13 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                             respostaEmail.data = "${LocalDate.now()}"
                             respostaEmail.horario =
                                 LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
-                            respostaEmail.id_email = idEmail
-                            respostaEmail.id_usuario = usuarioSelecionado.value.id_usuario
-                            val rowId = respostaEmailRepository.criarRespostaEmail(respostaEmail)
+                            anexoRespostaEmail.id_resposta_email = respostaEmail.id_resposta_email
 
-                            anexoRespostaEmail.id_resposta_email = rowId
+
+                            respostaEmailRepository.atualizarRespostaEmail(respostaEmail)
+                            anexoRespostaEmailRepository.excluirAnexoPorIdRespostaEmail(
+                                anexoRespostaEmail.id_resposta_email
+                            )
 
                             if (bitmapList.isNotEmpty()) {
                                 for (bitmap in bitmapList) {
@@ -301,15 +310,25 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                                 respostaEmail.remetente
                             )
 
-                            for (usuario in usuarioRepository.listarUsuarios()) {
+                            for (destinatario in todosDestinatarios) {
+                                val convidadoExistente =
+                                    convidadoRepository.verificarConvidadoExiste(destinatario)
 
+                                if (convidadoExistente != destinatario) {
+                                    convidado.email = destinatario
+                                    convidadoRepository.criarConvidado(convidado)
+                                }
+
+                            }
+
+                            for (usuario in usuarioRepository.listarUsuarios()) {
                                 if (todosDestinatarios.contains(usuario.email) && !alteracoesEmailAltIdUsuarioList.contains(
                                         usuario.id_usuario
                                     )
                                 ) {
                                     alteracaoRepository.criarAlteracao(
                                         Alteracao(
-                                            alt_id_email = idEmail,
+                                            alt_id_email = respostaEmail.id_email,
                                             alt_id_usuario = usuario.id_usuario
                                         )
                                     )
@@ -321,21 +340,10 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
                                 ) {
                                     alteracaoRepository.atualizarLidoPorIdEmailEIdusuario(
                                         false,
-                                        id_email = idEmail,
+                                        id_email = respostaEmail.id_email,
                                         id_usuario = usuario.id_usuario
                                     )
                                 }
-                            }
-
-                            for (destinatario in todosDestinatarios) {
-                                val convidadoExistente =
-                                    convidadoRepository.verificarConvidadoExiste(destinatario)
-
-                                if (convidadoExistente != destinatario) {
-                                    convidado.email = destinatario
-                                    convidadoRepository.criarConvidado(convidado)
-                                }
-
                             }
 
                             Toast.makeText(

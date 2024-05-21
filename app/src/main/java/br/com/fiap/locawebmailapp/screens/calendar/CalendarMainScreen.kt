@@ -201,7 +201,9 @@ fun CalendarMainScreen(navController: NavController, data: LocalDate = LocalDate
                                     }
                                 }
                             }) {
-                                Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
+                                Icon(imageVector = Icons.Filled.Menu, contentDescription = stringResource(
+                                    id = R.string.content_desc_menu
+                                ))
                             }
                         },
                         trailingIcon = {
@@ -212,7 +214,7 @@ fun CalendarMainScreen(navController: NavController, data: LocalDate = LocalDate
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.AccountCircle,
-                                    contentDescription = ""
+                                    contentDescription = stringResource(id = R.string.content_desc_user)
                                 )
                             }
                         },
@@ -314,7 +316,7 @@ fun CalendarMainScreen(navController: NavController, data: LocalDate = LocalDate
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Add,
-                        contentDescription = "",
+                        contentDescription = stringResource(id = R.string.content_desc_add),
                         tint = colorResource(id = R.color.white)
                     )
                 }

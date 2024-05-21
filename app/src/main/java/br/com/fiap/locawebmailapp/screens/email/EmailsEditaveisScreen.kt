@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
@@ -96,7 +97,7 @@ fun EmailsEditaveisScreen(navController: NavController) {
     }
 
     val editableEmailList =
-        emailRepository.listarEmailsEditaveisPorRemetente(usuarioSelecionado.value.email)
+            emailRepository.listarEmailsEditaveisPorRemetente(usuarioSelecionado.value.email)
     val editableEmailStateList = remember {
         mutableStateListOf<Email>().apply {
             addAll(editableEmailList)
@@ -120,7 +121,7 @@ fun EmailsEditaveisScreen(navController: NavController) {
 
     val alteracaoRepository = AlteracaoRepository(context)
     val listPasta =
-        pastaRepository.listarPastasPorIdUsuario(usuarioRepository.listarUsuarioSelecionado().id_usuario)
+            pastaRepository.listarPastasPorIdUsuario(usuarioRepository.listarUsuarioSelecionado().id_usuario)
 
     val listPastaState = remember {
         mutableStateListOf<Pasta>().apply {
@@ -128,133 +129,137 @@ fun EmailsEditaveisScreen(navController: NavController) {
         }
     }
 
+    val toastMessageDraftsDeleted = stringResource(id = R.string.toast_maildrafts_deleted)
+
 
     ModalNavDrawer(
-        selectedDrawer = selectedDrawer,
-        navController = navController,
-        drawerState = drawerState,
-        usuarioRepository = usuarioRepository,
-        pastaRepository = pastaRepository,
-        scrollState = rememberScrollState(),
-        expandedPasta = expandedPasta,
-        openDialogPastaCreator = openDialogPastaCreator,
-        textPastaCreator = textPastaCreator,
-        selectedDrawerPasta = selectedDrawerPasta,
-        alteracaoRepository = alteracaoRepository,
-        context = context,
-        listPastaState = listPastaState
+            selectedDrawer = selectedDrawer,
+            navController = navController,
+            drawerState = drawerState,
+            usuarioRepository = usuarioRepository,
+            pastaRepository = pastaRepository,
+            scrollState = rememberScrollState(),
+            expandedPasta = expandedPasta,
+            openDialogPastaCreator = openDialogPastaCreator,
+            textPastaCreator = textPastaCreator,
+            selectedDrawerPasta = selectedDrawerPasta,
+            alteracaoRepository = alteracaoRepository,
+            context = context,
+            listPastaState = listPastaState
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize()
         ) {
             Column {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextField(
-                        value = textSearchBar.value,
-                        onValueChange = {
-                            textSearchBar.value = it
-                        },
-                        modifier = Modifier.weight(1f),
-                        placeholder = {
-                            Text(
-                                text = stringResource(id = R.string.mail_main_searchbar)
-                            )
-                        },
-                        leadingIcon = {
-                            IconButton(onClick = {
-                                scope.launch {
-                                    drawerState.apply {
-                                        if (isClosed) open() else close()
-                                    }
-                                }
-                            }) {
-                                Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
-                            }
-                        },
-                        trailingIcon = {
-                            IconButton(
-                                onClick = {
-                                    openDialogUserPicker.value = !openDialogUserPicker.value
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.AccountCircle,
-                                    contentDescription = ""
+                            value = textSearchBar.value,
+                            onValueChange = {
+                                textSearchBar.value = it
+                            },
+                            modifier = Modifier.weight(1f),
+                            placeholder = {
+                                Text(
+                                        text = stringResource(id = R.string.mail_main_searchbar)
                                 )
-                            }
-                        },
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = colorResource(id = R.color.lcweb_red_1),
-                            unfocusedContainerColor = colorResource(id = R.color.lcweb_red_1),
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            focusedLeadingIconColor = colorResource(id = R.color.white),
-                            unfocusedLeadingIconColor = colorResource(id = R.color.white),
-                            focusedPlaceholderColor = colorResource(id = R.color.white),
-                            unfocusedPlaceholderColor = colorResource(id = R.color.white),
-                            cursorColor = colorResource(id = R.color.white),
-                            focusedTextColor = colorResource(id = R.color.white),
-                            unfocusedTextColor = colorResource(id = R.color.white),
-                            focusedSupportingTextColor = Color.Transparent,
-                            unfocusedSupportingTextColor = Color.Transparent,
-                            focusedTrailingIconColor = colorResource(id = R.color.white),
-                            unfocusedTrailingIconColor = colorResource(id = R.color.white)
-                        ),
-                        textStyle = TextStyle(
-                            textDecoration = TextDecoration.None
-                        ),
-                        singleLine = true,
-                        shape = RoundedCornerShape(5.dp)
+                            },
+                            leadingIcon = {
+                                IconButton(onClick = {
+                                    scope.launch {
+                                        drawerState.apply {
+                                            if (isClosed) open() else close()
+                                        }
+                                    }
+                                }) {
+                                    Icon(imageVector = Icons.Filled.Menu, contentDescription = stringResource(
+                                        id = R.string.content_desc_menu
+                                    ))
+                                }
+                            },
+                            trailingIcon = {
+                                IconButton(
+                                        onClick = {
+                                            openDialogUserPicker.value = !openDialogUserPicker.value
+                                        }
+                                ) {
+                                    Icon(
+                                            imageVector = Icons.Filled.AccountCircle,
+                                            contentDescription = stringResource(id = R.string.content_desc_user)
+                                    )
+                                }
+                            },
+                            colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = colorResource(id = R.color.lcweb_red_1),
+                                    unfocusedContainerColor = colorResource(id = R.color.lcweb_red_1),
+                                    focusedIndicatorColor = Color.Transparent,
+                                    unfocusedIndicatorColor = Color.Transparent,
+                                    focusedLeadingIconColor = colorResource(id = R.color.white),
+                                    unfocusedLeadingIconColor = colorResource(id = R.color.white),
+                                    focusedPlaceholderColor = colorResource(id = R.color.white),
+                                    unfocusedPlaceholderColor = colorResource(id = R.color.white),
+                                    cursorColor = colorResource(id = R.color.white),
+                                    focusedTextColor = colorResource(id = R.color.white),
+                                    unfocusedTextColor = colorResource(id = R.color.white),
+                                    focusedSupportingTextColor = Color.Transparent,
+                                    unfocusedSupportingTextColor = Color.Transparent,
+                                    focusedTrailingIconColor = colorResource(id = R.color.white),
+                                    unfocusedTrailingIconColor = colorResource(id = R.color.white)
+                            ),
+                            textStyle = TextStyle(
+                                    textDecoration = TextDecoration.None
+                            ),
+                            singleLine = true,
+                            shape = RoundedCornerShape(5.dp)
                     )
                 }
 
                 UserSelectorDalog(
-                    openDialogUserPicker = openDialogUserPicker,
-                    usuarioSelecionado,
-                    usuariosExistentes,
-                    editableEmailStateList,
-                    applyStateList = {
+                        openDialogUserPicker = openDialogUserPicker,
+                        usuarioSelecionado,
+                        usuariosExistentes,
+                        editableEmailStateList,
+                        applyStateList = {
 
-                        editableEmailStateList.addAll(
-                            emailRepository.listarEmailsEditaveisPorRemetente(
-                                usuarioSelecionado.value.email
+                            editableEmailStateList.addAll(
+                                    emailRepository.listarEmailsEditaveisPorRemetente(
+                                            usuarioSelecionado.value.email
+                                    )
                             )
-                        )
 
-                    },
-                    usuarioRepository = usuarioRepository
+                        },
+                        usuarioRepository = usuarioRepository
                 )
 
 
                 if (editableEmailStateList.isNotEmpty()) {
 
                     Button(
-                        onClick = {
-                            Toast.makeText(context, "Rascunhos excluídos", Toast.LENGTH_LONG)
-                                .show()
+                            onClick = {
+                                Toast.makeText(context, toastMessageDraftsDeleted, Toast.LENGTH_LONG)
+                                        .show()
 
-                            for (email in editableEmailList) {
-                                anexoRepository.excluirAnexoPorIdEmail(email.id_email)
-                                emailRepository.excluirEmail(email)
-                                editableEmailStateList.remove(email)
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent,
-                            contentColor = colorResource(id = R.color.lcweb_gray_1)
-                        ),
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RectangleShape,
+                                for (email in editableEmailList) {
+                                    anexoRepository.excluirAnexoPorIdEmail(email.id_email)
+                                    emailRepository.excluirEmail(email)
+                                    editableEmailStateList.remove(email)
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.Transparent,
+                                    contentColor = colorResource(id = R.color.lcweb_gray_1)
+                            ),
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RectangleShape,
                     ) {
-                        Text(text = "Limpar tudo")
+                        Text(text = stringResource(id = R.string.mail_generic_clean_all))
                     }
                     HorizontalDivider(
-                        color = colorResource(id = R.color.lcweb_red_1)
+                            color = colorResource(id = R.color.lcweb_red_1)
                     )
 
                     LazyColumn(reverseLayout = true) {
@@ -263,80 +268,89 @@ fun EmailsEditaveisScreen(navController: NavController) {
                         }) {
 
                             if (
-                                it.assunto.contains(textSearchBar.value, ignoreCase = true) ||
-                                it.corpo.contains(textSearchBar.value, ignoreCase = true)
+                                    it.assunto.contains(textSearchBar.value, ignoreCase = true) ||
+                                    it.corpo.contains(textSearchBar.value, ignoreCase = true)
                             ) {
-                                val redLcWeb = colorResource(id = R.color.lcweb_red_1)
 
                                 Button(
-                                    onClick = {
-                                        navController.navigate("editaemailscreen/${it.id_email}")
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .drawBehind {
-                                            val borderSize = 2.dp.toPx()
-                                            val y = size.height - borderSize / 2
-
-                                            drawLine(
-                                                redLcWeb,
-                                                Offset(0f, y),
-                                                Offset(size.width, y),
-                                                borderSize
-                                            )
+                                        onClick = {
+                                            navController.navigate("editaemailscreen/${it.id_email}")
                                         },
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color.Transparent,
-                                        contentColor = colorResource(id = R.color.lcweb_gray_1)
-                                    ),
-                                    shape = RectangleShape,
+                                        modifier = Modifier
+                                                .fillMaxWidth(),
+                                        colors = ButtonDefaults.buttonColors(
+                                                containerColor = Color.Transparent,
+                                                contentColor = colorResource(id = R.color.lcweb_gray_1)
+                                        ),
+                                        shape = RectangleShape,
                                 ) {
 
                                     Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Column(
-                                            modifier = Modifier.padding(horizontal = 2.dp)
+                                                modifier = Modifier.padding(horizontal = 2.dp)
                                         ) {
-                                            Text(text = "Para: ${it.destinatario}")
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+
+                                                Icon(
+                                                        imageVector = Icons.Filled.Edit,
+                                                        contentDescription = stringResource(id = R.string.content_desc_edit),
+                                                        modifier = Modifier
+                                                            .width(25.dp)
+                                                            .height(25.dp)
+                                                            .padding(horizontal = 5.dp),
+                                                        tint = colorResource(id = R.color.lcweb_red_1)
+                                                )
+
+
+                                                Text(
+                                                        text = if (it.destinatario.length > 25) {
+                                                            "${stringResource(id = R.string.mail_generic_to)} ${it.destinatario.take(25)}..."
+                                                        } else {
+                                                            "${stringResource(id = R.string.mail_generic_to)} ${it.destinatario}"
+                                                        },
+                                                        maxLines = 1
+                                                )
+                                            }
                                             Text(text = it.assunto)
                                             Text(
-                                                text = if (it.corpo.length > 25) {
-                                                    "${it.corpo.take(25)}..."
-                                                } else {
-                                                    it.corpo
-                                                },
-                                                maxLines = 1
+                                                    text = if (it.corpo.length > 25) {
+                                                        "${it.corpo.take(25)}..."
+                                                    } else {
+                                                        it.corpo
+                                                    },
+                                                    maxLines = 1
                                             )
                                         }
 
                                         Column(
-                                            modifier = Modifier.padding(horizontal = 2.dp),
-                                            horizontalAlignment = Alignment.CenterHorizontally
+                                                modifier = Modifier.padding(horizontal = 2.dp),
+                                                horizontalAlignment = Alignment.CenterHorizontally
                                         ) {
 
                                             Row(
-                                                verticalAlignment = Alignment.CenterVertically
+                                                    verticalAlignment = Alignment.CenterVertically
                                             ) {
 
 
                                                 if (attachEmailList.contains(it.id_email)) {
                                                     Icon(
-                                                        painter = painterResource(id = R.drawable.paperclip_solid),
-                                                        contentDescription = "",
-                                                        modifier = Modifier
-                                                            .width(20.dp)
-                                                            .height(20.dp)
-                                                            .padding(horizontal = 5.dp)
+                                                            painter = painterResource(id = R.drawable.paperclip_solid),
+                                                            contentDescription = stringResource(id = R.string.content_desc_clips),
+                                                            modifier = Modifier
+                                                                .width(20.dp)
+                                                                .height(20.dp)
+                                                                .padding(horizontal = 5.dp)
                                                     )
                                                 }
 
                                                 Text(
-                                                    text = if (timeState.is24hour) it.horario else convertTo12Hours(
-                                                        it.horario
-                                                    )
+                                                        text = if (timeState.is24hour) it.horario else convertTo12Hours(
+                                                                it.horario
+                                                        )
                                                 )
                                             }
                                         }
@@ -353,27 +367,27 @@ fun EmailsEditaveisScreen(navController: NavController) {
 
 
             Column(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.BottomEnd)
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.BottomEnd)
             ) {
 
                 Button(
-                    onClick = {
-                        navController.navigate("criaemailscreen")
-                    },
-                    elevation = ButtonDefaults.buttonElevation(4.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.lcweb_red_1)),
-                    modifier = Modifier
-                        .width(70.dp)
-                        .height(70.dp)
-                        .padding(vertical = 5.dp),
-                    shape = RoundedCornerShape(10.dp)
+                        onClick = {
+                            navController.navigate("criaemailscreen")
+                        },
+                        elevation = ButtonDefaults.buttonElevation(4.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.lcweb_red_1)),
+                        modifier = Modifier
+                                .width(70.dp)
+                                .height(70.dp)
+                                .padding(vertical = 5.dp),
+                        shape = RoundedCornerShape(10.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Email,
-                        contentDescription = "",
-                        tint = colorResource(id = R.color.white)
+                            imageVector = Icons.Filled.Email,
+                            contentDescription = stringResource(id = R.string.content_desc_mail_box),
+                            tint = colorResource(id = R.color.white)
                     )
                 }
             }
