@@ -35,7 +35,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun RowSearchBar(
+fun <T> RowSearchBar(
     modifier: Modifier = Modifier,
     drawerState: DrawerState,
     scope: CoroutineScope,
@@ -43,8 +43,7 @@ fun RowSearchBar(
     textSearchBar: MutableState<String>,
     applyStateListUserSelectorDialog: () -> Unit = {},
     usuarioSelecionado: MutableState<Usuario>,
-    usuariosExistentes: List<Usuario>,
-    stateEmailList: SnapshotStateList<EmailComAlteracao> = mutableStateListOf(),
+    stateEmailList: SnapshotStateList<T> = mutableStateListOf(),
     usuarioRepository: UsuarioRepository,
     placeholderTextFieldSearch: String,
     selectedDrawerPasta: MutableState<String>,
@@ -119,11 +118,10 @@ fun RowSearchBar(
         )
     }
 
-    UserSelectorDalog<EmailComAlteracao>(
+    UserSelectorDalog(
         openDialogUserPicker = openDialogUserPicker,
-        usuarioSelecionado,
-        usuariosExistentes,
-        stateEmailList,
+        usuarioSelecionado = usuarioSelecionado,
+        stateList = stateEmailList,
         applyStateList = applyStateListUserSelectorDialog,
         usuarioRepository = usuarioRepository,
         selectedDrawerPasta = selectedDrawerPasta,

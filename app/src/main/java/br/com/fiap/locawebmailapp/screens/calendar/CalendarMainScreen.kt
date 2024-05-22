@@ -201,9 +201,12 @@ fun CalendarMainScreen(navController: NavController, data: LocalDate = LocalDate
                                     }
                                 }
                             }) {
-                                Icon(imageVector = Icons.Filled.Menu, contentDescription = stringResource(
-                                    id = R.string.content_desc_menu
-                                ))
+                                Icon(
+                                    imageVector = Icons.Filled.Menu,
+                                    contentDescription = stringResource(
+                                        id = R.string.content_desc_menu
+                                    )
+                                )
                             }
                         },
                         trailingIcon = {
@@ -247,8 +250,10 @@ fun CalendarMainScreen(navController: NavController, data: LocalDate = LocalDate
                 UserSelectorDalog<Agenda>(
                     openDialogUserPicker = openDialogUserPicker,
                     usuarioSelecionado,
-                    usuariosExistentes,
-                    usuarioRepository = usuarioRepository
+                    usuarioRepository = usuarioRepository,
+                    selectedDrawerPasta = selectedDrawerPasta,
+                    navController = navController
+
                 )
 
                 Calendar(

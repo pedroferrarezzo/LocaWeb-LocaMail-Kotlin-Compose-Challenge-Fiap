@@ -22,7 +22,7 @@ import br.com.fiap.locawebmailapp.screens.calendar.EditaTarefaScreen
 import br.com.fiap.locawebmailapp.screens.email.CriaEmailScreen
 import br.com.fiap.locawebmailapp.screens.email.CriaRespostaEmailScreen
 import br.com.fiap.locawebmailapp.screens.email.EMailMainScreen
-import br.com.fiap.locawebmailapp.screens.email.EMailTodasContasScreen
+import br.com.fiap.locawebmailapp.screens.email.EmailTodasContasScreen
 import br.com.fiap.locawebmailapp.screens.email.EditaEmailScreen
 import br.com.fiap.locawebmailapp.screens.email.EditaRespostaEmailScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsArquivadosScreen
@@ -124,7 +124,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(route = "emailtodascontasscreen") {
-                            EMailTodasContasScreen(navController = navController)
+                            EmailTodasContasScreen(navController = navController)
                         }
 
                         composable(route = "visualizaemailscreen/{id_email}/{is_todas_contas_screen}") {

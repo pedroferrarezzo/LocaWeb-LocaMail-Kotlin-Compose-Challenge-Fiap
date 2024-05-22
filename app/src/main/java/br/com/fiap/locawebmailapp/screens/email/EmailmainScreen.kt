@@ -201,9 +201,12 @@ fun EMailMainScreen(navController: NavController) {
                                 receivedStateEmailList.add(email)
                             }
                         }
+
+                        listPastaState.clear()
+                        listPastaState.addAll(pastaRepository.listarPastasPorIdUsuario(usuarioSelecionado.value.id_usuario))
+
                     },
                     usuarioSelecionado = usuarioSelecionado,
-                    usuariosExistentes = usuariosExistentes,
                     stateEmailList = receivedStateEmailList,
                     usuarioRepository = usuarioRepository,
                     placeholderTextFieldSearch = stringResource(id = R.string.mail_main_searchbar),
