@@ -106,6 +106,7 @@ fun EmailsEditaveisScreen(navController: NavController) {
     }
 
     val toastMessageDraftsDeleted = stringResource(id = R.string.toast_maildrafts_deleted)
+    val toastMessageFolderDeleted = stringResource(id = R.string.toast_folder_deleted)
 
 
     ModalNavDrawer(
@@ -121,7 +122,9 @@ fun EmailsEditaveisScreen(navController: NavController) {
         selectedDrawerPasta = selectedDrawerPasta,
         alteracaoRepository = alteracaoRepository,
         context = context,
-        listPastaState = listPastaState
+        listPastaState = listPastaState,
+        scope = scope,
+        toastMessageFolderDeleted = toastMessageFolderDeleted
     ) {
         Box(
             modifier = Modifier.fillMaxSize()

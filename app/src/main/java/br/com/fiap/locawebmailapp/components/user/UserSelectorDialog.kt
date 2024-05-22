@@ -95,11 +95,12 @@ fun <T> UserSelectorDalog(
                                     stateList.clear()
                                     applyStateList()
 
-                                    if (selectedDrawerPasta.value != "") {
-                                        navController.popBackStack()
-                                    }
-
                                     openDialogUserPicker.value = false
+                                    navController.navigate("emailmainscreen") {
+                                        popUpTo(navController.graph.startDestinationId) {
+                                            inclusive = true
+                                        }
+                                    }
                                 },
                                 modifier = Modifier.fillMaxWidth(),
                                 colors = ButtonDefaults.buttonColors(

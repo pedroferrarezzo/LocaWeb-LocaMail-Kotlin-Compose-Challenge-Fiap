@@ -105,6 +105,8 @@ fun EmailsFavoritosScreen(navController: NavController) {
         }
     }
 
+    val toastMessageFolderDeleted = stringResource(id = R.string.toast_folder_deleted)
+
 
     ModalNavDrawer(
         selectedDrawer = selectedDrawer,
@@ -119,7 +121,9 @@ fun EmailsFavoritosScreen(navController: NavController) {
         selectedDrawerPasta = selectedDrawerPasta,
         alteracaoRepository = alteracaoRepository,
         context = context,
-        listPastaState = listPastaState
+        listPastaState = listPastaState,
+        scope = scope,
+        toastMessageFolderDeleted = toastMessageFolderDeleted
     ) {
         Box(
             modifier = Modifier.fillMaxSize()

@@ -102,6 +102,7 @@ fun EmailsEnviadosScreen(navController: NavController) {
             addAll(listPasta)
         }
     }
+    val toastMessageFolderDeleted = stringResource(id = R.string.toast_folder_deleted)
 
 
     ModalNavDrawer(
@@ -117,7 +118,9 @@ fun EmailsEnviadosScreen(navController: NavController) {
         selectedDrawerPasta = selectedDrawerPasta,
         alteracaoRepository = alteracaoRepository,
         context = context,
-        listPastaState = listPastaState
+        listPastaState = listPastaState,
+        scope = scope,
+        toastMessageFolderDeleted = toastMessageFolderDeleted
     ) {
         Box(
             modifier = Modifier.fillMaxSize()

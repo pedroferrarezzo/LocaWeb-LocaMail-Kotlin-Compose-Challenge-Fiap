@@ -114,6 +114,7 @@ fun EmailsExcluidosScreen(navController: NavController) {
 
     val toastMessageMailsDeleted = stringResource(id = R.string.toast_mails_delete)
     val toastMessageMailMovedFromTrash = stringResource(id = R.string.toast_mail_moved_from_trash)
+    val toastMessageFolderDeleted = stringResource(id = R.string.toast_folder_deleted)
 
 
     ModalNavDrawer(
@@ -129,7 +130,9 @@ fun EmailsExcluidosScreen(navController: NavController) {
         selectedDrawerPasta = selectedDrawerPasta,
         alteracaoRepository = alteracaoRepository,
         context = context,
-        listPastaState = listPastaState
+        listPastaState = listPastaState,
+        scope = scope,
+        toastMessageFolderDeleted = toastMessageFolderDeleted
     ) {
         Box(
             modifier = Modifier.fillMaxSize()

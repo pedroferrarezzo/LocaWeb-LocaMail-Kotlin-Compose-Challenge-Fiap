@@ -113,6 +113,7 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
     val toastMessageMailMovedFromFolder = stringResource(id = R.string.toast_mail_moved_from_folder)
     val toastMessageMailsMovedFromFolder =
         stringResource(id = R.string.toast_mails_moved_from_folder)
+    val toastMessageFolderDeleted = stringResource(id = R.string.toast_folder_deleted)
 
     ModalNavDrawer(
         selectedDrawer = selectedDrawer,
@@ -127,7 +128,9 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
         selectedDrawerPasta = selectedDrawerPasta,
         alteracaoRepository = alteracaoRepository,
         context = context,
-        listPastaState = listPastaState
+        listPastaState = listPastaState,
+        scope = scope,
+        toastMessageFolderDeleted = toastMessageFolderDeleted
     ) {
         Box(
             modifier = Modifier.fillMaxSize()

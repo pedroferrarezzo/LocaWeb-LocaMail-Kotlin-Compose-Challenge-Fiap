@@ -149,9 +149,8 @@ fun EMailMainScreen(navController: NavController) {
     val attachEmailList = anexoRepository.listarAnexosIdEmail()
 
     val redLcWeb = colorResource(id = R.color.lcweb_red_1)
-
-
     val toastMessageMailMovedFolder = stringResource(id = R.string.toast_mail_moved_folder)
+    val toastMessageFolderDeleted = stringResource(id = R.string.toast_folder_deleted)
 
     ModalNavDrawer(
         selectedDrawer = selectedDrawer,
@@ -178,7 +177,9 @@ fun EMailMainScreen(navController: NavController) {
             }
         },
         context = context,
-        listPastaState = listPastaState
+        listPastaState = listPastaState,
+        scope = scope,
+        toastMessageFolderDeleted = toastMessageFolderDeleted
     ) {
 
         Box(

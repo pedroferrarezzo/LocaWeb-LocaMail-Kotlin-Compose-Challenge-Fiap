@@ -157,6 +157,7 @@ fun CalendarMainScreen(navController: NavController, data: LocalDate = LocalDate
     }
 
     val alteracaoRepository = AlteracaoRepository(context)
+    val toastMessageFolderDeleted = stringResource(id = R.string.toast_folder_deleted)
 
     ModalNavDrawer(
         selectedDrawer = selectedDrawer,
@@ -171,7 +172,9 @@ fun CalendarMainScreen(navController: NavController, data: LocalDate = LocalDate
         selectedDrawerPasta = selectedDrawerPasta,
         alteracaoRepository = alteracaoRepository,
         context = context,
-        listPastaState = listPastaState
+        listPastaState = listPastaState,
+        scope = scope,
+        toastMessageFolderDeleted = toastMessageFolderDeleted
     ) {
 
         Box(modifier = Modifier.fillMaxSize()) {

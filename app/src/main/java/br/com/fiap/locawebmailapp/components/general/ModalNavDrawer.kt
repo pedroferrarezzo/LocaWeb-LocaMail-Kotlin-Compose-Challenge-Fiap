@@ -48,6 +48,8 @@ import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.PastaRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.Pasta
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun ModalNavDrawer(
@@ -65,7 +67,8 @@ fun ModalNavDrawer(
     listPastaState: SnapshotStateList<Pasta>,
     receivedEmailStateListRecompose: () -> Unit = {},
     context: Context,
-    toastMessageFolderDeleted: String = stringResource(id = R.string.toast_folder_deleted),
+    toastMessageFolderDeleted: String,
+    scope: CoroutineScope,
     content: @Composable () -> Unit
 
 ) {
@@ -122,6 +125,9 @@ fun ModalNavDrawer(
                                     selectedDrawer.value = "1"
                                     selectedDrawerPasta.value = ""
                                     navController.navigate("emailtodascontasscreen")
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
                                 }
                             },
                             colors = NavigationDrawerItemDefaults.colors(
@@ -165,6 +171,9 @@ fun ModalNavDrawer(
                                     selectedDrawer.value = "2"
                                     selectedDrawerPasta.value = ""
                                     navController.navigate("emailmainscreen")
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
                                 }
                             },
                             colors = NavigationDrawerItemDefaults.colors(
@@ -207,6 +216,9 @@ fun ModalNavDrawer(
                                     selectedDrawer.value = "3"
                                     selectedDrawerPasta.value = ""
                                     navController.navigate("emailsenviadosscreen")
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
                                 }
                             },
                             colors = NavigationDrawerItemDefaults.colors(
@@ -249,6 +261,9 @@ fun ModalNavDrawer(
                                     selectedDrawer.value = "4"
                                     selectedDrawerPasta.value = ""
                                     navController.navigate("emailsfavoritosscreen")
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
                                 }
                             },
                             colors = NavigationDrawerItemDefaults.colors(
@@ -291,6 +306,9 @@ fun ModalNavDrawer(
                                     selectedDrawer.value = "5"
                                     selectedDrawerPasta.value = ""
                                     navController.navigate("emailseditaveisscreen")
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
                                 }
                             },
                             colors = NavigationDrawerItemDefaults.colors(
@@ -333,6 +351,9 @@ fun ModalNavDrawer(
                                     selectedDrawer.value = "6"
                                     selectedDrawerPasta.value = ""
                                     navController.navigate("calendarmainscreen")
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
                                 }
                             },
                             colors = NavigationDrawerItemDefaults.colors(
@@ -375,6 +396,9 @@ fun ModalNavDrawer(
                                     selectedDrawer.value = "7"
                                     selectedDrawerPasta.value = ""
                                     navController.navigate("emailsarquivadosscreen")
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
                                 }
                             },
                             colors = NavigationDrawerItemDefaults.colors(
@@ -417,6 +441,9 @@ fun ModalNavDrawer(
                                     selectedDrawer.value = "9"
                                     selectedDrawerPasta.value = ""
                                     navController.navigate("emailsspamscreen")
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
                                 }
                             },
                             colors = NavigationDrawerItemDefaults.colors(
@@ -461,6 +488,9 @@ fun ModalNavDrawer(
                                     selectedDrawer.value = "8"
                                     selectedDrawerPasta.value = ""
                                     navController.navigate("emailslixeirascreen")
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
                                 }
                             },
                             colors = NavigationDrawerItemDefaults.colors(
@@ -604,6 +634,9 @@ fun ModalNavDrawer(
                                             selectedDrawerPasta.value = it.id_pasta.toString()
                                             selectedDrawer.value = ""
                                             navController.navigate("emailspastascreen/${it.id_pasta}")
+                                            scope.launch {
+                                                drawerState.close()
+                                            }
                                         }
                                     },
                                     colors = NavigationDrawerItemDefaults.colors(

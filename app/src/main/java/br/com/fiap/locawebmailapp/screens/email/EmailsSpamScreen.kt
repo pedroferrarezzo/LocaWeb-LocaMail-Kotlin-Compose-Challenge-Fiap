@@ -109,6 +109,7 @@ fun EmailsSpamScreen(navController: NavController) {
     }
 
     val toastMessageMailMovedTrash = stringResource(id = R.string.toast_mail_moved_trash)
+    val toastMessageFolderDeleted = stringResource(id = R.string.toast_folder_deleted)
 
 
     ModalNavDrawer(
@@ -124,7 +125,9 @@ fun EmailsSpamScreen(navController: NavController) {
         selectedDrawerPasta = selectedDrawerPasta,
         alteracaoRepository = alteracaoRepository,
         context = context,
-        listPastaState = listPastaState
+        listPastaState = listPastaState,
+        scope = scope,
+        toastMessageFolderDeleted = toastMessageFolderDeleted
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
