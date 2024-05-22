@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LocaWebMailApp</string>
+    <string name="app_name">LocaMail</string>
     <string name="calendar_organizer_you">You</string>
     <string name="calendar_organizer_text">Organizer</string>
     <string name="calendar_save_button">Save</string>

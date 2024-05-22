@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LocaWebMailApp</string>
+    <string name="app_name">LocaMail</string>
     <string name="calendar_organizer_you">Você</string>
     <string name="calendar_organizer_text">Organizador</string>
     <string name="calendar_save_button">Salvar</string>
