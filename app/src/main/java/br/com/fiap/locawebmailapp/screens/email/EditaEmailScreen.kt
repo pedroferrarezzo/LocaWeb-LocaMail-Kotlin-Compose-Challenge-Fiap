@@ -201,7 +201,14 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                         emailRepository.atualizarEmail(email)
                         anexoRepository.excluirAnexoPorIdEmail(anexo.id_email)
 
-                        val todosDestinatarios = destinatarios + ccos + ccs
+                        val todosDestinatarios = arrayListOf<String>()
+                        todosDestinatarios.addAll(destinatarios)
+                        todosDestinatarios.addAll(ccos)
+                        todosDestinatarios.addAll(ccs)
+
+                        if (!todosDestinatarios.contains(email.remetente)) todosDestinatarios.add(
+                            email.remetente
+                        )
 
                         for (usuario in usuarioRepository.listarUsuarios()) {
                             if (todosDestinatarios.contains(usuario.email)) {

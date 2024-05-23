@@ -378,6 +378,7 @@ fun CriaEventoScreen(navController: NavController) {
                             }
 
                         } else if (selectedMailOption.value == 3) {
+                            email.agenda_atrelada = true
                             email.remetente = usuarioSelecionado.value.email
                             email.destinatario =
                                 listaParaString(listConvidadoSelected.map { it.email })
@@ -414,6 +415,7 @@ fun CriaEventoScreen(navController: NavController) {
                             email.enviado = false
                             email.editavel = true
                             email.id_usuario = usuarioSelecionado.value.id_usuario
+
                             emailRepository.criarEmail(email = email)
 
                             Toast.makeText(context, toastMessageMailDraftSaved, Toast.LENGTH_LONG)

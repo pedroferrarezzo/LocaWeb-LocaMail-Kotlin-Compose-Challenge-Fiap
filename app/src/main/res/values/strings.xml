@@ -116,4 +116,6 @@
     <string name="toast_event_invitesent">Email invitation sent</string>
     <string name="toast_event_invitedeleted">Invitation deleted</string>
     <string name="toast_event_inviteaccepted">Invitation accepted</string>
+    <string name="content_desc_users">Icon of a user group, social</string>
+    <string name="navbar_modal_social">Social</string>
 </resources>

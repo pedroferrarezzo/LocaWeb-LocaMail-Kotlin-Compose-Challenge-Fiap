@@ -29,6 +29,7 @@ import br.com.fiap.locawebmailapp.model.Alteracao
 import br.com.fiap.locawebmailapp.model.Anexo
 import br.com.fiap.locawebmailapp.model.Convidado
 import br.com.fiap.locawebmailapp.model.Email
+import br.com.fiap.locawebmailapp.utils.atualizarTodosDestinatarios
 import br.com.fiap.locawebmailapp.utils.bitmapToByteArray
 import br.com.fiap.locawebmailapp.utils.isValidEmail
 import br.com.fiap.locawebmailapp.utils.listaParaString

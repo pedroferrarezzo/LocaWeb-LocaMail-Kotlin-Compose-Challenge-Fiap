@@ -117,5 +117,7 @@
     <string name="toast_event_invitesent">Convite de email enviado</string>
     <string name="toast_event_invitedeleted">Convite excluído</string>
     <string name="toast_event_inviteaccepted">Convite aceito</string>
+    <string name="content_desc_users">Ícone de um grupo de usuários, social</string>
+    <string name="navbar_modal_social">Social</string>
 
 </resources>

@@ -105,4 +105,8 @@ class EmailRepository(context: Context) {
         return emailDao.listarEmailsSpamPorIdUsuario(id_usuario)
     }
 
+    fun listarEmailsSociaisPorIdUsuario(id_usuario: Long): List<EmailComAlteracao> {
+        return emailDao.listarEmailsSociaisPorIdUsuario(id_usuario)
+    }
+
 }

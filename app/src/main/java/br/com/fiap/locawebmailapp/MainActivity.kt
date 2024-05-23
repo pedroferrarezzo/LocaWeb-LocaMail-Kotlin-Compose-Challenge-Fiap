@@ -31,6 +31,7 @@ import br.com.fiap.locawebmailapp.screens.email.EmailsEnviadosScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsExcluidosScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsFavoritosScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsPastaScreen
+import br.com.fiap.locawebmailapp.screens.email.EmailsSociaisScreen
 import br.com.fiap.locawebmailapp.screens.email.EmailsSpamScreen
 import br.com.fiap.locawebmailapp.screens.email.VisualizaEmailScreen
 import br.com.fiap.locawebmailapp.ui.theme.LocaWebMailAppTheme
@@ -123,6 +124,10 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = "emailsfavoritosscreen") {
                             EmailsFavoritosScreen(navController = navController)
+                        }
+
+                        composable(route = "emailssociaisscreen") {
+                            EmailsSociaisScreen(navController = navController)
                         }
 
                         composable(route = "emailseditaveisscreen") {

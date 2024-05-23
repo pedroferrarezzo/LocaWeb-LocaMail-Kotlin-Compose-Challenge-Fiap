@@ -41,6 +41,9 @@ interface EmailDao {
     @Query("SELECT * FROM T_LCW_EMAIL INNER JOIN T_LCW_ALTERACAO ON T_LCW_EMAIL.id_email = T_LCW_ALTERACAO.alt_id_email where T_LCW_ALTERACAO.alt_id_usuario = :id_usuario AND importante = 1 AND editavel = 0 AND arquivado = 0 AND excluido = 0 AND spam = 0")
     fun listarEmailsImportantesPorIdUsuario(id_usuario: Long): List<EmailComAlteracao>
 
+    @Query("SELECT * FROM T_LCW_EMAIL INNER JOIN T_LCW_ALTERACAO ON T_LCW_EMAIL.id_email = T_LCW_ALTERACAO.alt_id_email where T_LCW_ALTERACAO.alt_id_usuario = :id_usuario AND agenda_atrelada = 1 AND editavel = 0 AND arquivado = 0 AND excluido = 0 AND spam = 0")
+    fun listarEmailsSociaisPorIdUsuario(id_usuario: Long): List<EmailComAlteracao>
+
     @Query("SELECT * FROM T_LCW_EMAIL INNER JOIN T_LCW_ALTERACAO ON T_LCW_EMAIL.id_email = T_LCW_ALTERACAO.alt_id_email where T_LCW_ALTERACAO.alt_id_usuario = :id_usuario AND arquivado = 1 AND excluido = 0 AND spam = 0 AND editavel = 0")
     fun listarEmailsArquivadosPorIdUsuario(id_usuario: Long): List<EmailComAlteracao>
 
