@@ -174,8 +174,8 @@ fun EmailsSpamScreen(navController: NavController) {
                                 .show()
                         })
 
-                    LazyColumn(reverseLayout = true) {
-                        items(spamEmailStateList, key = {
+                    LazyColumn(reverseLayout = false) {
+                        items(spamEmailStateList.reversed(), key = {
                             it.alteracao.id_alteracao
                         }) {
 

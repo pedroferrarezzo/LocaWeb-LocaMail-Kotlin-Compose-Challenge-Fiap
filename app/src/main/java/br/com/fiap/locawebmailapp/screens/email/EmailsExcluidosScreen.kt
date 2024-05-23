@@ -213,8 +213,8 @@ fun EmailsExcluidosScreen(navController: NavController) {
                             }
                         })
 
-                    LazyColumn(reverseLayout = true) {
-                        items(lixeiraStateEmailLst, key = {
+                    LazyColumn(reverseLayout = false) {
+                        items(lixeiraStateEmailLst.reversed(), key = {
                             it.alteracao.id_alteracao
                         }) {
 

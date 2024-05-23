@@ -72,12 +72,12 @@ fun PeopleSelectorDalog(
                     )
 
                     LazyColumn(
-                        reverseLayout = true,
+                        reverseLayout = false,
                         content = {
                             items(
                                 listConvidado.value.filter {
                                     it.email != usuarioSelecionado.value.email
-                                },
+                                }.reversed(),
                                 key = {
                                     it.id_convidado
                                 }

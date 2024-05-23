@@ -154,8 +154,8 @@ fun EmailsFavoritosScreen(navController: NavController) {
 
                 if (favoriteStateEmailLst.isNotEmpty()) {
 
-                    LazyColumn(reverseLayout = true) {
-                        items(favoriteStateEmailLst, key = {
+                    LazyColumn(reverseLayout = false) {
+                        items(favoriteStateEmailLst.reversed(), key = {
                             it.alteracao.id_alteracao
                         }) {
 

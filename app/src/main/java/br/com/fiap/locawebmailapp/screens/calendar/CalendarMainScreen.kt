@@ -277,10 +277,10 @@ fun CalendarMainScreen(navController: NavController, data: LocalDate = LocalDate
                     })
 
                 LazyColumn(
-                    reverseLayout = true,
+                    reverseLayout = false,
                     content = {
                         items(
-                            listTask.value,
+                            listTask.value.reversed(),
                             key = {
                                 it.id_agenda
                             }

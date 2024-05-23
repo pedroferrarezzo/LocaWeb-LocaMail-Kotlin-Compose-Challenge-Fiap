@@ -217,8 +217,8 @@ fun EMailMainScreen(navController: NavController) {
 
                 if (receivedStateEmailList.isNotEmpty()) {
 
-                    LazyColumn(reverseLayout = true) {
-                        items(receivedStateEmailList, key = {
+                    LazyColumn() {
+                        items(receivedStateEmailList.reversed(), key = {
                             it.alteracao.id_alteracao
                         }) {
 

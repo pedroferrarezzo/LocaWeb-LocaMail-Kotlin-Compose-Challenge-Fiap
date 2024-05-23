@@ -140,8 +140,8 @@ fun EmailsSociaisScreen(navController: NavController) {
 
                 if (socialEmailList.isNotEmpty()) {
 
-                    LazyColumn(reverseLayout = true) {
-                        items(socialEmailList, key = {
+                    LazyColumn(reverseLayout = false) {
+                        items(socialEmailList.reversed(), key = {
                             it.alteracao.id_alteracao
                         }) {
 

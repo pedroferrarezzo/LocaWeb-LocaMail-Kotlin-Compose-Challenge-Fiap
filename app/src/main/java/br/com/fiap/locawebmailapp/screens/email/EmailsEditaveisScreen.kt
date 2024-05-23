@@ -169,8 +169,8 @@ fun EmailsEditaveisScreen(navController: NavController) {
                             }
                         })
 
-                    LazyColumn(reverseLayout = true) {
-                        items(editableEmailStateList, key = {
+                    LazyColumn(reverseLayout = false) {
+                        items(editableEmailStateList.reversed(), key = {
                             it.id_email
                         }) {
 

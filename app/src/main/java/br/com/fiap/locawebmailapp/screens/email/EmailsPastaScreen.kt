@@ -184,8 +184,8 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
                                 .show()
                         })
 
-                    LazyColumn(reverseLayout = true) {
-                        items(pastaStateEmailLst, key = {
+                    LazyColumn(reverseLayout = false) {
+                        items(pastaStateEmailLst.reversed(), key = {
                             it.alteracao.id_alteracao
                         }) {
 

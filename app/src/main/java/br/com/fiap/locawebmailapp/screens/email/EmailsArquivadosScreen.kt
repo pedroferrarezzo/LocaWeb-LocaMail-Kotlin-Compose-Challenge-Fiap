@@ -136,8 +136,8 @@ fun EmailsArquivadosScreen(navController: NavController) {
 
                 if (archiveEmailList.isNotEmpty()) {
 
-                    LazyColumn(reverseLayout = true) {
-                        items(archiveEmailList, key = {
+                    LazyColumn(reverseLayout = false) {
+                        items(archiveEmailList.reversed(), key = {
                             it.alteracao.id_alteracao
                         }) {
 

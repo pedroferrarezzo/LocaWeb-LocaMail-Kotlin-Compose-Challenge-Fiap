@@ -140,8 +140,8 @@ fun EmailsEnviadosScreen(navController: NavController) {
 
                 if (sentEmailList.isNotEmpty()) {
 
-                    LazyColumn(reverseLayout = true) {
-                        items(sentEmailList, key = {
+                    LazyColumn(reverseLayout = false) {
+                        items(sentEmailList.reversed(), key = {
                             it.alteracao.id_alteracao
                         }) {
 

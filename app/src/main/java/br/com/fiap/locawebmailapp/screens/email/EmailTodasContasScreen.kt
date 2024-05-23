@@ -146,8 +146,8 @@ fun EmailTodasContasScreen(navController: NavController) {
 
                 if (receivedEmailList.isNotEmpty()) {
 
-                    LazyColumn(reverseLayout = true) {
-                        items(receivedEmailList, key = {
+                    LazyColumn(reverseLayout = false) {
+                        items(receivedEmailList.reversed(), key = {
                             it.alteracao.id_alteracao
                         }) {
                             if (
