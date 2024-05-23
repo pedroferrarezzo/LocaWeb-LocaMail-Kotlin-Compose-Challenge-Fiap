@@ -1,6 +1,5 @@
 package br.com.fiap.locawebmailapp.screens.email
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +17,8 @@ import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.components.email.ColumnEmailDetails
 import br.com.fiap.locawebmailapp.components.email.RowTopOptionsViewEmail
+import br.com.fiap.locawebmailapp.database.repository.AgendaConvidadoRepository
+import br.com.fiap.locawebmailapp.database.repository.AgendaRepository
 import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRespostaEmailRepository
@@ -48,6 +49,8 @@ fun VisualizaEmailScreen(
     val usuarioRepository = UsuarioRepository(context)
     val respostaEmailRepository = RespostaEmailRepository(context)
     val anexoRespostaEmailRepository = AnexoRespostaEmailRepository(context)
+    val agendaRepository = AgendaRepository(context)
+    val agendaConvidadoRepository = AgendaConvidadoRepository(context)
 
 
     val usuarioSelecionado = remember {
@@ -61,18 +64,24 @@ fun VisualizaEmailScreen(
         usuarioSelecionado.value.id_usuario
     )
 
-    Log.i("TEST3", alteracao.alt_id_usuario.toString())
-
     val todosDestinatarios = arrayListOf<String>()
 
 
     val respostasEmailList = respostaEmailRepository.listarRespostasEmailPorIdEmail(idEmail)
     val respostasEmailStateList = respostasEmailList.toMutableStateList()
 
-
     val anexoArrayByteList = anexoRepository.listarAnexosArraybytePorIdEmail(idEmail);
     val anexoBitMapList = anexoArrayByteList.map {
         byteArrayToBitmap(it)
+    }
+
+
+    val agendaEmailList = agendaRepository.listarAgendaPorIdEmailEIdUsuario(idEmail, usuarioSelecionado.value.id_usuario)
+    val agendaEmailStateList = agendaEmailList.toMutableStateList()
+
+
+    val isAgendaAtrelada = remember {
+        mutableStateOf(if (agendaEmailList.isNotEmpty()) true else false)
     }
 
 
@@ -91,6 +100,9 @@ fun VisualizaEmailScreen(
     val isExcluido = remember {
         if (alteracao != null) mutableStateOf(alteracao.excluido) else mutableStateOf(false)
     }
+
+
+
 
     if (isTodasContasScreen) {
         atualizarTodosDestinatarios(
@@ -137,8 +149,8 @@ fun VisualizaEmailScreen(
     val toastMessageDraftMailDeleted = stringResource(id = R.string.toast_maildraftresp_delete)
     val toastMessageMailMovedToTrashBin = stringResource(id = R.string.toast_mail_moved_trash_bin)
     val toastMessageMailMovedToTrash = stringResource(id = R.string.toast_mail_moved_trash)
-
-
+    val toastMessageInviteDeleted = stringResource(id = R.string.toast_event_invitedeleted)
+    val toastMessageInviteAccepted = stringResource(id = R.string.toast_event_inviteaccepted)
 
     if (email != null) {
         Column(
@@ -178,6 +190,22 @@ fun VisualizaEmailScreen(
 
                         Toast.makeText(context, toastMessageMailDeleted, Toast.LENGTH_LONG)
                             .show()
+
+
+
+                        if (agendaEmailStateList.isNotEmpty()) {
+                            for (agenda in agendaEmailList) {
+                                agendaConvidadoRepository.excluirPorIdAgenda(agenda.id_agenda)
+                                agendaRepository.excluiAgenda(agenda)
+                                agendaEmailStateList.remove(agenda)
+                            }
+
+                            Toast.makeText(
+                                context,
+                                toastMessageInviteDeleted,
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
 
                         navController.popBackStack()
 
@@ -225,7 +253,7 @@ fun VisualizaEmailScreen(
                 },
                 isExcluido = isExcluido,
                 isTodasContasScreen = isTodasContasScreen,
-                onClickReply = { navController.navigate("criarespostaemailscreen/${idEmail}") },
+                onClickReply = { navController.navigate("criarespostaemailscreen?id_email=${idEmail}") },
                 onClickSpam = {
                     if (isTodasContasScreen) {
                         isSpam.value = !isSpam.value
@@ -322,7 +350,8 @@ fun VisualizaEmailScreen(
                 },
                 isSpam = isSpam,
                 isImportant = isImportant,
-                isArchive = isArchive
+                isArchive = isArchive,
+                isAgendaAtrelada = isAgendaAtrelada
             )
 
 
@@ -348,7 +377,40 @@ fun VisualizaEmailScreen(
                 timeState = timeState,
                 usuarioSelecionado = usuarioSelecionado,
                 anexoRespostaEmailRepository = anexoRespostaEmailRepository,
-                respostasEmailStateList = respostasEmailStateList
+                respostasEmailStateList = respostasEmailStateList,
+                isTodasContasScreen = isTodasContasScreen,
+                onClickReply = {
+                    navController.navigate("criarespostaemailscreen?id_email=${idEmail}&id_resposta_email=${it.id_resposta_email}")
+                },
+                isAgendaAtrelada = isAgendaAtrelada,
+                onClickAcceptInviteButton = {
+                    for (agenda in agendaEmailList) {
+                        agendaRepository.atualizaVisivelPorIdAgenda(agenda.id_agenda, true)
+                        agendaEmailStateList.remove(agenda)
+                    }
+
+                    Toast.makeText(
+                        context,
+                        toastMessageInviteAccepted,
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                },
+                onClickRejectInviteButton = {
+                    for (agenda in agendaEmailList) {
+                        agendaConvidadoRepository.excluirPorIdAgenda(agenda.id_agenda)
+                        agendaRepository.excluiAgenda(agenda)
+                        agendaEmailStateList.remove(agenda)
+                    }
+
+                    Toast.makeText(
+                        context,
+                        toastMessageInviteDeleted,
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                },
+                agendaEmailStateList = agendaEmailStateList
             )
         }
     }

@@ -105,4 +105,15 @@
     <string name="calendar_event_draft_hourtext">Event time:</string>
     <string name="calendar_event_draft_allday">All day</string>
     <string name="mail_generic_move_all">Mover all</string>
+    <string name="calendar_mail_options_selector_no">Nothing</string>
+    <string name="calendar_mail_options_selector_invite">Email invitation</string>
+    <string name="calendar_mail_options_selector_draft">Save draft</string>
+    <string name="content_desc_nothing_do">Blocked icon, nothing to do</string>
+    <string name="content_desc_mail_options">Open email icon, email options</string>
+    <string name="calendar_event_mail_options">Email Options</string>
+    <string name="mail_event_accept">Add invitation</string>
+    <string name="mail_event_reject">Reject invitation</string>
+    <string name="toast_event_invitesent">Email invitation sent</string>
+    <string name="toast_event_invitedeleted">Invitation deleted</string>
+    <string name="toast_event_inviteaccepted">Invitation accepted</string>
 </resources>

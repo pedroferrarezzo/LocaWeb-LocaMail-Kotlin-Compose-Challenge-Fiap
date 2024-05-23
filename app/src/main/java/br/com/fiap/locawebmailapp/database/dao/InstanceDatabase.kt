@@ -17,7 +17,7 @@ import br.com.fiap.locawebmailapp.model.Usuario
 
 @Database(
     entities = [Agenda::class, Convidado::class, AgendaConvidado::class, Email::class, Anexo::class, Usuario::class, Alteracao::class, Pasta::class, RespostaEmail::class, AnexoRespostaEmail::class],
-    version = 30
+    version = 38
 )
 abstract class InstanceDatabase : RoomDatabase() {
 

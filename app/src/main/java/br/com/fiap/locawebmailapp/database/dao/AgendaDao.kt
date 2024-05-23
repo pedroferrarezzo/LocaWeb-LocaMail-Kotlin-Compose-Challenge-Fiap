@@ -14,10 +14,10 @@ interface AgendaDao {
     @Insert
     fun criarAgenda(agenda: Agenda): Long
 
-    @Query("SELECT * FROM T_LCW_AGENDA WHERE data = :data AND id_usuario = :id_usuario")
+    @Query("SELECT * FROM T_LCW_AGENDA WHERE data = :data AND id_usuario = :id_usuario AND visivel = 1")
     fun listarAgendaPorDia(data: String, id_usuario: Long): List<Agenda>
 
-    @Query("SELECT DISTINCT cor FROM T_LCW_AGENDA WHERE data = :data AND id_usuario = :id_usuario")
+    @Query("SELECT DISTINCT cor FROM T_LCW_AGENDA WHERE data = :data AND id_usuario = :id_usuario AND visivel = 1")
     fun listarCorAgendaPorDia(data: String, id_usuario: Long): List<AgendaCor>
 
     @Query("SELECT DISTINCT grupo_repeticao FROM T_LCW_AGENDA")
@@ -25,6 +25,10 @@ interface AgendaDao {
 
     @Query("SELECT * FROM T_LCW_AGENDA WHERE id_agenda = :id_agenda")
     fun listarAgendaPorId(id_agenda: Int): Agenda
+
+
+    @Query("SELECT * FROM T_LCW_AGENDA WHERE id_email = :id_email AND id_usuario = :id_usuario AND visivel = 0")
+    fun listarAgendaPorIdEmailEIdUsuario(id_email: Long, id_usuario: Long): List<Agenda>
 
     @Query("DELETE FROM T_LCW_AGENDA WHERE grupo_repeticao = :grupo_repeticao AND data != :data")
     fun excluirPorGrupoRepeticaoExcetoData(grupo_repeticao: Int, data: String): Int
@@ -37,6 +41,9 @@ interface AgendaDao {
 
     @Query("UPDATE T_LCW_AGENDA SET repeticao = :repeticao WHERE id_agenda = :id_agenda")
     fun atualizaOpcaoRepeticaoPorIdAgenda(id_agenda: Long, repeticao: Int): Int
+
+    @Query("UPDATE T_LCW_AGENDA SET visivel = :visivel WHERE id_agenda = :id_agenda")
+    fun atualizaVisivelPorIdAgenda(id_agenda: Long, visivel: Boolean): Int
 
     @Query("SELECT seq FROM sqlite_sequence WHERE name=\"T_LCW_AGENDA\"")
     fun retornaValorAtualSeqPrimayKey(): Long

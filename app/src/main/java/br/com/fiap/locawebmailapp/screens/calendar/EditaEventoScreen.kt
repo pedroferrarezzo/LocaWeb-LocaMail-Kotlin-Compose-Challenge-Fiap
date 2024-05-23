@@ -57,6 +57,7 @@ import br.com.fiap.locawebmailapp.components.calendar.TimeSelectorDialog
 import br.com.fiap.locawebmailapp.database.repository.AgendaConvidadoRepository
 import br.com.fiap.locawebmailapp.database.repository.AgendaRepository
 import br.com.fiap.locawebmailapp.database.repository.ConvidadoRepository
+import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.AgendaConvidado
 import br.com.fiap.locawebmailapp.model.Convidado
 import br.com.fiap.locawebmailapp.model.IdConvidado
@@ -89,6 +90,11 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
 
     val isEdit = remember {
         mutableStateOf(false)
+    }
+
+    val usuarioRepository = UsuarioRepository(LocalContext.current)
+    val usuarioSelecionado = remember {
+        mutableStateOf(usuarioRepository.listarUsuarioSelecionado())
     }
 
     val taskTitle = remember {
@@ -392,7 +398,8 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
                     openDialogPeoplePicker = openDialogPeoplePicker,
                     listConvidado = listTodoConvidado,
                     listConvidadoText = listConvidadoText,
-                    listConvidadoSelected = listConvidadoSelected
+                    listConvidadoSelected = listConvidadoSelected,
+                    usuarioSelecionado = usuarioSelecionado
                 )
             }
 

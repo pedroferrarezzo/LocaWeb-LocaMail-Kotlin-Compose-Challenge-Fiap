@@ -31,5 +31,6 @@ data class Email(
     var editavel: Boolean = false,
     var enviado: Boolean = false,
     var horario: String = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")),
-    var data: String = "${LocalDate.now()}"
+    var data: String = "${LocalDate.now()}",
+    var agenda_atrelada: Boolean = false
 )

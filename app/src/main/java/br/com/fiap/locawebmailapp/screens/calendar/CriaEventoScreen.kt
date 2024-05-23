@@ -48,6 +48,7 @@ import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.components.calendar.ColorSelectorDalog
 import br.com.fiap.locawebmailapp.components.calendar.DateSelectorDialog
+import br.com.fiap.locawebmailapp.components.calendar.MailOptionsDialog
 import br.com.fiap.locawebmailapp.components.calendar.PeopleSelectorDalog
 import br.com.fiap.locawebmailapp.components.calendar.RepeatSelectorDialog
 import br.com.fiap.locawebmailapp.components.calendar.TextFieldCalendar
@@ -55,11 +56,13 @@ import br.com.fiap.locawebmailapp.components.calendar.TimeSelectorDialog
 import br.com.fiap.locawebmailapp.components.general.RowIconButton
 import br.com.fiap.locawebmailapp.database.repository.AgendaConvidadoRepository
 import br.com.fiap.locawebmailapp.database.repository.AgendaRepository
+import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.ConvidadoRepository
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.Agenda
 import br.com.fiap.locawebmailapp.model.AgendaConvidado
+import br.com.fiap.locawebmailapp.model.Alteracao
 import br.com.fiap.locawebmailapp.model.Convidado
 import br.com.fiap.locawebmailapp.model.Email
 import br.com.fiap.locawebmailapp.utils.bitmapToByteArray
@@ -72,6 +75,7 @@ import br.com.fiap.locawebmailapp.utils.localDateToMillis
 import br.com.fiap.locawebmailapp.utils.returnColor
 import br.com.fiap.locawebmailapp.utils.returnOneMonthFromDate
 import br.com.fiap.locawebmailapp.utils.returnStringRepeatOption
+import br.com.fiap.locawebmailapp.utils.stringParaLista
 import br.com.fiap.locawebmailapp.utils.stringToLocalDate
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -126,6 +130,15 @@ fun CriaEventoScreen(navController: NavController) {
         mutableStateOf(usuarioRepository.listarUsuarioSelecionado())
     }
 
+
+    val selectedMailOption = remember {
+        mutableStateOf(1)
+    }
+
+    val openDialogMailOptions = remember { mutableStateOf(false) }
+
+    val usuariosExistentes = usuarioRepository.listarUsuarios()
+
     val openDialogColorPicker = remember { mutableStateOf(false) }
     val selectedColor = remember { mutableStateOf(1) }
 
@@ -165,9 +178,14 @@ fun CriaEventoScreen(navController: NavController) {
     val calendarEventDraftInviteText = stringResource(R.string.calendar_event_draft_invitetext)
     val calendarEventDraftDescribeText = stringResource(R.string.calendar_event_draft_describetext)
     val calendarEventDraftDateText = stringResource(R.string.calendar_event_draft_datetext)
-    val calendarEventDraftEverydayUntil = stringResource(R.string.calendar_event_draft_everydayuntil)
+    val calendarEventDraftEverydayUntil =
+        stringResource(R.string.calendar_event_draft_everydayuntil)
     val calendarEventDraftHourText = stringResource(R.string.calendar_event_draft_hourtext)
     val calendarEventDraftAllDay = stringResource(R.string.calendar_event_draft_allday)
+    val toastMessageEventInviteSent = stringResource(id = R.string.toast_event_invitesent)
+
+
+    val alteracaoRepository = AlteracaoRepository(context)
 
 
 
@@ -237,47 +255,171 @@ fun CriaEventoScreen(navController: NavController) {
                         )
                     }
 
-
                     if (listConvidadoSelected.isNotEmpty()) {
-                        email.remetente = usuarioSelecionado.value.email
-                        email.destinatario = listaParaString(listConvidadoSelected.map { it.email })
-                        email.cc = ""
-                        email.cco = ""
-                        email.assunto = "$calendarEventDraftInvite ${agenda.nome}"
-                        email.corpo =
-                            "${agenda.proprietario} $calendarEventDraftInviteText ${agenda.nome}! \n" +
-                                    "$calendarEventDraftDescribeText ${agenda.descritivo}\n" +
-                                    "$calendarEventDraftDateText ${
-                                        if (agenda.repeticao == 2) dateToCompleteStringDate(
-                                            completeStringDateToDate(selectedDate.value)
-                                        ) +
-                                                " $calendarEventDraftEverydayUntil ${
-                                                    dateToCompleteStringDate(
-                                                        stringToLocalDate(agenda.data)
-                                                    )
-                                                }" else dateToCompleteStringDate(
-                                            stringToLocalDate(
-                                                agenda.data
+                        if (selectedMailOption.value == 2) {
+                            email.agenda_atrelada = true
+                            email.remetente = usuarioSelecionado.value.email
+                            email.destinatario = listaParaString(listConvidadoSelected.map { it.email })
+                            email.cc = ""
+                            email.cco = ""
+                            email.assunto = "Convite de agenda: ${agenda.nome}"
+                            email.corpo =
+                                "${agenda.proprietario} $calendarEventDraftInviteText ${agenda.nome}! \n" +
+                                        "$calendarEventDraftDescribeText ${agenda.descritivo}\n" +
+                                        "$calendarEventDraftDateText ${
+                                            if (agenda.repeticao == 2) dateToCompleteStringDate(
+                                                completeStringDateToDate(selectedDate.value)
+                                            ) +
+                                                    " $calendarEventDraftEverydayUntil ${
+                                                        dateToCompleteStringDate(
+                                                            stringToLocalDate(agenda.data)
+                                                        )
+                                                    }" else dateToCompleteStringDate(
+                                                stringToLocalDate(
+                                                    agenda.data
+                                                )
                                             )
-                                        )
-                                    }\n" +
-                                    "$calendarEventDraftHourText ${
+                                        }\n" +
+                                        "$calendarEventDraftHourText ${
 
-                                        if (allDay.value) {
-                                            calendarEventDraftAllDay
-                                        } else {
-                                            if (timePickerState.is24hour) agenda.horario else convertTo12Hours(
-                                                agenda.horario
+                                            if (allDay.value) {
+                                                calendarEventDraftAllDay
+                                            } else {
+                                                if (timePickerState.is24hour) agenda.horario else convertTo12Hours(
+                                                    agenda.horario
+                                                )
+                                            }
+                                        }"
+                            email.enviado = true
+                            email.editavel = false
+                            email.id_usuario = usuarioSelecionado.value.id_usuario
+                            val rowId = emailRepository.criarEmail(email = email)
+                            alteracaoRepository.criarAlteracao(
+                                Alteracao(
+                                    alt_id_email = rowId,
+                                    alt_id_usuario = usuarioSelecionado.value.id_usuario
+                                )
+                            )
+
+                            for (convidadoSelected in listConvidadoSelected) {
+                                val usuarioExistente =
+                                    usuarioRepository.retornaUsarioPorEmail(convidadoSelected.email)
+
+
+                                if (usuarioExistente != null) {
+                                    alteracaoRepository.criarAlteracao(
+                                        Alteracao(
+                                            alt_id_email = rowId,
+                                            alt_id_usuario = usuarioExistente.id_usuario
+                                        )
+                                    )
+
+                                    agenda.id_email = rowId
+                                    agenda.nome = taskTitle.value
+                                    agenda.descritivo = taskDescription.value
+                                    agenda.proprietario = usuarioSelecionado.value.nome
+                                    agenda.data = if (millisToLocalDate.toString()
+                                            .equals("null")
+                                    ) LocalDate.now()
+                                        .toString() else millisToLocalDate!!.toString()
+                                    agenda.horario = time.value
+                                    agenda.cor = selectedColor.value
+                                    agenda.repeticao = selectedRepeat.value
+                                    agenda.tarefa = false
+                                    agenda.id_usuario = usuarioExistente.id_usuario
+                                    agenda.visivel = false
+
+                                    if (agenda.repeticao == 2) {
+                                        if (agendaRepository.listarGrupoRepeticao()
+                                                .isNotEmpty()
+                                        ) {
+                                            agenda.grupo_repeticao =
+                                                agendaRepository.listarGrupoRepeticao()
+                                                    .last().grupo_repeticao + 1
+                                        }
+
+                                        for (day in returnOneMonthFromDate(agenda.data)) {
+                                            agenda.data = day
+                                            agendaRepository.criarAgenda(agenda)
+                                            agendaConvidado.id_agenda =
+                                                agendaRepository.retornaValorAtualSeqPrimayKey()
+                                            agendaConvidado.grupo_repeticao =
+                                                agenda.grupo_repeticao
+
+                                            for (convidado in listConvidadoSelected) {
+                                                agendaConvidado.id_convidado =
+                                                    convidado.id_convidado
+                                                agendaConvidadoRepository.criaAgendaConvidado(
+                                                    agendaConvidado
+                                                )
+                                            }
+                                        }
+
+                                    } else {
+                                        agendaRepository.criarAgenda(agenda)
+                                        agendaConvidado.id_agenda =
+                                            agendaRepository.retornaValorAtualSeqPrimayKey()
+                                        for (convidado in listConvidadoSelected) {
+                                            agendaConvidado.id_convidado =
+                                                convidado.id_convidado
+                                            agendaConvidadoRepository.criaAgendaConvidado(
+                                                agendaConvidado
                                             )
                                         }
-                                    }"
-                        email.enviado = false
-                        email.editavel = true
-                        email.id_usuario = usuarioSelecionado.value.id_usuario
-                        emailRepository.criarEmail(email = email)
+                                    }
+                                }
 
-                        Toast.makeText(context, toastMessageMailDraftSaved, Toast.LENGTH_LONG)
-                            .show()
+                                Toast.makeText(
+                                    context,
+                                    toastMessageEventInviteSent,
+                                    Toast.LENGTH_LONG
+                                )
+                                    .show()
+                            }
+
+                        } else if (selectedMailOption.value == 3) {
+                            email.remetente = usuarioSelecionado.value.email
+                            email.destinatario =
+                                listaParaString(listConvidadoSelected.map { it.email })
+                            email.cc = ""
+                            email.cco = ""
+                            email.assunto = "$calendarEventDraftInvite ${agenda.nome}"
+                            email.corpo =
+                                "${agenda.proprietario} $calendarEventDraftInviteText ${agenda.nome}! \n" +
+                                        "$calendarEventDraftDescribeText ${agenda.descritivo}\n" +
+                                        "$calendarEventDraftDateText ${
+                                            if (agenda.repeticao == 2) dateToCompleteStringDate(
+                                                completeStringDateToDate(selectedDate.value)
+                                            ) +
+                                                    " $calendarEventDraftEverydayUntil ${
+                                                        dateToCompleteStringDate(
+                                                            stringToLocalDate(agenda.data)
+                                                        )
+                                                    }" else dateToCompleteStringDate(
+                                                stringToLocalDate(
+                                                    agenda.data
+                                                )
+                                            )
+                                        }\n" +
+                                        "$calendarEventDraftHourText ${
+
+                                            if (allDay.value) {
+                                                calendarEventDraftAllDay
+                                            } else {
+                                                if (timePickerState.is24hour) agenda.horario else convertTo12Hours(
+                                                    agenda.horario
+                                                )
+                                            }
+                                        }"
+                            email.enviado = false
+                            email.editavel = true
+                            email.id_usuario = usuarioSelecionado.value.id_usuario
+                            emailRepository.criarEmail(email = email)
+
+                            Toast.makeText(context, toastMessageMailDraftSaved, Toast.LENGTH_LONG)
+                                .show()
+
+                        }
                     }
                     navController.popBackStack()
                 }
@@ -362,8 +504,42 @@ fun CriaEventoScreen(navController: NavController) {
                 openDialogPeoplePicker = openDialogPeoplePicker,
                 listConvidado = listConvidado,
                 listConvidadoText = listConvidadoText,
-                listConvidadoSelected = listConvidadoSelected
+                listConvidadoSelected = listConvidadoSelected,
+                usuarioSelecionado = usuarioSelecionado
             )
+        }
+
+        if (listConvidadoSelected.isNotEmpty()) {
+            Button(
+                onClick = {
+                    openDialogMailOptions.value = true
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent
+                ),
+                shape = RoundedCornerShape(5.dp)
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .width(30.dp)
+                        .height(30.dp),
+                    painter = painterResource(id = R.drawable.envelope_open_text_solid),
+                    contentDescription = stringResource(id = R.string.content_desc_mail_options),
+                    tint = colorResource(id = R.color.lcweb_gray_1)
+                )
+
+                Text(
+                    text = stringResource(id = R.string.calendar_event_mail_options),
+                    color = colorResource(id = R.color.lcweb_gray_1),
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(horizontal = 5.dp)
+                )
+
+                MailOptionsDialog(
+                    openDialogMailOptions = openDialogMailOptions,
+                    selectedMailOption = selectedMailOption
+                )
+            }
         }
 
         Row(
@@ -546,6 +722,4 @@ fun CriaEventoScreen(navController: NavController) {
             isError = false
         )
     }
-
-
 }

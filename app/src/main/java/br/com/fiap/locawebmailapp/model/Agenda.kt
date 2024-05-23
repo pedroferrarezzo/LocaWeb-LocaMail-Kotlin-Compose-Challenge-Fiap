@@ -14,7 +14,12 @@ import java.time.LocalDate
         entity = Usuario::class,
         childColumns = ["id_usuario"],
         parentColumns = ["id_usuario"]
-    )
+    ),
+        ForeignKey(
+            entity = Email::class,
+            childColumns = ["id_email"],
+            parentColumns = ["id_email"]
+        )
     ])
 data class Agenda(
     @PrimaryKey(autoGenerate = true) var id_agenda: Long = 0,
@@ -30,8 +35,9 @@ data class Agenda(
     var evento: Boolean = false,
     var tarefa: Boolean = false,
     var repeticao: Int = 0,
-    var grupo_repeticao: Int = 0
-
+    var grupo_repeticao: Int = 0,
+    var visivel: Boolean = true,
+    var id_email: Long? = null
 )
 
 @Immutable

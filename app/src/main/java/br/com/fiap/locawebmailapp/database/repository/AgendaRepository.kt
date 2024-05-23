@@ -25,12 +25,20 @@ class AgendaRepository(context: Context) {
         return agendaDao.listarGrupoRepeticao()
     }
 
+    fun listarAgendaPorIdEmailEIdUsuario(id_email: Long, id_usuario: Long): List<Agenda> {
+        return agendaDao.listarAgendaPorIdEmailEIdUsuario(id_email, id_usuario)
+    }
+
     fun listarAgendaPorId(id_agenda: Int): Agenda {
         return agendaDao.listarAgendaPorId(id_agenda)
     }
 
     fun atualizaAgenda(agenda: Agenda): Int {
         return agendaDao.atualizaAgenda(agenda)
+    }
+
+    fun atualizaVisivelPorIdAgenda(id_agenda: Long, visivel: Boolean): Int {
+        return agendaDao.atualizaVisivelPorIdAgenda(id_agenda, visivel)
     }
 
     fun excluiAgenda(agenda: Agenda): Int {

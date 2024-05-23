@@ -65,6 +65,7 @@ import br.com.fiap.locawebmailapp.utils.bitmapToByteArray
 import br.com.fiap.locawebmailapp.utils.isValidEmail
 import br.com.fiap.locawebmailapp.utils.listaParaString
 import br.com.fiap.locawebmailapp.utils.pickImageFromGallery
+import br.com.fiap.locawebmailapp.utils.respostaEmailParaEmail
 import br.com.fiap.locawebmailapp.utils.stringParaLista
 import java.time.LocalDate
 import java.time.LocalTime
@@ -73,7 +74,7 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
+fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long, idRespostaEmail: Long?) {
 
     val context = LocalContext.current
 
@@ -86,7 +87,11 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long) {
 
 
     val respostaEmail = RespostaEmail()
-    val emailResponder = emailRepository.listarEmailPorId(idEmail)
+    var emailResponder = emailRepository.listarEmailPorId(idEmail)
+
+    if (idRespostaEmail != null) {
+        emailResponder = respostaEmailParaEmail(respostaEmailRepository.listarRespostaEmailPorIdRespostaEmail(idRespostaEmail))
+    }
 
     val anexoRespostaEmail = AnexoRespostaEmail()
     val convidado = Convidado()

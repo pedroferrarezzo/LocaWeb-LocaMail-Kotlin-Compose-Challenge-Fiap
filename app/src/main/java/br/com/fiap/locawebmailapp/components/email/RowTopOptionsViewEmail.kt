@@ -1,7 +1,5 @@
 package br.com.fiap.locawebmailapp.components.email
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -38,7 +36,8 @@ fun RowTopOptionsViewEmail(
     onClickArchive: () -> Unit,
     isSpam: MutableState<Boolean>,
     isImportant: MutableState<Boolean>,
-    isArchive: MutableState<Boolean>
+    isArchive: MutableState<Boolean>,
+    isAgendaAtrelada: MutableState<Boolean>
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -70,9 +69,6 @@ fun RowTopOptionsViewEmail(
 
 
         Row {
-
-
-
             IconButton(onClick = onClickDelete) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
@@ -86,7 +82,7 @@ fun RowTopOptionsViewEmail(
 
             if (!isExcluido.value) {
 
-                if (!isTodasContasScreen) {
+                if (!isTodasContasScreen && !isAgendaAtrelada.value) {
                     IconButton(onClick = onClickReply) {
                         Icon(
                             painter = painterResource(id = R.drawable.reply_solid),

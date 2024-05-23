@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
@@ -58,7 +59,7 @@ fun EmailViewButton(
     email: EmailComAlteracao,
     moveIconOption: Boolean = false,
     importantIconOption: Boolean = true,
-    onClickMoveButton: () -> Unit = {},
+    onClickMoveButton: () -> Unit = {}
 
     ) {
     Button(
@@ -98,7 +99,7 @@ fun EmailViewButton(
             Column(
                 modifier = Modifier.padding(horizontal = 2.dp)
             ) {
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     if (respostasEmail.isNotEmpty()) {
                         Icon(
                             painter = painterResource(id = R.drawable.reply_solid),
@@ -106,6 +107,17 @@ fun EmailViewButton(
                             modifier = Modifier
                                 .width(20.dp)
                                 .height(20.dp)
+                                .padding(horizontal = 5.dp)
+                        )
+                    }
+
+                    if (email.email.agenda_atrelada) {
+                        Icon(
+                            imageVector = Icons.Filled.DateRange,
+                            contentDescription = stringResource(id = R.string.content_desc_event),
+                            modifier = Modifier
+                                .width(25.dp)
+                                .height(25.dp)
                                 .padding(horizontal = 5.dp)
                         )
                     }

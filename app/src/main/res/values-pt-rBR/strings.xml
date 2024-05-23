@@ -106,5 +106,16 @@
     <string name="calendar_event_draft_everydayuntil">todos os dias até:</string>
     <string name="calendar_event_draft_hourtext">Horário do evento:</string>
     <string name="calendar_event_draft_allday">Todo o dia</string>
+    <string name="calendar_mail_options_selector_no">Nenhum</string>
+    <string name="calendar_mail_options_selector_invite">Convite por e-mail</string>
+    <string name="calendar_mail_options_selector_draft">Salvar rascunho</string>
+    <string name="content_desc_nothing_do">Ícone de bloqueado, nada ha fazer</string>
+    <string name="content_desc_mail_options">Ícone de email aberto, opções de e-mail</string>
+    <string name="calendar_event_mail_options">Opções de email</string>
+    <string name="mail_event_accept">Adicionar convite</string>
+    <string name="mail_event_reject">Rejeitar convite</string>
+    <string name="toast_event_invitesent">Convite de email enviado</string>
+    <string name="toast_event_invitedeleted">Convite excluído</string>
+    <string name="toast_event_inviteaccepted">Convite aceito</string>
 
 </resources>

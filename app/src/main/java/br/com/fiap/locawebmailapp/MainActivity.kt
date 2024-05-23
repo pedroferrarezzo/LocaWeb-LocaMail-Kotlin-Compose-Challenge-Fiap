@@ -71,6 +71,25 @@ class MainActivity : ComponentActivity() {
                             }
                         }
 
+                        composable(
+                            route = "criarespostaemailscreen?id_email={id_email}&id_resposta_email={id_resposta_email}",
+                            arguments = listOf(
+                                navArgument("id_email") {
+                                    type = NavType.StringType
+                                },
+                                navArgument("id_resposta_email") {
+                                    type = NavType.StringType
+                                    nullable = true
+                                }
+                            )
+                        ) {
+                            val idEmail = it.arguments?.getString("id_email")
+                            val idRespostaEmail = it.arguments?.getString("id_resposta_email")
+                            CriaRespostaEmailScreen(navController = navController, idEmail!!.toLong(),
+                                idRespostaEmail?.toLong()
+                            )
+                        }
+
 
                         composable(route = "criatarefascreen") {
                             CriaTarefaScreen(navController = navController)
@@ -131,11 +150,6 @@ class MainActivity : ComponentActivity() {
                             val idEmail = it.arguments?.getString("id_email")
                             val todasContasScreen = it.arguments?.getString("is_todas_contas_screen").toBoolean()
                             VisualizaEmailScreen(navController = navController, idEmail = idEmail!!.toLong(), isTodasContasScreen = todasContasScreen)
-                        }
-
-                        composable(route = "criarespostaemailscreen/{id_email}") {
-                            val idEmail = it.arguments?.getString("id_email")
-                            CriaRespostaEmailScreen(navController = navController, idEmail!!.toLong())
                         }
 
                         composable(route = "editarespostaemailscreen/{id_resposta_email}") {

@@ -31,13 +31,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.model.Convidado
+import br.com.fiap.locawebmailapp.model.Usuario
 
 @Composable
 fun PeopleSelectorDalog(
     openDialogPeoplePicker: MutableState<Boolean>,
     listConvidado: MutableState<List<Convidado>>,
     listConvidadoSelected: MutableList<Convidado>,
-    listConvidadoText: MutableState<String>
+    listConvidadoText: MutableState<String>,
+    usuarioSelecionado: MutableState<Usuario>
 ) {
     if (openDialogPeoplePicker.value) {
         Dialog(onDismissRequest = { openDialogPeoplePicker.value = false }) {
@@ -73,7 +75,9 @@ fun PeopleSelectorDalog(
                         reverseLayout = true,
                         content = {
                             items(
-                                listConvidado.value,
+                                listConvidado.value.filter {
+                                    it.email != usuarioSelecionado.value.email
+                                },
                                 key = {
                                     it.id_convidado
                                 }
@@ -84,9 +88,7 @@ fun PeopleSelectorDalog(
                                             if (!listConvidadoSelected.contains(it)) {
                                                 listConvidadoSelected.add(it)
                                                 listConvidadoText.value = ""
-                                            }
-
-                                            else {
+                                            } else {
                                                 listConvidadoSelected.remove(it)
                                             }
                                         },
@@ -95,22 +97,26 @@ fun PeopleSelectorDalog(
                                         ),
                                         modifier = Modifier.fillMaxWidth(),
                                         shape = RectangleShape
-                                    
-                                    
+
+
                                     ) {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Text(
                                                 text = it.email,
                                                 color = colorResource(id = R.color.lcweb_gray_1),
-                                                fontSize = 20.sp)
+                                                fontSize = 20.sp
+                                            )
 
                                             if (listConvidadoSelected.contains(it)) {
                                                 Icon(
-                                                    imageVector = Icons.Filled.Check, contentDescription = stringResource(
+                                                    imageVector = Icons.Filled.Check,
+                                                    contentDescription = stringResource(
                                                         id = R.string.content_desc_check
-                                                    ), tint = colorResource(
+                                                    ),
+                                                    tint = colorResource(
                                                         id = R.color.lcweb_gray_1
-                                                    ))
+                                                    )
+                                                )
                                             }
                                         }
                                     }

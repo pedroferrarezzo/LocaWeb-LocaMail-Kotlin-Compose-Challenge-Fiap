@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,6 +31,8 @@ import br.com.fiap.locawebmailapp.components.email.EmailViewButton
 import br.com.fiap.locawebmailapp.components.email.RowSearchBar
 import br.com.fiap.locawebmailapp.components.email.TopButton
 import br.com.fiap.locawebmailapp.components.general.ModalNavDrawer
+import br.com.fiap.locawebmailapp.database.repository.AgendaConvidadoRepository
+import br.com.fiap.locawebmailapp.database.repository.AgendaRepository
 import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRespostaEmailRepository
@@ -65,6 +68,8 @@ fun EmailsExcluidosScreen(navController: NavController) {
     val alteracaoRepository = AlteracaoRepository(context)
     val pastaRepository = PastaRepository(context)
     val respostaEmailRepository = RespostaEmailRepository(context)
+    val agendaRepository = AgendaRepository(context)
+    val agendaConvidadoRepository = AgendaConvidadoRepository(context)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -196,6 +201,15 @@ fun EmailsExcluidosScreen(navController: NavController) {
 
                                 Toast.makeText(context, toastMessageMailsDeleted, Toast.LENGTH_LONG)
                                     .show()
+
+                                val agendaEmailList = agendaRepository.listarAgendaPorIdEmailEIdUsuario(email.email.id_email, usuarioSelecionado.value.id_usuario)
+
+                                if (agendaEmailList.isNotEmpty()) {
+                                    for (agenda in agendaEmailList) {
+                                        agendaConvidadoRepository.excluirPorIdAgenda(agenda.id_agenda)
+                                        agendaRepository.excluiAgenda(agenda)
+                                    }
+                                }
                             }
                         })
 
