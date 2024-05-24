@@ -92,6 +92,52 @@ fun ModalNavDrawer(
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
                     item() {
 
+                        NavigationDrawerItem(
+                            modifier = Modifier.padding(end = 5.dp),
+                            shape = RoundedCornerShape(
+                                bottomEndPercent = 50,
+                                topEndPercent = 50
+                            ),
+                            label = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ai_mi_algorithm_svgrepo_com),
+                                        contentDescription = stringResource(id = R.string.content_desc_algorithm),
+                                        modifier = Modifier
+                                            .width(25.dp)
+                                            .height(25.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.navbar_modal_ai),
+                                        modifier = Modifier.padding(start = 5.dp),
+                                        fontSize = 15.sp
+                                    )
+                                }
+                            },
+                            selected = selectedDrawer.value == "11",
+                            onClick = {
+
+                                if (navController.currentBackStackEntry?.destination?.route != "aiscreen") {
+                                    selectedDrawer.value = "11"
+                                    selectedDrawerPasta.value = ""
+                                    navController.navigate("aiscreen")
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
+                                }
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                selectedContainerColor = colorResource(id = R.color.lcweb_gray_1),
+                                selectedIconColor = colorResource(id = R.color.lcweb_red_1),
+                                selectedTextColor = colorResource(id = R.color.lcweb_red_1),
+                                unselectedIconColor = colorResource(id = R.color.lcweb_gray_1),
+                                unselectedTextColor = colorResource(id = R.color.lcweb_gray_1)
+                            )
+                        )
+
 
                         NavigationDrawerItem(
                             modifier = Modifier.padding(end = 5.dp),

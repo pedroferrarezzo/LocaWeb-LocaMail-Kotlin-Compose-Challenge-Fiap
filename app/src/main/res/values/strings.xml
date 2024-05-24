@@ -118,4 +118,12 @@
     <string name="toast_event_inviteaccepted">Invitation accepted</string>
     <string name="content_desc_users">Icon of a user group, social</string>
     <string name="navbar_modal_social">Social</string>
+    <string name="content_desc_algorithm">algorithm icon</string>
+    <string name="navbar_modal_ai">Loca Assistant</string>
+    <string name="ai_button_return">Return</string>
+    <string name="ai_error_oops">Oops</string>
+    <string name="ai_error_verifynet">Check your internet!</string>
+    <string name="content_desc_nonet">404 error image</string>
+    <string name="ai_error_apiproblem">Your internet or API is having problems!</string>
+    <string name="content_desc_apiproblem">Bug fix image</string>
 </resources>

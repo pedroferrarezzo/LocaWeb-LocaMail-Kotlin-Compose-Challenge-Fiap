@@ -119,5 +119,13 @@
     <string name="toast_event_inviteaccepted">Convite aceito</string>
     <string name="content_desc_users">Ícone de um grupo de usuários, social</string>
     <string name="navbar_modal_social">Social</string>
+    <string name="content_desc_algorithm">Ícone de algoritmo</string>
+    <string name="navbar_modal_ai">"Loca Assistente "</string>
+    <string name="ai_button_return">Voltar</string>
+    <string name="ai_error_oops">Ops</string>
+    <string name="ai_error_verifynet">Verifique sua internet!</string>
+    <string name="content_desc_nonet">Imagem de erro 404</string>
+    <string name="ai_error_apiproblem">Sua internet ou a API está com problemas!</string>
+    <string name="content_desc_apiproblem">Imagem de conserto de bug</string>
 
 </resources>

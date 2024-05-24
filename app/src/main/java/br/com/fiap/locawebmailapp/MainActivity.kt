@@ -14,6 +14,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import br.com.fiap.llocalweb.screens.HomeScreen
+import br.com.fiap.llocalweb.screens.LoginScreen
+import br.com.fiap.llocalweb.screens.SignupScreen
+import br.com.fiap.locawebmailapp.screens.ai.AiResponseScreen
+import br.com.fiap.locawebmailapp.screens.ai.AiScreen
 import br.com.fiap.locawebmailapp.screens.calendar.CalendarMainScreen
 import br.com.fiap.locawebmailapp.screens.calendar.CriaEventoScreen
 import br.com.fiap.locawebmailapp.screens.calendar.CriaTarefaScreen
@@ -96,6 +101,18 @@ class MainActivity : ComponentActivity() {
                             CriaTarefaScreen(navController = navController)
                         }
 
+                        composable(route = "homescreen") {
+                            HomeScreen(navController = navController)
+                        }
+
+                        composable(route = "signupscreen") {
+                            SignupScreen(navController = navController)
+                        }
+
+                        composable(route = "loginscreen") {
+                            LoginScreen(navController = navController)
+                        }
+
                         composable(route = "criaeventoscreen") {
                             CriaEventoScreen(navController = navController)
                         }
@@ -130,6 +147,10 @@ class MainActivity : ComponentActivity() {
                             EmailsSociaisScreen(navController = navController)
                         }
 
+                        composable(route = "aiscreen") {
+                            AiScreen(navController = navController)
+                        }
+
                         composable(route = "emailseditaveisscreen") {
                             EmailsEditaveisScreen(navController = navController)
                         }
@@ -141,6 +162,11 @@ class MainActivity : ComponentActivity() {
                         composable(route = "emailspastascreen/{id_pasta}") {
                             val idPasta = it.arguments?.getString("id_pasta")
                             EmailsPastaScreen(navController = navController, id_pasta = idPasta!!.toLong())
+                        }
+
+                        composable(route = "airesponsescreen/{id_email}") {
+                            val idEmail = it.arguments?.getString("id_email")
+                            AiResponseScreen(navController = navController, id_email = idEmail!!.toLong())
                         }
 
                         composable(route = "emailsspamscreen") {
