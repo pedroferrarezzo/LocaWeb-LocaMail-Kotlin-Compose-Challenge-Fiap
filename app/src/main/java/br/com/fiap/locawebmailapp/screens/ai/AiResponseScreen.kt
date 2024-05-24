@@ -86,7 +86,7 @@ fun AiResponseScreen(modifier: Modifier = Modifier, navController: NavController
                 val apiToken = BuildConfig.API_KEY
 
                 textRequestResponse.text =
-                    "Dê um resumo sobre o email abaixo. Destaque os pontos principais.\n" +
+                    "Forneça um resumo sobre o email abaixo. Destaque os pontos principais.\n" +
                             email.corpo
                 parts.parts = listOf(textRequestResponse)
                 geminiRequest.contents = listOf(parts)
