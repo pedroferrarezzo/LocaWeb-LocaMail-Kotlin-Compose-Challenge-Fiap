@@ -36,8 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.model.Usuario
-import br.com.fiap.locawebmailapp.utils.isValidEmail
-import br.com.fiap.locawebmailapp.utils.stringParaLista
 
 @Composable
 fun ColumnCrudMail(

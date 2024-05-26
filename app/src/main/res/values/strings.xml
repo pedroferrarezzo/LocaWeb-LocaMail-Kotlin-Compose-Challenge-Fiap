@@ -126,4 +126,26 @@
     <string name="content_desc_nonet">404 error image</string>
     <string name="ai_error_apiproblem">Your internet or API is having problems!</string>
     <string name="content_desc_apiproblem">Bug fix image</string>
+    <string name="register_screen_fullname">Full name</string>
+    <string name="register_screen_insertfull">Enter your full name</string>
+    <string name="register_screen_email">Email</string>
+    <string name="register_screen_insertmail">Enter your email</string>
+    <string name="register_screen_insertpass">Enter your password</string>
+    <string name="register_screen_pass">Password</string>
+    <string name="register_screen_image">Profile image</string>
+    <string name="register_screen_login">Login</string>
+    <string name="register_screen_signup">Signup</string>
+    <string name="register_screen_question">Don\'t have a registration?</string>
+    <string name="toast_mail_ai_wait">Wait for analysis from Loca Assistent</string>
+    <string name="register_welcome_title">Connect, organize, and get things done with free personal email and calendar.</string>
+    <string name="register_welcome_comeback">Oops, are you back? Welcome!</string>
+    <string name="register_forget_pass">Forgot your password?</string>
+    <string name="register_register">Register</string>
+    <string name="content_desc_welcome_image">Welcome image</string>
+    <string name="register_screen_signupupper">REGISTER</string>
+    <string name="content_desc_iconregister">Register Icon</string>
+    <string name="register_screen_advance">Advance</string>
+    <string name="register_screen_return">Return</string>
+    <string name="register_screen_pickimage">Open Gallery</string>
+    <string name="toast_register_createduser">User created</string>
 </resources>

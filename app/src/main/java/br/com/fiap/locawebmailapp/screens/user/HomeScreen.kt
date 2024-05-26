@@ -17,8 +17,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,16 +38,17 @@ fun HomeScreen(navController: NavController) {
             modifier = Modifier
                 .padding(top = 150.dp),
             painter = painterResource(id = R.drawable.locaweb),
-            contentDescription = "logo-locaweb"
+            contentDescription = stringResource(id = R.string.content_desc_lcweb_logo)
         )
         Column {
             Text(
-                text = "Conecte-se, organize-se e realize tarefas com email pessoal e calendário gratuitos.",
+                text = stringResource(id = R.string.register_welcome_title),
                 modifier = Modifier
                     .padding(30.dp)
                     .align(Alignment.CenterHorizontally),
                 fontSize = 26.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = colorResource(id = R.color.lcweb_gray_1)
             )
 
             Button(
@@ -56,31 +58,14 @@ fun HomeScreen(navController: NavController) {
                     .padding(10.dp)
                     .width(330.dp)
                     .height(56.dp),
-                colors = ButtonDefaults.buttonColors(Color(0xFFFF0142)),
+                colors = ButtonDefaults.buttonColors(colorResource(id = R.color.lcweb_red_1)),
                 shape = RoundedCornerShape(15.dp)
             ) {
 
 
-                Text(text = "Entrar")
+                Text(
+                    text = stringResource(id = R.string.register_screen_advance))
             }
-
-            OutlinedButton(
-                onClick = {
-                    navController.navigate("signupscreen")
-                },
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 10.dp, bottom = 30.dp)
-                    .width(330.dp)
-                    .height(56.dp),
-                shape = RoundedCornerShape(15.dp),
-                border = BorderStroke(1.dp, Color(0xFFFF0142)),
-
-
-                ) {
-                Text(text = "Cadastrar", color = Color(0xFFFF0142))
-            }
-
         }
     }
 }

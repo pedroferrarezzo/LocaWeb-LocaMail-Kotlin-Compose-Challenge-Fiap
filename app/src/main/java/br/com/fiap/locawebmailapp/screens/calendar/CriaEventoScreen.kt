@@ -65,7 +65,6 @@ import br.com.fiap.locawebmailapp.model.AgendaConvidado
 import br.com.fiap.locawebmailapp.model.Alteracao
 import br.com.fiap.locawebmailapp.model.Convidado
 import br.com.fiap.locawebmailapp.model.Email
-import br.com.fiap.locawebmailapp.utils.bitmapToByteArray
 import br.com.fiap.locawebmailapp.utils.completeStringDateToDate
 import br.com.fiap.locawebmailapp.utils.convertMillisToLocalDate
 import br.com.fiap.locawebmailapp.utils.convertTo12Hours
@@ -75,7 +74,6 @@ import br.com.fiap.locawebmailapp.utils.localDateToMillis
 import br.com.fiap.locawebmailapp.utils.returnColor
 import br.com.fiap.locawebmailapp.utils.returnOneMonthFromDate
 import br.com.fiap.locawebmailapp.utils.returnStringRepeatOption
-import br.com.fiap.locawebmailapp.utils.stringParaLista
 import br.com.fiap.locawebmailapp.utils.stringToLocalDate
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -259,7 +257,8 @@ fun CriaEventoScreen(navController: NavController) {
                         if (selectedMailOption.value == 2) {
                             email.agenda_atrelada = true
                             email.remetente = usuarioSelecionado.value.email
-                            email.destinatario = listaParaString(listConvidadoSelected.map { it.email })
+                            email.destinatario =
+                                listaParaString(listConvidadoSelected.map { it.email })
                             email.cc = ""
                             email.cco = ""
                             email.assunto = "Convite de agenda: ${agenda.nome}"
@@ -469,7 +468,15 @@ fun CriaEventoScreen(navController: NavController) {
 
             Text(
                 text = "${stringResource(id = R.string.calendar_organizer_text)}: ${
-                    usuarioSelecionado.value.nome
+                    if (usuarioSelecionado.value.nome.length > 25) {
+                        "${
+                            usuarioSelecionado.value.nome.take(
+                                25
+                            )
+                        }..."
+                    } else {
+                        usuarioSelecionado.value.nome
+                    }
                 }",
                 modifier = Modifier.padding(5.dp),
                 color = colorResource(id = R.color.lcweb_gray_1),

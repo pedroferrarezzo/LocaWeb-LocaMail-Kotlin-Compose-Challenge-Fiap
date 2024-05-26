@@ -32,7 +32,7 @@ import br.com.fiap.locawebmailapp.model.Anexo
 import br.com.fiap.locawebmailapp.model.Convidado
 import br.com.fiap.locawebmailapp.utils.bitmapToByteArray
 import br.com.fiap.locawebmailapp.utils.byteArrayToBitmap
-import br.com.fiap.locawebmailapp.utils.isValidEmail
+import br.com.fiap.locawebmailapp.utils.validateEmail
 import br.com.fiap.locawebmailapp.utils.listaParaString
 import br.com.fiap.locawebmailapp.utils.pickImageFromGallery
 import br.com.fiap.locawebmailapp.utils.stringParaLista
@@ -283,7 +283,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                     ) {
                         isErrorPara.value = true
                     } else {
-                        isErrorPara.value = !isValidEmail(destinatarioText.value)
+                        isErrorPara.value = !validateEmail(destinatarioText.value)
                     }
 
                     if (!isErrorPara.value) destinatarios.add(destinatarioText.value.toLowerCase())
@@ -302,7 +302,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                     ) {
                         isErrorCc.value = true
                     } else {
-                        isErrorCc.value = !isValidEmail(cc.value)
+                        isErrorCc.value = !validateEmail(cc.value)
                     }
                     if (!isErrorCc.value) ccs.add(cc.value.toLowerCase())
                 },
@@ -320,7 +320,7 @@ fun EditaEmailScreen(navController: NavController, idEmail: Long) {
                     ) {
                         isErrorCco.value = true
                     } else {
-                        isErrorCco.value = !isValidEmail(cco.value)
+                        isErrorCco.value = !validateEmail(cco.value)
                     }
                     if (!isErrorCco.value) ccos.add(cco.value.toLowerCase())
                 },

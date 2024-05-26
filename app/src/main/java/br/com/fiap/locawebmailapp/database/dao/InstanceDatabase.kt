@@ -14,10 +14,11 @@ import br.com.fiap.locawebmailapp.model.Email
 import br.com.fiap.locawebmailapp.model.Pasta
 import br.com.fiap.locawebmailapp.model.RespostaEmail
 import br.com.fiap.locawebmailapp.model.Usuario
+import br.com.fiap.locawebmailapp.model.ai.AiQuestion
 
 @Database(
-    entities = [Agenda::class, Convidado::class, AgendaConvidado::class, Email::class, Anexo::class, Usuario::class, Alteracao::class, Pasta::class, RespostaEmail::class, AnexoRespostaEmail::class],
-    version = 38
+    entities = [Agenda::class, Convidado::class, AgendaConvidado::class, Email::class, Anexo::class, Usuario::class, Alteracao::class, Pasta::class, RespostaEmail::class, AnexoRespostaEmail::class, AiQuestion::class],
+    version = 45
 )
 abstract class InstanceDatabase : RoomDatabase() {
 
@@ -31,6 +32,8 @@ abstract class InstanceDatabase : RoomDatabase() {
     abstract fun pastaDao(): PastaDao
     abstract fun respostaEmailDao(): RespostaEmailDao
     abstract fun anexoRespostaEmailDao(): AnexoRespostaEmailDao
+
+    abstract fun aiQuestionDao(): AiQuestionDao
 
     // Padrão Singleton
     companion object {

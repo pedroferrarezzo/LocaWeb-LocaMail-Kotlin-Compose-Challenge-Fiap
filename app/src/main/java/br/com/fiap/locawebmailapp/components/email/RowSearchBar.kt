@@ -1,8 +1,11 @@
 package br.com.fiap.locawebmailapp.components.email
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -19,7 +22,9 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -31,6 +36,7 @@ import br.com.fiap.locawebmailapp.components.user.UserSelectorDalog
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.EmailComAlteracao
 import br.com.fiap.locawebmailapp.model.Usuario
+import br.com.fiap.locawebmailapp.utils.byteArrayToBitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -87,9 +93,12 @@ fun <T> RowSearchBar(
                         openDialogUserPicker.value = !openDialogUserPicker.value
                     }
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.AccountCircle,
-                        contentDescription = stringResource(id = R.string.content_desc_user)
+                    Image(
+                        bitmap = byteArrayToBitmap(usuarioSelecionado.value.profile_image).asImageBitmap(),
+                        contentDescription = stringResource(id = R.string.content_desc_iconregister),
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clip(shape = CircleShape)
                     )
                 }
             },

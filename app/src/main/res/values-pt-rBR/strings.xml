@@ -127,5 +127,27 @@
     <string name="content_desc_nonet">Imagem de erro 404</string>
     <string name="ai_error_apiproblem">Sua internet ou a API está com problemas!</string>
     <string name="content_desc_apiproblem">Imagem de conserto de bug</string>
+    <string name="register_screen_fullname">Nome completo</string>
+    <string name="register_screen_insertfull">Insira seu nome completo</string>
+    <string name="register_screen_email">Email</string>
+    <string name="register_screen_insertmail">Insira seu email</string>
+    <string name="register_screen_insertpass">Insira sua senha</string>
+    <string name="register_screen_pass">Senha</string>
+    <string name="register_screen_image">Imagem do perfil</string>
+    <string name="register_screen_login">Entrar</string>
+    <string name="register_screen_signup">Cadastrar</string>
+    <string name="register_screen_question">Não possui cadastro?</string>
+    <string name="toast_mail_ai_wait">Aguarde a análise da Loca Assistente</string>
+    <string name="register_welcome_title">Conecte-se, organize-se e realize tarefas com email pessoal e calendário gratuitos.</string>
+    <string name="register_welcome_comeback">Opa, você de volta? Seja bem-vindo(a)!</string>
+    <string name="register_forget_pass">Esqueceu sua senha?</string>
+    <string name="register_register">Registre-se</string>
+    <string name="content_desc_welcome_image">Imagem de boas vindas</string>
+    <string name="register_screen_signupupper">CADASTRO</string>
+    <string name="content_desc_iconregister">Icone de cadastro</string>
+    <string name="register_screen_advance">Avançar</string>
+    <string name="register_screen_return">Voltar</string>
+    <string name="register_screen_pickimage">Abrir galeria</string>
+    <string name="toast_register_createduser">Usuário criado</string>
 
 </resources>

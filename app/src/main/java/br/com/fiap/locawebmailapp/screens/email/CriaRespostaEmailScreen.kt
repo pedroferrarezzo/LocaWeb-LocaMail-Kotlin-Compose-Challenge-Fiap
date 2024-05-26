@@ -6,30 +6,8 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -37,16 +15,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.components.email.ColumnCrudMail
@@ -62,7 +33,7 @@ import br.com.fiap.locawebmailapp.model.AnexoRespostaEmail
 import br.com.fiap.locawebmailapp.model.Convidado
 import br.com.fiap.locawebmailapp.model.RespostaEmail
 import br.com.fiap.locawebmailapp.utils.bitmapToByteArray
-import br.com.fiap.locawebmailapp.utils.isValidEmail
+import br.com.fiap.locawebmailapp.utils.validateEmail
 import br.com.fiap.locawebmailapp.utils.listaParaString
 import br.com.fiap.locawebmailapp.utils.pickImageFromGallery
 import br.com.fiap.locawebmailapp.utils.respostaEmailParaEmail
@@ -347,7 +318,7 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long, idRespo
                     ) {
                         isErrorPara.value = true
                     } else {
-                        isErrorPara.value = !isValidEmail(destinatarioText.value)
+                        isErrorPara.value = !validateEmail(destinatarioText.value)
                     }
 
                     if (!isErrorPara.value) destinatarios.add(destinatarioText.value.toLowerCase())
@@ -371,7 +342,7 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long, idRespo
                     ) {
                         isErrorCc.value = true
                     } else {
-                        isErrorCc.value = !isValidEmail(cc.value)
+                        isErrorCc.value = !validateEmail(cc.value)
                     }
                     if (!isErrorCc.value) ccs.add(cc.value.toLowerCase())
                 },
@@ -392,7 +363,7 @@ fun CriaRespostaEmailScreen(navController: NavController, idEmail: Long, idRespo
                     ) {
                         isErrorCco.value = true
                     } else {
-                        isErrorCco.value = !isValidEmail(cco.value)
+                        isErrorCco.value = !validateEmail(cco.value)
                     }
                     if (!isErrorCco.value) ccos.add(cco.value.toLowerCase())
                 },

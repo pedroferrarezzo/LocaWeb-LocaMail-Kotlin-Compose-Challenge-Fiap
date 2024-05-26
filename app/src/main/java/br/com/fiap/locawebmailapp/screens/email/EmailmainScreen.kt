@@ -84,35 +84,6 @@ fun EMailMainScreen(navController: NavController) {
 
     val usuariosExistentes = usuarioRepository.listarUsuariosNaoSelecionados()
 
-    if (usuariosExistentes.isEmpty()) {
-        usuarioRepository.criarUsuario(
-            usuario = Usuario(
-                email = "pedrof@teste.com.br",
-                nome = "Pedro Ferrarezzo",
-                selected_user = true,
-
-                )
-        )
-
-        usuarioRepository.criarUsuario(
-            Usuario(
-                email = "marianaf@teste.com.br",
-                nome = "Mariana Ferreira",
-                selected_user = false,
-
-                )
-        )
-
-        usuarioRepository.criarUsuario(
-            Usuario(
-                email = "tadeuf@teste.com.br",
-                nome = "Tadeu Ferreira",
-                selected_user = false,
-
-                )
-        )
-    }
-
     val expandedPasta = remember {
         mutableStateOf(true)
     }

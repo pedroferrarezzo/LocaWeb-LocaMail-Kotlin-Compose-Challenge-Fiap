@@ -1,6 +1,5 @@
 package br.com.fiap.locawebmailapp.screens.ai
 
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -38,6 +37,7 @@ import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.BuildConfig
 import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.components.general.ErrorComponent
+import br.com.fiap.locawebmailapp.database.repository.AiQuestionRepository
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
 import br.com.fiap.locawebmailapp.model.ai.ContentsBody
 import br.com.fiap.locawebmailapp.model.ai.GeminiRequest
@@ -45,18 +45,23 @@ import br.com.fiap.locawebmailapp.model.ai.GeminiResponse
 import br.com.fiap.locawebmailapp.model.ai.TextRequestResponse
 import br.com.fiap.locawebmailapp.utils.callGemini
 import br.com.fiap.locawebmailapp.utils.checkInternetConnectivity
-import br.com.fiap.locawebmailapp.utils.retornaApiToken
 import com.halilibo.richtext.commonmark.CommonmarkAstNodeParser
 import com.halilibo.richtext.commonmark.MarkdownParseOptions
 import com.halilibo.richtext.markdown.BasicMarkdown
 import com.halilibo.richtext.ui.RichTextScope
 
 @Composable
-fun AiResponseScreen(modifier: Modifier = Modifier, navController: NavController, id_email: Long) {
-
+fun AiResponseScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    id_email: Long,
+    id_question: Long
+) {
     val context = LocalContext.current
     val emailRepository = EmailRepository(context)
     val email = emailRepository.listarEmailPorId(id_email)
+    val aiQuestionRepository = AiQuestionRepository(context)
+    val question = aiQuestionRepository.listarPergunta(id_question, id_email)
 
     val isLoading = remember {
         mutableStateOf(true)
@@ -74,6 +79,8 @@ fun AiResponseScreen(modifier: Modifier = Modifier, navController: NavController
         mutableStateOf(false)
     }
 
+    val toastMessageAiWait = stringResource(id = R.string.toast_mail_ai_wait)
+
     LaunchedEffect(key1 = Unit) {
         try {
             isConnectedStatus.value = checkInternetConnectivity(context)
@@ -86,8 +93,18 @@ fun AiResponseScreen(modifier: Modifier = Modifier, navController: NavController
                 val apiToken = BuildConfig.API_KEY
 
                 textRequestResponse.text =
-                    "Forneça um resumo sobre o email abaixo. Destaque os pontos principais.\n" +
-                            email.corpo
+                    "${question.pergunta}\n" +
+                            "A pergunta acima deve ser respondida com base no email abaixo:\n" +
+                            "De: ${email.remetente}\n" +
+                            "Para: ${email.destinatario}\n" +
+                            "Cc: ${email.cc}\n" +
+                            "Cco: ${email.cco}\n" +
+                            "Assunto: ${email.assunto}\n" +
+                            "Corpo: ${email.corpo}\n" +
+                            "\n" +
+                            "**OBSERVAÇÃO: Sinta-se a vontade para responder qualquer pergunta relacionada ao email acima. Porém\n" +
+                            "Quaisquer perguntas que fujam desta temática devem ser ignoradas e respondidas com uma resposta padrão explicando" +
+                            "que o seu uso se restringe a este contexto.\n"
                 parts.parts = listOf(textRequestResponse)
                 geminiRequest.contents = listOf(parts)
                 geminiResponse.value =
@@ -108,7 +125,7 @@ fun AiResponseScreen(modifier: Modifier = Modifier, navController: NavController
         BackHandler {
             Toast.makeText(
                 context,
-                "Aguarde a análise de nossa assistente virtual",
+                toastMessageAiWait,
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -169,7 +186,10 @@ fun AiResponseScreen(modifier: Modifier = Modifier, navController: NavController
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 30.dp).align(Alignment.TopCenter)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 30.dp)
+                        .align(Alignment.TopCenter)
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.aiworking),

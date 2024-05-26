@@ -35,9 +35,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
+import br.com.fiap.locawebmailapp.components.ai.QuestionDialog
 import br.com.fiap.locawebmailapp.components.email.EmailViewButton
 import br.com.fiap.locawebmailapp.components.email.RowSearchBar
 import br.com.fiap.locawebmailapp.components.general.ModalNavDrawer
+import br.com.fiap.locawebmailapp.database.repository.AiQuestionRepository
 import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.AnexoRepository
 import br.com.fiap.locawebmailapp.database.repository.EmailRepository
@@ -75,6 +77,7 @@ fun AiScreen(navController: NavController) {
     val alteracaoRepository = AlteracaoRepository(context)
     val pastaRepository = PastaRepository(context)
     val respostaEmailRepository = RespostaEmailRepository(context)
+    val aiQuestionRepository = AiQuestionRepository(context)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -83,6 +86,10 @@ fun AiScreen(navController: NavController) {
     val timeState = rememberTimePickerState()
 
     val openDialogUserPicker = remember {
+        mutableStateOf(false)
+    }
+
+    val openQuestionDialog = remember {
         mutableStateOf(false)
     }
 
@@ -103,18 +110,16 @@ fun AiScreen(navController: NavController) {
         mutableStateOf(usuarioRepository.listarUsuarioSelecionado())
     }
 
+    val question = remember {
+        mutableStateOf("")
+    }
+
     val receivedEmailList =
         emailRepository.listarEmailsPorDestinatario(
             usuarioSelecionado.value.email,
             usuarioSelecionado.value.id_usuario,
             respostaEmailRepository
         )
-
-    val receivedStateEmailList = remember {
-        mutableStateListOf<EmailComAlteracao>().apply {
-            addAll(receivedEmailList)
-        }
-    }
 
     val listPastaState = remember {
         mutableStateListOf<Pasta>().apply {
@@ -141,18 +146,6 @@ fun AiScreen(navController: NavController) {
         textPastaCreator = textPastaCreator,
         selectedDrawerPasta = selectedDrawerPasta,
         alteracaoRepository = alteracaoRepository,
-        receivedEmailStateListRecompose = {
-            val emails = emailRepository.listarEmailsPorDestinatario(
-                usuarioSelecionado.value.email,
-                usuarioSelecionado.value.id_usuario,
-                respostaEmailRepository
-            )
-            emails.forEach { email ->
-                if (!receivedStateEmailList.contains(email)) {
-                    receivedStateEmailList.add(email)
-                }
-            }
-        },
         context = context,
         listPastaState = listPastaState,
         scope = scope,
@@ -163,39 +156,25 @@ fun AiScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize()
         ) {
             Column {
-                RowSearchBar(
+                RowSearchBar<EmailComAlteracao>(
                     drawerState = drawerState,
                     scope = scope,
                     openDialogUserPicker = openDialogUserPicker,
                     textSearchBar = textSearchBar,
-                    applyStateListUserSelectorDialog = {
-                        val emails = emailRepository.listarEmailsPorDestinatario(
-                            usuarioSelecionado.value.email,
-                            usuarioSelecionado.value.id_usuario,
-                            respostaEmailRepository
-                        )
-                        emails.forEach { email ->
-                            if (!receivedStateEmailList.contains(email)) {
-                                receivedStateEmailList.add(email)
-                            }
-                        }
-
-                        listPastaState.clear()
-                        listPastaState.addAll(pastaRepository.listarPastasPorIdUsuario(usuarioSelecionado.value.id_usuario))
-
-                    },
                     usuarioSelecionado = usuarioSelecionado,
-                    stateEmailList = receivedStateEmailList,
                     usuarioRepository = usuarioRepository,
                     placeholderTextFieldSearch = stringResource(id = R.string.mail_main_searchbar),
                     selectedDrawerPasta = selectedDrawerPasta,
                     navController = navController
                 )
 
-                if (receivedStateEmailList.isNotEmpty()) {
+                if (receivedEmailList.isNotEmpty()) {
                     LazyColumn() {
                         item {
-                            Row(modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth().padding(bottom = 10.dp),
+                            Row(modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp),
                                 horizontalArrangement = Arrangement.Center) {
                                 Image(
                                     painter = painterResource(id = R.drawable.aianalyse),
@@ -219,7 +198,7 @@ fun AiScreen(navController: NavController) {
                             }
                         }
 
-                        items(receivedStateEmailList.reversed(), key = {
+                        items(receivedEmailList.reversed(), key = {
                             it.alteracao.id_alteracao
                         }) {
 
@@ -249,36 +228,11 @@ fun AiScreen(navController: NavController) {
                                             )
                                         }
 
-                                        navController.navigate("airesponsescreen/${it.email.id_email}")
+                                        openQuestionDialog.value = true
                                     },
                                     isRead = isRead,
                                     redLcWeb = redLcWeb,
                                     respostasEmail = respostasEmail,
-                                    onClickPastaIconButton = {
-                                        openDialogPastaPicker.value =
-                                            !openDialogPastaPicker.value
-
-                                    },
-                                    onClickPastaPastaPickerDialog = { pasta ->
-
-                                        Toast.makeText(
-                                            context,
-                                            "$toastMessageMailMovedFolder ${pasta.nome}",
-                                            Toast.LENGTH_LONG
-                                        )
-                                            .show()
-
-                                        alteracaoRepository.atualizarPastaPorIdEmailEIdUsuario(
-                                            pasta = pasta.id_pasta,
-                                            id_email = it.alteracao.alt_id_email,
-                                            id_usuario = usuarioSelecionado.value.id_usuario
-
-                                        )
-
-                                        receivedStateEmailList.remove(it)
-
-                                        openDialogPastaPicker.value = false
-                                    },
                                     onClickImportantButton = {
                                         isImportant.value = !isImportant.value
                                         alteracaoRepository.atualizarImportantePorIdEmail(
@@ -295,6 +249,14 @@ fun AiScreen(navController: NavController) {
                                     email = it
                                 )
                             }
+
+                            QuestionDialog(
+                                openQuestionDialog = openQuestionDialog ,
+                                question = question,
+                                aiQuestionRepository = aiQuestionRepository,
+                                idEmail = it.email.id_email,
+                                navController = navController
+                            )
                         }
                     }
                 }

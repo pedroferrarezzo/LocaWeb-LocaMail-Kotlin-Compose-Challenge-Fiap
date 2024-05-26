@@ -2,9 +2,7 @@ package br.com.fiap.locawebmailapp.screens.calendar
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -13,18 +11,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -37,12 +29,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
@@ -50,20 +39,20 @@ import br.com.fiap.locawebmailapp.components.calendar.Calendar
 import br.com.fiap.locawebmailapp.components.calendar.CardAgenda
 import br.com.fiap.locawebmailapp.components.calendar.Day
 import br.com.fiap.locawebmailapp.components.calendar.ExpandedShadowDropdown
+import br.com.fiap.locawebmailapp.components.email.RowSearchBar
 import br.com.fiap.locawebmailapp.components.general.ModalNavDrawer
 import br.com.fiap.locawebmailapp.components.general.ShadowBox
-import br.com.fiap.locawebmailapp.components.user.UserSelectorDalog
 import br.com.fiap.locawebmailapp.database.repository.AgendaRepository
 import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
 import br.com.fiap.locawebmailapp.database.repository.PastaRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.Agenda
 import br.com.fiap.locawebmailapp.model.AgendaCor
+import br.com.fiap.locawebmailapp.model.EmailComAlteracao
 import br.com.fiap.locawebmailapp.model.Pasta
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.daysOfWeek
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -179,84 +168,17 @@ fun CalendarMainScreen(navController: NavController, data: LocalDate = LocalDate
 
         Box(modifier = Modifier.fillMaxSize()) {
             Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    TextField(
-                        value = textSearchBar.value,
-                        onValueChange = {
-                            textSearchBar.value = it
-                        },
-                        modifier = Modifier.weight(1f),
-                        placeholder = {
-                            Text(
-                                text = stringResource(id = R.string.calendar_main_searchbar)
-                            )
-                        },
-                        leadingIcon = {
-                            IconButton(onClick = {
-                                scope.launch {
-                                    drawerState.apply {
-                                        if (isClosed) open() else close()
-                                    }
-                                }
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Menu,
-                                    contentDescription = stringResource(
-                                        id = R.string.content_desc_menu
-                                    )
-                                )
-                            }
-                        },
-                        trailingIcon = {
-                            IconButton(
-                                onClick = {
-                                    openDialogUserPicker.value = !openDialogUserPicker.value
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.AccountCircle,
-                                    contentDescription = stringResource(id = R.string.content_desc_user)
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = colorResource(id = R.color.lcweb_red_1),
-                            unfocusedContainerColor = colorResource(id = R.color.lcweb_red_1),
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            focusedLeadingIconColor = colorResource(id = R.color.white),
-                            unfocusedLeadingIconColor = colorResource(id = R.color.white),
-                            focusedPlaceholderColor = colorResource(id = R.color.white),
-                            unfocusedPlaceholderColor = colorResource(id = R.color.white),
-                            cursorColor = colorResource(id = R.color.white),
-                            focusedTextColor = colorResource(id = R.color.white),
-                            unfocusedTextColor = colorResource(id = R.color.white),
-                            focusedSupportingTextColor = Color.Transparent,
-                            unfocusedSupportingTextColor = Color.Transparent,
-                            focusedTrailingIconColor = colorResource(id = R.color.white),
-                            unfocusedTrailingIconColor = colorResource(id = R.color.white)
-                        ),
-                        textStyle = TextStyle(
-                            textDecoration = TextDecoration.None
-                        ),
-                        singleLine = true,
-                        shape = RoundedCornerShape(5.dp)
-                    )
-                }
 
-
-                UserSelectorDalog<Agenda>(
+                RowSearchBar<EmailComAlteracao>(
+                    drawerState = drawerState,
+                    scope = scope,
                     openDialogUserPicker = openDialogUserPicker,
-                    usuarioSelecionado,
+                    textSearchBar = textSearchBar,
+                    usuarioSelecionado = usuarioSelecionado,
                     usuarioRepository = usuarioRepository,
+                    placeholderTextFieldSearch = stringResource(id = R.string.calendar_main_searchbar),
                     selectedDrawerPasta = selectedDrawerPasta,
                     navController = navController
-
                 )
 
                 Calendar(

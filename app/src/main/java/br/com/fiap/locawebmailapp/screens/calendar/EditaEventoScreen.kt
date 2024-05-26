@@ -358,7 +358,19 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
                 )
 
                 Text(
-                    text = "${stringResource(id = R.string.calendar_organizer_text)}: ${if (agenda != null) agenda.proprietario else ""}",
+                    text = "${stringResource(id = R.string.calendar_organizer_text)}: ${
+                        if (agenda != null)
+                            if (agenda.proprietario.length > 25) {
+                                "${
+                                    agenda.proprietario.take(
+                                        25
+                                    )
+                                }..."
+                            } else {
+                                agenda.proprietario
+                            }
+                        else ""
+                    }",
                     modifier = Modifier.padding(5.dp),
                     color = colorResource(id = R.color.lcweb_gray_1),
                     fontSize = 20.sp

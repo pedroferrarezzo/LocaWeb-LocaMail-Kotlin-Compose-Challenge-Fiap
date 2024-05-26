@@ -18,6 +18,8 @@ data class Usuario(
     @PrimaryKey(autoGenerate = true) var id_usuario: Long = 0,
     @ColumnInfo(name = "email") var email: String,
     var nome: String,
+    var senha: String,
+    var autenticado: Boolean,
     var profile_image: ByteArray = ByteArray(10),
     var selected_user: Boolean
 )

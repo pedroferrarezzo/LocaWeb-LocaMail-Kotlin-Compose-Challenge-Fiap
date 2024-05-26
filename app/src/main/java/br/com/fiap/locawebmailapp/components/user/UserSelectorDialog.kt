@@ -1,14 +1,18 @@
 package br.com.fiap.locawebmailapp.components.user
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -22,15 +26,21 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.Usuario
+import br.com.fiap.locawebmailapp.utils.byteArrayToBitmap
 
 @Composable
 fun <T> UserSelectorDalog(
@@ -42,14 +52,14 @@ fun <T> UserSelectorDalog(
     navController: NavController,
     selectedDrawerPasta: MutableState<String>
 
-    ) {
+) {
     if (openDialogUserPicker.value) {
         Dialog(onDismissRequest = { openDialogUserPicker.value = false }) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp)
-                    .padding(16.dp),
+                    .padding(5.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = colorResource(id = R.color.white)
@@ -65,17 +75,113 @@ fun <T> UserSelectorDalog(
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(5.dp)
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Button(
+                            onClick = {
+                                usuarioRepository.atualizaAutenticaUsuario(
+                                    usuarioSelecionado.value.id_usuario,
+                                    false
+                                )
+                                usuarioRepository.desselecionarUsuarioSelecionadoAtual()
+
+                                val usuariosAutenticados =
+                                    usuarioRepository.listarUsuariosAutenticados()
+
+                                if (usuariosAutenticados.isNotEmpty()) {
+                                    usuarioRepository.selecionarUsuario(usuariosAutenticados.last().id_usuario)
+                                    navController.navigate("emailmainscreen") {
+                                        popUpTo(navController.graph.startDestinationId) {
+                                            inclusive = true
+                                        }
+                                    }
+                                } else {
+                                    openDialogUserPicker.value = false
+                                    navController.navigate("loginscreen") {
+                                        popUpTo(navController.graph.startDestinationId) {
+                                            inclusive = true
+                                        }
+                                    }
+
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(colorResource(id = R.color.lcweb_red_1)),
+                            shape = RoundedCornerShape(15.dp),
+                            contentPadding = PaddingValues(5.dp)
+                        ) {
+                            Text(
+                                text = "Sair",
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                color = colorResource(id = R.color.white),
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+
+                        Button(
+                            onClick = {
+                                openDialogUserPicker.value = false
+                                navController.navigate("signupscreen")
+                            },
+                            modifier = Modifier
+                                .padding(horizontal = 5.dp),
+                            colors = ButtonDefaults.buttonColors(colorResource(id = R.color.lcweb_red_1)),
+                            shape = RoundedCornerShape(15.dp),
+                            contentPadding = PaddingValues(5.dp)
+                        ) {
+                            Text(
+                                text = "Criar conta",
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                color = colorResource(id = R.color.white),
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .padding(20.dp)
+                            .fillMaxWidth()
                     ) {
 
-                        Text(
-                            text = "IMAGEM AQUI",
-                            modifier = Modifier.padding(end = 5.dp)
+                        Image(
+                            bitmap = byteArrayToBitmap(usuarioSelecionado.value.profile_image).asImageBitmap(),
+                            contentDescription = stringResource(id = R.string.content_desc_iconregister),
+                            modifier = Modifier
+                                .size(50.dp)
+                                .clip(shape = CircleShape)
                         )
 
                         Column {
-                            Text(text = usuarioSelecionado.value.nome)
-                            Text(text = usuarioSelecionado.value.email)
+
+                            Text(
+                                text = if (usuarioSelecionado.value.nome.length > 25) {
+                                    "${
+                                        usuarioSelecionado.value.nome.take(
+                                            25
+                                        )
+                                    }..."
+                                } else {
+                                    usuarioSelecionado.value.nome
+                                }
+                            )
+                            Text(
+                                text = if (usuarioSelecionado.value.email.length > 25) {
+                                    "${
+                                        usuarioSelecionado.value.email.take(
+                                            25
+                                        )
+                                    }..."
+                                } else {
+                                    usuarioSelecionado.value.email
+                                }
+                            )
                         }
                     }
 
@@ -84,22 +190,35 @@ fun <T> UserSelectorDalog(
                     )
 
 
-                    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
                         items(usuarioRepository.listarUsuariosNaoSelecionados()) {
                             Button(
                                 onClick = {
-                                    usuarioRepository.desselecionarUsuarioSelecionadoAtual()
-                                    usuarioRepository.selecionarUsuario(it.id_usuario)
-                                    usuarioSelecionado.value = it
+                                    val usuariosAutenticados =
+                                        usuarioRepository.listarUsuariosAutenticados()
 
-                                    stateList.clear()
-                                    applyStateList()
+                                    if (usuariosAutenticados.any { usuarioAutenticado ->
+                                            usuarioAutenticado.email == it.email
+                                        }) {
+                                        openDialogUserPicker.value = false
+                                        usuarioRepository.desselecionarUsuarioSelecionadoAtual()
+                                        usuarioRepository.selecionarUsuario(it.id_usuario)
+                                        usuarioSelecionado.value = it
 
-                                    openDialogUserPicker.value = false
-                                    navController.navigate("emailmainscreen") {
-                                        popUpTo(navController.graph.startDestinationId) {
-                                            inclusive = true
+                                        stateList.clear()
+                                        applyStateList()
+
+
+                                        navController.navigate("emailmainscreen") {
+                                            popUpTo(navController.graph.startDestinationId) {
+                                                inclusive = true
+                                            }
                                         }
+                                    } else {
+                                        openDialogUserPicker.value = false
+                                        navController.navigate("loginscreen")
                                     }
                                 },
                                 modifier = Modifier.fillMaxWidth(),
@@ -111,17 +230,42 @@ fun <T> UserSelectorDalog(
                             ) {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.padding(5.dp)
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    modifier = Modifier
+                                        .padding(horizontal = 20.dp)
+                                        .fillMaxWidth()
                                 ) {
-
-                                    Text(
-                                        text = "IMAGEM AQUI",
-                                        modifier = Modifier.padding(end = 5.dp)
+                                    Image(
+                                        bitmap = byteArrayToBitmap(it.profile_image).asImageBitmap(),
+                                        contentDescription = stringResource(id = R.string.content_desc_iconregister),
+                                        modifier = Modifier
+                                            .size(50.dp)
+                                            .clip(shape = CircleShape)
                                     )
 
                                     Column {
-                                        Text(text = it.nome)
-                                        Text(text = it.email)
+                                        Text(
+                                            text = if (it.nome.length > 25) {
+                                                "${
+                                                    it.nome.take(
+                                                        25
+                                                    )
+                                                }..."
+                                            } else {
+                                                it.nome
+                                            }
+                                        )
+                                        Text(
+                                            text = if (it.email.length > 25) {
+                                                "${
+                                                    it.email.take(
+                                                        25
+                                                    )
+                                                }..."
+                                            } else {
+                                                it.email
+                                            }
+                                        )
                                     }
                                 }
                             }

@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 
 
@@ -14,7 +15,7 @@ fun pickImageFromGallery(
     context: Context,
     imageUri: Uri?,
     bitmap: MutableState<Bitmap?>,
-    bitmapList: SnapshotStateList<Bitmap>
+    bitmapList: SnapshotStateList<Bitmap> = mutableStateListOf()
 ) {
     imageUri?.let {
         val originalBitmap = if (Build.VERSION.SDK_INT < 28) {

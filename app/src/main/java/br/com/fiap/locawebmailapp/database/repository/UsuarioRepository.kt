@@ -17,9 +17,21 @@ class UsuarioRepository(context: Context) {
         return usuarioDao.listarUsuarios()
     }
 
+    fun atualizaAutenticaUsuario(id_usuario: Long, autenticado: Boolean){
+        return usuarioDao.atualizaAutenticaUsuario(id_usuario, autenticado)
+    }
+
+    fun listarUsuariosAutenticados(): List<Usuario>{
+        return usuarioDao.listarUsuariosAutenticados()
+    }
+
 
     fun retornaUsarioPorEmail(email: String): Usuario {
         return usuarioDao.retornaUsarioPorEmail(email)
+    }
+
+    fun retornaUsuarioPorId(id_usuario: Long): Usuario {
+        return usuarioDao.retornaUsuarioPorId(id_usuario)
     }
 
 
@@ -39,4 +51,6 @@ class UsuarioRepository(context: Context) {
     fun listarUsuariosNaoSelecionados(): List<Usuario> {
         return usuarioDao.listarUsuariosNaoSelecionados()
     }
+
+
 }

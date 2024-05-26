@@ -40,7 +40,7 @@ fun Day(
             .aspectRatio(1f)
             .clip(CircleShape)
             .background(
-                color = if (day.date == LocalDate.now()) colorResource(id = R.color.lcweb_gray_1)
+                color = if (day.date == LocalDate.now() && day.position == DayPosition.MonthDate) colorResource(id = R.color.lcweb_gray_1)
                 else if (selectedDate && day.position == DayPosition.MonthDate) colorResource(
                     id = R.color.lcweb_gray_2
                 )
