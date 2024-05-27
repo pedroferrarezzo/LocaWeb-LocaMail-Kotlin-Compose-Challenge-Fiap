@@ -93,6 +93,10 @@ class EmailRepository(context: Context) {
         return emailDao.listarEmailsImportantesPorIdUsuario(id_usuario)
     }
 
+    fun listarEmailsAi(id_usuario: Long): List<EmailComAlteracao> {
+        return emailDao.listarEmailsAi(id_usuario)
+    }
+
     fun listarEmailsArquivadosPorIdUsuario(id_usuario: Long): List<EmailComAlteracao> {
         return emailDao.listarEmailsArquivadosPorIdUsuario(id_usuario)
     }

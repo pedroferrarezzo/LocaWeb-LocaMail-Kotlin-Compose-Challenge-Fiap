@@ -196,13 +196,14 @@ fun <T> UserSelectorDalog(
                         items(usuarioRepository.listarUsuariosNaoSelecionados()) {
                             Button(
                                 onClick = {
+                                    openDialogUserPicker.value = false
                                     val usuariosAutenticados =
                                         usuarioRepository.listarUsuariosAutenticados()
 
                                     if (usuariosAutenticados.any { usuarioAutenticado ->
                                             usuarioAutenticado.email == it.email
                                         }) {
-                                        openDialogUserPicker.value = false
+
                                         usuarioRepository.desselecionarUsuarioSelecionadoAtual()
                                         usuarioRepository.selecionarUsuario(it.id_usuario)
                                         usuarioSelecionado.value = it
@@ -210,14 +211,12 @@ fun <T> UserSelectorDalog(
                                         stateList.clear()
                                         applyStateList()
 
-
                                         navController.navigate("emailmainscreen") {
                                             popUpTo(navController.graph.startDestinationId) {
                                                 inclusive = true
                                             }
                                         }
                                     } else {
-                                        openDialogUserPicker.value = false
                                         navController.navigate("loginscreen")
                                     }
                                 },

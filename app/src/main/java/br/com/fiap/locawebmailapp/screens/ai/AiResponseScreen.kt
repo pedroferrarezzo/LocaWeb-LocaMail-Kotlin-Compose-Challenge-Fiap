@@ -93,8 +93,8 @@ fun AiResponseScreen(
                 val apiToken = BuildConfig.API_KEY
 
                 textRequestResponse.text =
-                    "${question.pergunta}\n" +
-                            "A pergunta acima deve ser respondida com base no email abaixo:\n" +
+                    "Pergunta: ${question.pergunta}\n" +
+                            "Email relacionado a pergunta acima:\n"+
                             "De: ${email.remetente}\n" +
                             "Para: ${email.destinatario}\n" +
                             "Cc: ${email.cc}\n" +
@@ -102,8 +102,10 @@ fun AiResponseScreen(
                             "Assunto: ${email.assunto}\n" +
                             "Corpo: ${email.corpo}\n" +
                             "\n" +
-                            "**OBSERVAÇÃO: Sinta-se a vontade para responder qualquer pergunta relacionada ao email acima. Porém\n" +
-                            "Quaisquer perguntas que fujam desta temática devem ser ignoradas e respondidas com uma resposta padrão explicando" +
+                            "**OBSERVAÇÃO: \n" +
+                            "- Caso a pergunta esteja correlacionada ao contexto de email acima, responda;\n" +
+                            "- Não restrinja a resposta apenas as informações contidas no email acima, se ele não possuir tais informações, responda você;\n" +
+                            "**Quaisquer outras perguntas que fujam dos critérios acima devem ser ignoradas e respondidas com uma resposta padrão explicando\n" +
                             "que o seu uso se restringe a este contexto.\n"
                 parts.parts = listOf(textRequestResponse)
                 geminiRequest.contents = listOf(parts)
@@ -229,7 +231,7 @@ fun AiResponseScreen(
                                 Column(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .padding(horizontal = 10.dp)
+                                        .padding(10.dp)
                                 ) {
                                     val parser = CommonmarkAstNodeParser(
                                         options = MarkdownParseOptions(true)

@@ -76,7 +76,10 @@ fun VisualizaEmailScreen(
     }
 
 
-    val agendaEmailList = agendaRepository.listarAgendaPorIdEmailEIdUsuario(idEmail, usuarioSelecionado.value.id_usuario)
+    val agendaEmailList = agendaRepository.listarAgendaPorIdEmailEIdUsuario(
+        idEmail,
+        usuarioSelecionado.value.id_usuario
+    )
     val agendaEmailStateList = agendaEmailList.toMutableStateList()
 
 

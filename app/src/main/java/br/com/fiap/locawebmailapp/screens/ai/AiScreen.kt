@@ -57,6 +57,10 @@ fun AiScreen(navController: NavController) {
         mutableStateOf("11")
     }
 
+    val idEmail = remember {
+        mutableStateOf(0L)
+    }
+
     val selectedDrawerPasta = remember {
         mutableStateOf("")
     }
@@ -115,10 +119,8 @@ fun AiScreen(navController: NavController) {
     }
 
     val receivedEmailList =
-        emailRepository.listarEmailsPorDestinatario(
-            usuarioSelecionado.value.email,
-            usuarioSelecionado.value.id_usuario,
-            respostaEmailRepository
+        emailRepository.listarEmailsAi(
+            usuarioSelecionado.value.id_usuario
         )
 
     val listPastaState = remember {
@@ -131,7 +133,6 @@ fun AiScreen(navController: NavController) {
     val attachEmailList = anexoRepository.listarAnexosIdEmail()
 
     val redLcWeb = colorResource(id = R.color.lcweb_red_1)
-    val toastMessageMailMovedFolder = stringResource(id = R.string.toast_mail_moved_folder)
     val toastMessageFolderDeleted = stringResource(id = R.string.toast_folder_deleted)
 
     ModalNavDrawer(
@@ -229,6 +230,7 @@ fun AiScreen(navController: NavController) {
                                         }
 
                                         openQuestionDialog.value = true
+                                        idEmail.value = it.email.id_email
                                     },
                                     isRead = isRead,
                                     redLcWeb = redLcWeb,
@@ -243,22 +245,20 @@ fun AiScreen(navController: NavController) {
                                     },
                                     isImportant = isImportant,
                                     attachEmailList = attachEmailList,
-                                    listPastaState = listPastaState,
                                     timeState = timeState,
-                                    openDialogPastaPicker = openDialogPastaPicker,
                                     email = it
                                 )
                             }
-
-                            QuestionDialog(
-                                openQuestionDialog = openQuestionDialog ,
-                                question = question,
-                                aiQuestionRepository = aiQuestionRepository,
-                                idEmail = it.email.id_email,
-                                navController = navController
-                            )
                         }
                     }
+
+                    QuestionDialog(
+                        openQuestionDialog = openQuestionDialog ,
+                        question = question,
+                        aiQuestionRepository = aiQuestionRepository,
+                        idEmail = idEmail.value,
+                        navController = navController
+                    )
                 }
             }
         }
