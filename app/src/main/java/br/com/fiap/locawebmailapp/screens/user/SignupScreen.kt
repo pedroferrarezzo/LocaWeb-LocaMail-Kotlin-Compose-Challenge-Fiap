@@ -120,6 +120,23 @@ fun SignupScreen(navController: NavController) {
     val alteracaoRepository = AlteracaoRepository(context)
 
     val toastMessageRegisterUserCreated = stringResource(id = R.string.toast_register_createduser)
+    val welcomeSubject = stringResource(id = R.string.register_email_welcome)
+    val hello = stringResource(id = R.string.register_email_hi)
+    val messageFirstLine = stringResource(id = R.string.register_email_first)
+    val messageSecondLine = stringResource(id = R.string.register_email_second)
+    val messageThirdLine = stringResource(id = R.string.register_email_third)
+    val messageFourthLine = stringResource(id = R.string.email_register_fourth)
+    val messageFifthLine = stringResource(id = R.string.email_register_fifth)
+    val messageSixthLine = stringResource(id = R.string.email_register_sixth)
+    val messageSeventhLine = stringResource(id = R.string.email_register_seventh)
+    val messageEighthLine = stringResource(id = R.string.email_register_eighth)
+    val messageNinthLine = stringResource(id = R.string.email_register_ninth)
+    val messageTenthLine = stringResource(id = R.string.email_register_tenth)
+    val messageEleventhLine = stringResource(id = R.string.email_register_eleventh)
+    val messageTwelfthLine = stringResource(id = R.string.email_register_twelfth)
+    val messageNote = stringResource(id = R.string.email_register_note)
+    val messageThirteenthLine = stringResource(id = R.string.email_register_thirteenth)
+    val messageFourteenthLine = stringResource(id = R.string.email_register_fourteenth)
 
     Column(
         modifier = Modifier
@@ -368,23 +385,23 @@ fun SignupScreen(navController: NavController) {
                                 id_usuario = usuarioCriado.id_usuario,
                                 remetente = "dev@locaweb.com.br",
                                 destinatario = usuarioCriado.email,
-                                assunto = "Bem vindo! - LocaMail",
-                                corpo = "Olá ${usuarioCriado.nome}!\n" +
-                                        "Bem vindo ao LocaMail. Seu aplicativo de emails para celular.\n" +
-                                        "Com o LocaMail você pode enviar e receber emails de qualquer dispositivo.\n" +
-                                        "Um passo a passo para testar algumas funcionalidades do App: \n" +
-                                        "- Crie mais de uma conta;\n" +
-                                        "- Envie um email para a conta criada;\n" +
-                                        "- Acesse a conta criada, visualize o email na caixa de entrada e responda-o;\n" +
-                                        "- Respostas de email e emails são salvos como rascunho automaticamente se não enviados;\n" +
-                                        "- Favorite emails, marque como spam, arquivado, crie pastas de organização, exclua...;\n" +
-                                        "- Crie tarefas no calendário, ou eventos;\n" +
-                                        "- Ao criar eventos e especificar convidados, marque para enviar um convite por email e o aceite acessando a conta convidada! Ao aceitar, o evento será criado automaticamente no calendário do convidado;\n" +
-                                        "- Convites de email são automaticamente categorizados como emails sociais;\n" +
-                                        "- Teste a integração com a API do Google elaborando um prompt de pergunta sobre algum email enviado/recebido;" +
-                                        "Observação:\n" +
-                                        "Todo o fluxo de email e calendário foram projetados para funcionar sem internet, contudo, para testar a IA é necessário!\n" +
-                                        "Caso ao tentar usar a IA receba a resposta que a API está com problemas, algo pode ter acontecido com o Token utilizado (que é gratuito). Nesta caso, veja ela funcionando no vídeo descrito na apresentação.",
+                                assunto = welcomeSubject,
+                                corpo = "$hello ${usuarioCriado.nome}!\n" +
+                                        "$messageFirstLine\n" +
+                                        "$messageSecondLine\n" +
+                                        "$messageThirdLine \n" +
+                                        "$messageFourthLine\n" +
+                                        "$messageFifthLine\n" +
+                                        "$messageSixthLine\n\n" +
+                                        "$messageSeventhLine\n" +
+                                        "$messageEighthLine\n" +
+                                        "$messageNinthLine\n" +
+                                        "$messageTenthLine\n" +
+                                        "$messageEleventhLine\n" +
+                                        "$messageTwelfthLine\n" +
+                                        "$messageNote\n" +
+                                        "$messageThirteenthLine\n" +
+                                        messageFourteenthLine,
                                 editavel = false,
                                 enviado = true
 
@@ -405,7 +422,8 @@ fun SignupScreen(navController: NavController) {
                                 .show()
                             navController.popBackStack()
                         } else {
-                            Toast.makeText(context, toastMessageAlreadyExistUser, Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, toastMessageAlreadyExistUser, Toast.LENGTH_LONG)
+                                .show()
                         }
                     }
                 },

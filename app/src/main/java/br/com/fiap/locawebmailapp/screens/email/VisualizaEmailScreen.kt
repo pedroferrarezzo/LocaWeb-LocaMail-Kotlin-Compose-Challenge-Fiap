@@ -26,7 +26,7 @@ import br.com.fiap.locawebmailapp.database.repository.EmailRepository
 import br.com.fiap.locawebmailapp.database.repository.RespostaEmailRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.utils.atualizarIsImportantParaUsuariosRelacionados
-import br.com.fiap.locawebmailapp.utils.atualizarTodosDestinatarios
+import br.com.fiap.locawebmailapp.utils.atualizarTodosDestinatariosList
 import br.com.fiap.locawebmailapp.utils.atualizarisArchiveParaUsuariosRelacionados
 import br.com.fiap.locawebmailapp.utils.atualizarisExcluidoParaUsuariosRelacionados
 import br.com.fiap.locawebmailapp.utils.atualizarisSpamParaUsuariosRelacionados
@@ -108,7 +108,7 @@ fun VisualizaEmailScreen(
 
 
     if (isTodasContasScreen) {
-        atualizarTodosDestinatarios(
+        atualizarTodosDestinatariosList(
             todosDestinatarios,
             email,
             respostasEmailList

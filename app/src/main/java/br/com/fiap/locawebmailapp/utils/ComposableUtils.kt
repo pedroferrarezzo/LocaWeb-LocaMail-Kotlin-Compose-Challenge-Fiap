@@ -1,14 +1,10 @@
 package br.com.fiap.locawebmailapp.utils
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import br.com.fiap.locawebmailapp.R
-import br.com.fiap.locawebmailapp.database.repository.ConvidadoRepository
-import br.com.fiap.locawebmailapp.model.Convidado
-import br.com.fiap.locawebmailapp.model.IdConvidado
 
 @Composable
 fun returnColor(option: Int): Color {
@@ -23,26 +19,15 @@ fun returnColor(option: Int): Color {
     return color
 }
 
+
+@Composable
 fun returnStringRepeatOption(option: Int): String {
     var stringOption = ""
     when (option) {
-        1 -> stringOption = "Não repetir"
-        2 -> stringOption = "Todos os dias"
+        1 -> stringOption = stringResource(id = R.string.calendar_options_not_repeat)
+        2 -> stringOption = stringResource(id = R.string.calendar_options_every_day_repeat)
     }
 
     return stringOption
 }
 
-fun returnListConvidado(
-    listIdConvidado: List<IdConvidado>,
-    convidadoRepository: ConvidadoRepository
-): SnapshotStateList<Convidado> {
-
-    val list = mutableStateListOf<Convidado>()
-
-    for (id in listIdConvidado) {
-        list.add(convidadoRepository.listarConvidadoPorId(id.id_convidado))
-    }
-
-    return list
-}

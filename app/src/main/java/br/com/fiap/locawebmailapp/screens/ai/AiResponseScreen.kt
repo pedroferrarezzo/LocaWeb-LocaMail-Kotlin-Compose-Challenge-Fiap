@@ -93,20 +93,21 @@ fun AiResponseScreen(
                 val apiToken = BuildConfig.API_KEY
 
                 textRequestResponse.text =
-                    "Pergunta: ${question.pergunta}\n" +
-                            "Email relacionado a pergunta acima:\n"+
-                            "De: ${email.remetente}\n" +
-                            "Para: ${email.destinatario}\n" +
+                    "Question: ${question.pergunta}\n" +
+                            "Email related to the question above:\n"+
+                            "From: ${email.remetente}\n" +
+                            "To: ${email.destinatario}\n" +
                             "Cc: ${email.cc}\n" +
                             "Cco: ${email.cco}\n" +
-                            "Assunto: ${email.assunto}\n" +
-                            "Corpo: ${email.corpo}\n" +
+                            "Subject: ${email.assunto}\n" +
+                            "Body: ${email.corpo}\n" +
                             "\n" +
-                            "**OBSERVAÇÃO: \n" +
-                            "- Caso a pergunta esteja correlacionada ao contexto de email acima, responda;\n" +
-                            "- Não restrinja a resposta apenas as informações contidas no email acima, se ele não possuir tais informações, responda você;\n" +
-                            "**Quaisquer outras perguntas que fujam dos critérios acima devem ser ignoradas e respondidas com uma resposta padrão explicando\n" +
-                            "que o seu uso se restringe a este contexto.\n"
+                            "**OBSERVATION: \n" +
+                            "- Your answer must be given in the same language used in the question;\n"+
+                            "- If the question is related to the email context above, respond;\n" +
+                            "- Do not restrict the response to just the information contained in the email above, if it does not contain such information, respond yourself;\n" +
+                            "**Any other questions that fall outside the above criteria should be ignored and answered with a standard answer explaining\n" +
+                            "that its use is restricted to this context.\n"
                 parts.parts = listOf(textRequestResponse)
                 geminiRequest.contents = listOf(parts)
                 geminiResponse.value =
@@ -195,13 +196,13 @@ fun AiResponseScreen(
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.aiworking),
-                        contentDescription = "",
+                        contentDescription = stringResource(id = R.string.content_desc_ai_working),
                         modifier = Modifier
                             .width(130.dp)
                             .height(130.dp)
                     )
                     Text(
-                        text = "Analisei o email \n para você:",
+                        text = "${stringResource(id = R.string.ai_analyse_first)} \n ${stringResource(id = R.string.ai_analyse_second)}",
                         fontSize = 30.sp,
                         color = colorResource(id = R.color.lcweb_gray_1),
                         fontWeight = FontWeight.Bold

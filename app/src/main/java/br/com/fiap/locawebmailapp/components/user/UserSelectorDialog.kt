@@ -113,7 +113,7 @@ fun <T> UserSelectorDalog(
                             contentPadding = PaddingValues(5.dp)
                         ) {
                             Text(
-                                text = "Sair",
+                                text = stringResource(id = R.string.user_dialog_exit),
                                 modifier = Modifier.align(Alignment.CenterVertically),
                                 color = colorResource(id = R.color.white),
                                 fontSize = 12.sp,
@@ -133,7 +133,7 @@ fun <T> UserSelectorDalog(
                             contentPadding = PaddingValues(5.dp)
                         ) {
                             Text(
-                                text = "Criar conta",
+                                text = stringResource(id = R.string.user_dialog_create),
                                 modifier = Modifier.align(Alignment.CenterVertically),
                                 color = colorResource(id = R.color.white),
                                 fontSize = 12.sp,

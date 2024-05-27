@@ -1,6 +1,5 @@
 package br.com.fiap.locawebmailapp.components.ai
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,9 +30,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.database.repository.AiQuestionRepository
-import br.com.fiap.locawebmailapp.database.repository.PastaRepository
-import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
-import br.com.fiap.locawebmailapp.model.Pasta
 import br.com.fiap.locawebmailapp.model.ai.AiQuestion
 
 @Composable
@@ -78,7 +73,7 @@ fun QuestionDialog(
                             )
                         },
                         placeholder = {
-                            Text(text = "Escreva sua pergunta sobre este email")
+                            Text(text = stringResource(id = R.string.question_dialog_placeholder))
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -128,7 +123,7 @@ fun QuestionDialog(
                             navController.navigate("airesponsescreen/${idEmail}/${rowId}")
                             question.value = ""
                         }) {
-                            Text(text = "Perguntar", color = colorResource(id = R.color.lcweb_red_1))
+                            Text(text = stringResource(id = R.string.question_dialog_ask), color = colorResource(id = R.color.lcweb_red_1))
                         }
                     }
                 }

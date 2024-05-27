@@ -37,7 +37,7 @@ import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
 import br.com.fiap.locawebmailapp.model.EmailComAlteracao
 import br.com.fiap.locawebmailapp.model.Pasta
 import br.com.fiap.locawebmailapp.utils.atualizarIsImportantParaUsuariosRelacionados
-import br.com.fiap.locawebmailapp.utils.atualizarTodosDestinatarios
+import br.com.fiap.locawebmailapp.utils.atualizarTodosDestinatariosList
 import br.com.fiap.locawebmailapp.utils.atualizarisReadParaUsuariosRelacionados
 import br.com.fiap.locawebmailapp.utils.stringParaLista
 
@@ -168,7 +168,7 @@ fun EmailTodasContasScreen(navController: NavController) {
                                 val respostasEmailList =
                                     respostaEmailRepository.listarRespostasEmailPorIdEmail(id_email = it.email.id_email)
 
-                                atualizarTodosDestinatarios(
+                                atualizarTodosDestinatariosList(
                                     todosDestinatarios,
                                     it.email,
                                     respostasEmailList

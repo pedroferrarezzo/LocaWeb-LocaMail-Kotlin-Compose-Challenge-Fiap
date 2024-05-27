@@ -160,5 +160,34 @@
     <string name="toast_not_exist_email">O email não existe</string>
     <string name="user_name_required">O nome é obrigatório</string>
     <string name="toast_already_exist_user">O usuário já existe</string>
+    <string name="content_desc_aianalyse">Imagem de uma inteligência artificial analisando</string>
+    <string name="ai_analyse_first">Analise o email</string>
+    <string name="ai_analyse_second">para você</string>
+    <string name="content_desc_ai_working">Imagem de uma IA trabalhando</string>
+    <string name="ai_summary">Resuma um email rapidamente</string>
+    <string name="ai_main_topics">Conheça os tópicos principais</string>
+    <string name="register_email_welcome">Bem-vindo! - LocaMail</string>
+    <string name="register_email_hi">Olá</string>
+    <string name="register_email_first">Bem-vindo ao LocaMail. Seu aplicativo de emails para celular.</string>
+    <string name="register_email_second">Com o LocaMail você pode enviar e receber emails de qualquer dispositivo.</string>
+    <string name="register_email_third">Passo a passo para testar algumas funcionalidades do App:</string>
+    <string name="email_register_fourth">- Crie mais de uma conta;</string>
+    <string name="email_register_fifth">- Envie um email para a conta criada;</string>
+    <string name="email_register_sixth">- Acesse a conta criada, visualize o email na caixa de entrada e responda-o;</string>
+    <string name="email_register_seventh">- Respostas de email e emails são salvos como rascunho automaticamente se não enviados;</string>
+    <string name="email_register_eighth">- Favorite emails, marque como spam, arquivado, crie pastas de organização, exclua…;</string>
+    <string name="email_register_ninth">- Crie tarefas no calendário, ou eventos;</string>
+    <string name="email_register_tenth">- Ao criar eventos e especificar convidados, marque para enviar um convite por email e o aceite acessando a conta convidada! Ao aceitar, o evento será criado automaticamente no calendário do convidado;</string>
+    <string name="email_register_eleventh">- Convites de email são automaticamente categorizados como emails sociais;</string>
+    <string name="email_register_twelfth">- Teste a integração com a API do Google elaborando um prompt de pergunta sobre algum email enviado/recebido;</string>
+    <string name="email_register_note">Observação:</string>
+    <string name="email_register_thirteenth">Todo o fluxo de email e calendário foram projetados para funcionar sem internet, contudo, para testar a IA é necessário!</string>
+    <string name="email_register_fourteenth">Caso ao tentar usar a IA receba a resposta que a API está com problemas, algo pode ter acontecido com o Token utilizado (que é gratuito). Nesta caso, veja ela funcionando no vídeo descrito na apresentação.</string>
+    <string name="user_dialog_exit">Sair</string>
+    <string name="user_dialog_create">Criar conta</string>
+    <string name="question_dialog_ask">Perguntar</string>
+    <string name="question_dialog_placeholder">Escreva sua pergunta sobre este email</string>
+    <string name="calendar_options_not_repeat">Não repetir</string>
+    <string name="calendar_options_every_day_repeat">Todos os dias</string>
 
 </resources>
