@@ -149,5 +149,16 @@
     <string name="register_screen_return">Voltar</string>
     <string name="register_screen_pickimage">Abrir galeria</string>
     <string name="toast_register_createduser">Usuário criado</string>
+    <string name="content_desc_eye_slash">Imagem de um olho cortado com uma barra</string>
+    <string name="content_desc_eye">Imagem de um olho</string>
+    <string name="user_email_required">O email é obrigatório</string>
+    <string name="user_password_required">A senha é obrigatória</string>
+    <string name="user_email_format">O email deve estar no formato correto (Ex: user@email.com)</string>
+    <string name="user_password_length">A senha deve ter no mínimo oito caractéres</string>
+    <string name="user_password_format">A senha deve ter pelo menos um caractére minúsculo, maiúsculo, número e caractere especial</string>
+    <string name="toast_wrong_password">Senha incorreta</string>
+    <string name="toast_not_exist_email">O email não existe</string>
+    <string name="user_name_required">O nome é obrigatório</string>
+    <string name="toast_already_exist_user">O usuário já existe</string>
 
 </resources>

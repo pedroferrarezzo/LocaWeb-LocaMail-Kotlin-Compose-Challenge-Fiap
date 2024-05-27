@@ -93,6 +93,8 @@ fun SignupScreen(navController: NavController) {
         )
     }
 
+    val toastMessageAlreadyExistUser = stringResource(id = R.string.toast_already_exist_user)
+
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
             imageUri = uri
@@ -262,13 +264,13 @@ fun SignupScreen(navController: NavController) {
                         if (passwordVisibility.value) {
                             Icon(
                                 painter = painterResource(id = R.drawable.eye_slash_regular),
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_eye_slash),
                                 modifier = Modifier.size(20.dp)
                             )
                         } else {
                             Icon(
                                 painter = painterResource(id = R.drawable.eye_regular),
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_eye),
                                 Modifier.size(20.dp)
                             )
                         }
@@ -290,23 +292,23 @@ fun SignupScreen(navController: NavController) {
             if (isErrorPassword.value || isErrorEmail.value || isErrorNome.value) {
                 if (nome == "") {
                     Text(
-                        text = "O nome é obrigatório",
+                        text = stringResource(id = R.string.user_name_required),
                         color = colorResource(id = R.color.lcweb_red_1)
                     )
 
                 } else if (email == "") {
                     Text(
-                        text = "O email é obrigatório",
+                        text = stringResource(id = R.string.user_email_required),
                         color = colorResource(id = R.color.lcweb_red_1)
                     )
                 } else if (senha == "") {
                     Text(
-                        text = "A senha é obrigatória",
+                        text = stringResource(id = R.string.user_password_required),
                         color = colorResource(id = R.color.lcweb_red_1)
                     )
                 } else if (!validateEmail(email)) {
                     Text(
-                        text = "O email deve estar no formato correto (Ex: user@email.com)",
+                        text = stringResource(id = R.string.user_email_format),
                         color = colorResource(id = R.color.lcweb_red_1),
                         fontSize = 12.sp,
                         textAlign = TextAlign.Center
@@ -314,12 +316,12 @@ fun SignupScreen(navController: NavController) {
 
                 } else if (senha.length < 8) {
                     Text(
-                        text = "A senha deve ter no mínimo oito caractéres",
+                        text = stringResource(id = R.string.user_password_length),
                         color = colorResource(id = R.color.lcweb_red_1)
                     )
                 } else if (!validatePassword(password = senha)) {
                     Text(
-                        text = "A senha deve ter um caractéres minúsculo, maiúsculo, um número e um caractere especial",
+                        text = stringResource(id = R.string.user_password_format),
                         color = colorResource(id = R.color.lcweb_red_1),
                         fontSize = 12.sp,
                         textAlign = TextAlign.Center
@@ -370,18 +372,17 @@ fun SignupScreen(navController: NavController) {
                                 corpo = "Olá ${usuarioCriado.nome}!\n" +
                                         "Bem vindo ao LocaMail. Seu aplicativo de emails para celular.\n" +
                                         "Com o LocaMail você pode enviar e receber emails de qualquer dispositivo.\n" +
-                                        "Aproveite para criar tarefas em seu calendário, ou eventos que podem ser enviados como convite para convidados!\n" +
-                                        "Aproveite a integração com a IA do Google (Gemini), com a Loca Assistente você poderá obter resumos e os pontos principais de e-mails recebidos!\n" +
-                                        "Para testar o app: \n" +
+                                        "Um passo a passo para testar algumas funcionalidades do App: \n" +
                                         "- Crie mais de uma conta;\n" +
                                         "- Envie um email para a conta criada;\n" +
-                                        "- Responda o email acessando a conta criada;\n" +
+                                        "- Acesse a conta criada, visualize o email na caixa de entrada e responda-o;\n" +
                                         "- Respostas de email e emails são salvos como rascunho automaticamente se não enviados;\n" +
                                         "- Favorite emails, marque como spam, arquivado, crie pastas de organização, exclua...;\n" +
                                         "- Crie tarefas no calendário, ou eventos;\n" +
-                                        "- Ao criar eventos e especificar convidados, marque para enviar um convite por email e aceite na conta destinatária! Ao aceitar evento será criado automaticamente no calendário dela;\n" +
-                                        "- Convites de email são automaticamente categorizados como Sociais;\n" +
-                                        "- Teste a integração com a API do Google elaborando um prompt de pergunta;\n" +
+                                        "- Ao criar eventos e especificar convidados, marque para enviar um convite por email e o aceite acessando a conta convidada! Ao aceitar, o evento será criado automaticamente no calendário do convidado;\n" +
+                                        "- Convites de email são automaticamente categorizados como emails sociais;\n" +
+                                        "- Teste a integração com a API do Google elaborando um prompt de pergunta sobre algum email enviado/recebido;" +
+                                        "Observação:\n" +
                                         "Todo o fluxo de email e calendário foram projetados para funcionar sem internet, contudo, para testar a IA é necessário!\n" +
                                         "Caso ao tentar usar a IA receba a resposta que a API está com problemas, algo pode ter acontecido com o Token utilizado (que é gratuito). Nesta caso, veja ela funcionando no vídeo descrito na apresentação.",
                                 editavel = false,
@@ -396,12 +397,15 @@ fun SignupScreen(navController: NavController) {
                                     alt_id_usuario = usuarioCriado.id_usuario
                                 )
                             )
-                            Toast.makeText(context, toastMessageRegisterUserCreated, Toast.LENGTH_LONG)
+                            Toast.makeText(
+                                context,
+                                toastMessageRegisterUserCreated,
+                                Toast.LENGTH_LONG
+                            )
                                 .show()
                             navController.popBackStack()
-                        }
-                        else {
-                            Toast.makeText(context, "Usuário já existe", Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(context, toastMessageAlreadyExistUser, Toast.LENGTH_LONG).show()
                         }
                     }
                 },

@@ -148,4 +148,15 @@
     <string name="register_screen_return">Return</string>
     <string name="register_screen_pickimage">Open Gallery</string>
     <string name="toast_register_createduser">User created</string>
+    <string name="content_desc_eye">Eye image</string>
+    <string name="content_desc_eye_slash">Slash Eye Image</string>
+    <string name="user_email_required">Email is mandatory</string>
+    <string name="user_password_required">Password is mandatory</string>
+    <string name="user_email_format">The email must be in the correct format (Ex: user@email.com)</string>
+    <string name="user_password_length">The password must be at least eight characters long</string>
+    <string name="user_password_format">The password must have at least one lowercase character, uppercase character, number and special character</string>
+    <string name="toast_wrong_password">Incorrect password</string>
+    <string name="toast_not_exist_email">Email does not exist</string>
+    <string name="user_name_required">Name is mandatory</string>
+    <string name="toast_already_exist_user">The user already exists</string>
 </resources>

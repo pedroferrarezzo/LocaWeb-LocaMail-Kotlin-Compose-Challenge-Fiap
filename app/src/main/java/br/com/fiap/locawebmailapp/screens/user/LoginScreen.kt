@@ -40,11 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
-import br.com.fiap.locawebmailapp.database.repository.AlteracaoRepository
-import br.com.fiap.locawebmailapp.database.repository.EmailRepository
 import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
-import br.com.fiap.locawebmailapp.model.Alteracao
-import br.com.fiap.locawebmailapp.model.Email
 import br.com.fiap.locawebmailapp.utils.generateSha256
 import br.com.fiap.locawebmailapp.utils.validateEmail
 import br.com.fiap.locawebmailapp.utils.validatePassword
@@ -71,6 +67,10 @@ fun LoginScreen(navController: NavController) {
     }
     val passwordVisibility = remember { mutableStateOf(false) }
     val usuarioRepository = UsuarioRepository(context)
+
+
+    val toastMessageNotExistEmail = stringResource(id = R.string.toast_not_exist_email)
+    val toastMessageIncorrectPassword = stringResource(id = R.string.toast_wrong_password)
 
 
 
@@ -177,13 +177,13 @@ fun LoginScreen(navController: NavController) {
                         if (passwordVisibility.value) {
                             Icon(
                                 painter = painterResource(id = R.drawable.eye_slash_regular),
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_eye_slash),
                                 modifier = Modifier.size(20.dp)
                             )
                         } else {
                             Icon(
                                 painter = painterResource(id = R.drawable.eye_regular),
-                                contentDescription = "",
+                                contentDescription = stringResource(id = R.string.content_desc_eye),
                                 Modifier.size(20.dp)
                             )
                         }
@@ -209,29 +209,29 @@ fun LoginScreen(navController: NavController) {
         if (isErrorPassword.value || isErrorEmail.value) {
             if (email == "") {
                 Text(
-                    text = "O email é obrigatório",
+                    text = stringResource(id = R.string.user_email_required),
                     color = colorResource(id = R.color.lcweb_red_1)
                 )
             } else if (password == "") {
                 Text(
-                    text = "A senha é obrigatória",
+                    text = stringResource(id = R.string.user_password_required),
                     color = colorResource(id = R.color.lcweb_red_1)
                 )
             } else if (!validateEmail(email)) {
                 Text(
-                    text = "O email deve estar no formato correto (Ex: user@email.com)",
+                    text = stringResource(id = R.string.user_email_format),
                     color = colorResource(id = R.color.lcweb_red_1),
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center
                 )
             } else if (password.length < 8) {
                 Text(
-                    text = "A senha deve ter no mínimo oito caractéres",
+                    text = stringResource(id = R.string.user_password_length),
                     color = colorResource(id = R.color.lcweb_red_1)
                 )
             } else if (!validatePassword(password = password)) {
                 Text(
-                    text = "A senha deve ter um caractéres minúsculo, maiúsculo, um número e um caractere especial",
+                    text = stringResource(id = R.string.user_password_format),
                     color = colorResource(id = R.color.lcweb_red_1),
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center
@@ -269,12 +269,12 @@ fun LoginScreen(navController: NavController) {
                         }
                         else {
                             isErrorPassword.value = true
-                            Toast.makeText(context, "Senha incorreta!", Toast.LENGTH_LONG)
+                            Toast.makeText(context, toastMessageIncorrectPassword, Toast.LENGTH_LONG)
                                 .show()
                         }
                     } else {
                         isErrorEmail.value = true
-                        Toast.makeText(context, "O email não existe!", Toast.LENGTH_LONG)
+                        Toast.makeText(context, toastMessageNotExistEmail, Toast.LENGTH_LONG)
                             .show()
 
                     }
