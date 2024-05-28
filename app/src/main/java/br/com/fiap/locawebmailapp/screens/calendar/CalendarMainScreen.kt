@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -53,6 +54,7 @@ import br.com.fiap.locawebmailapp.model.Pasta
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.daysOfWeek
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -180,6 +182,8 @@ fun CalendarMainScreen(navController: NavController, data: LocalDate = LocalDate
                     selectedDrawerPasta = selectedDrawerPasta,
                     navController = navController
                 )
+
+
 
                 Calendar(
                     stateHorizontalCalendar = stateHorizontalCalendar,

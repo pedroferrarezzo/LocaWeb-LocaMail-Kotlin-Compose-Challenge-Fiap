@@ -189,5 +189,8 @@
     <string name="question_dialog_placeholder">Escreva sua pergunta sobre este email</string>
     <string name="calendar_options_not_repeat">Não repetir</string>
     <string name="calendar_options_every_day_repeat">Todos os dias</string>
+    <string name="content_desc_recyclinimage">Imagem de um homem colocando lixo</string>
+    <string name="content_desc_nomailimage">"Imagem de uma caixa de emails "</string>
+    <string name="ai_language">Português PT-BR</string>
 
 </resources>

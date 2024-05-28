@@ -217,7 +217,7 @@ fun EmailsFavoritosScreen(navController: NavController) {
             if (favoriteStateEmailLst.isEmpty()) {
                 Image(
                     painter = painterResource(id = R.drawable.messagereceived),
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.content_desc_nomailimage),
                     modifier = Modifier
                         .size(250.dp)
                         .align(Alignment.Center)

@@ -188,4 +188,7 @@
     <string name="question_dialog_placeholder">Write your question on this email</string>
     <string name="calendar_options_not_repeat">Do not repeat</string>
     <string name="calendar_options_every_day_repeat">Every day</string>
+    <string name="content_desc_recyclinimage">Image of a man putting out trash</string>
+    <string name="content_desc_nomailimage">Image of an email box</string>
+    <string name="ai_language">English EUA</string>
 </resources>

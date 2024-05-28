@@ -80,6 +80,7 @@ fun AiResponseScreen(
     }
 
     val toastMessageAiWait = stringResource(id = R.string.toast_mail_ai_wait)
+    val aiLanguage = stringResource(id = R.string.ai_language)
 
     LaunchedEffect(key1 = Unit) {
         try {
@@ -93,21 +94,19 @@ fun AiResponseScreen(
                 val apiToken = BuildConfig.API_KEY
 
                 textRequestResponse.text =
-                    "Question: ${question.pergunta}\n" +
-                            "Email related to the question above:\n"+
-                            "From: ${email.remetente}\n" +
-                            "To: ${email.destinatario}\n" +
-                            "Cc: ${email.cc}\n" +
-                            "Cco: ${email.cco}\n" +
-                            "Subject: ${email.assunto}\n" +
-                            "Body: ${email.corpo}\n" +
-                            "\n" +
-                            "**OBSERVATION: \n" +
-                            "- Your answer must be given in the same language used in the question;\n"+
-                            "- If the question is related to the email context above, respond;\n" +
-                            "- Do not restrict the response to just the information contained in the email above, if it does not contain such information, respond yourself;\n" +
-                            "**Any other questions that fall outside the above criteria should be ignored and answered with a standard answer explaining\n" +
-                            "that its use is restricted to this context.\n"
+                "Pergunta: ${question.pergunta}\n" +
+                        "Email:\n"+
+                        "De: ${email.remetente}\n" +
+                        "Para: ${email.destinatario}\n" +
+                        "Cc: ${email.cc}\n" +
+                        "Cco: ${email.cco}\n" +
+                        "Assunto: ${email.assunto}\n" +
+                        "Corpo: ${email.corpo}\n" +
+                        "\n" +
+                        "**OBSERVAÇÃO: \n" +
+                        "- Sua resposta deve ser baseada no email acima;\n" +
+                        "- Sua resposta deve ser fornecida no idioma: $aiLanguage;\n" +
+                        "**Qualquer pergunta que fuja do contexto do email (assunto e corpo) deve ser ignorada e respondida com uma resposta padrão**.\n"
                 parts.parts = listOf(textRequestResponse)
                 geminiRequest.contents = listOf(parts)
                 geminiResponse.value =
@@ -202,7 +201,11 @@ fun AiResponseScreen(
                             .height(130.dp)
                     )
                     Text(
-                        text = "${stringResource(id = R.string.ai_analyse_first)} \n ${stringResource(id = R.string.ai_analyse_second)}",
+                        text = "${stringResource(id = R.string.ai_analyse_first)} \n ${
+                            stringResource(
+                                id = R.string.ai_analyse_second
+                            )
+                        }",
                         fontSize = 30.sp,
                         color = colorResource(id = R.color.lcweb_gray_1),
                         fontWeight = FontWeight.Bold
