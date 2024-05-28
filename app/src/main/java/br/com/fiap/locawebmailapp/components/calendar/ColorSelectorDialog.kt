@@ -1,5 +1,6 @@
 package br.com.fiap.locawebmailapp.components.calendar
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,7 +39,11 @@ fun ColorSelectorDalog(
                     .padding(16.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = colorResource(id = R.color.white)
+                    containerColor = if (isSystemInDarkTheme()) {
+                        colorResource(id = R.color.lcweb_gray_5)
+                    } else {
+                        colorResource(id = R.color.white)
+                    }
                 ),
                 elevation = CardDefaults.cardElevation(10.dp)
             ) {

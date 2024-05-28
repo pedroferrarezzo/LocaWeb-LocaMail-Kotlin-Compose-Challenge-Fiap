@@ -1,6 +1,7 @@
 package br.com.fiap.locawebmailapp.components.calendar
 
 import android.util.Log
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,7 +50,11 @@ fun PeopleSelectorDalog(
                     .padding(vertical = 10.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = colorResource(id = R.color.white)
+                    containerColor = if (isSystemInDarkTheme()) {
+                        colorResource(id = R.color.lcweb_gray_5)
+                    } else {
+                        colorResource(id = R.color.white)
+                    }
                 ),
                 elevation = CardDefaults.cardElevation(10.dp)
             ) {

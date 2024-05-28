@@ -1,5 +1,6 @@
 package br.com.fiap.locawebmailapp.components.ai
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,7 +50,11 @@ fun QuestionDialog(
                     .padding(16.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = colorResource(id = R.color.white)
+                    containerColor = if (isSystemInDarkTheme()) {
+                        colorResource(id = R.color.lcweb_gray_5)
+                    } else {
+                        colorResource(id = R.color.white)
+                    }
                 ),
                 elevation = CardDefaults.cardElevation(10.dp)
             ) {
@@ -96,7 +101,10 @@ fun QuestionDialog(
                             errorCursorColor = colorResource(id = R.color.lcweb_red_1),
                             errorTrailingIconColor = colorResource(id = R.color.lcweb_red_1),
                             errorPlaceholderColor = colorResource(id = R.color.lcweb_red_1),
-                            errorIndicatorColor = colorResource(id = R.color.lcweb_red_1)
+                            errorIndicatorColor = colorResource(id = R.color.lcweb_red_1),
+                            focusedLeadingIconColor = colorResource(id = R.color.lcweb_gray_1),
+                            unfocusedLeadingIconColor = colorResource(id = R.color.lcweb_gray_1),
+
                         ),
                         singleLine = true,
                         textStyle = TextStyle(
