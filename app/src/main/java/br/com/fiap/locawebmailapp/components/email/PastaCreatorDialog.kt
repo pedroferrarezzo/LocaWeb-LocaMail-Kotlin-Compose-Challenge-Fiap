@@ -102,7 +102,9 @@ fun PastaCreatorDalog(
                             errorCursorColor = colorResource(id = R.color.lcweb_red_1),
                             errorTrailingIconColor = colorResource(id = R.color.lcweb_red_1),
                             errorPlaceholderColor = colorResource(id = R.color.lcweb_red_1),
-                            errorIndicatorColor = colorResource(id = R.color.lcweb_red_1)
+                            errorIndicatorColor = colorResource(id = R.color.lcweb_red_1),
+                            focusedLeadingIconColor = colorResource(id = R.color.lcweb_gray_1),
+                            unfocusedLeadingIconColor = colorResource(id = R.color.lcweb_gray_1),
                         ),
                         singleLine = true,
                         textStyle = TextStyle(
