@@ -161,7 +161,7 @@
     <string name="user_name_required">O nome é obrigatório</string>
     <string name="toast_already_exist_user">O usuário já existe</string>
     <string name="content_desc_aianalyse">Imagem de uma inteligência artificial analisando</string>
-    <string name="ai_analyse_first">Analise o email</string>
+    <string name="ai_analyse_first">Analisei o email</string>
     <string name="ai_analyse_second">para você</string>
     <string name="content_desc_ai_working">Imagem de uma IA trabalhando</string>
     <string name="ai_summary">Resuma um email rapidamente</string>

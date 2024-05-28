@@ -18,7 +18,7 @@ import br.com.fiap.locawebmailapp.model.ai.AiQuestion
 
 @Database(
     entities = [Agenda::class, Convidado::class, AgendaConvidado::class, Email::class, Anexo::class, Usuario::class, Alteracao::class, Pasta::class, RespostaEmail::class, AnexoRespostaEmail::class, AiQuestion::class],
-    version = 45
+    version = 46
 )
 abstract class InstanceDatabase : RoomDatabase() {
 
