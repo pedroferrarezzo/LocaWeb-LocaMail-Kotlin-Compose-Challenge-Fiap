@@ -16,6 +16,8 @@
     <color name="lcweb_gray_1">#2a343e</color>
     <color name="lcweb_gray_2">#7C2A343E</color>
     <color name="lcweb_gray_3">#B3B3B3</color>
+    <color name="lcweb_gray_5">#121317</color>
+
     <color name="lcweb_colortodo_1">#FFCE09</color>
     <color name="lcweb_colortodo_2">#FF19F4</color>
     <color name="lcweb_colortodo_3">#00FFFF</color>

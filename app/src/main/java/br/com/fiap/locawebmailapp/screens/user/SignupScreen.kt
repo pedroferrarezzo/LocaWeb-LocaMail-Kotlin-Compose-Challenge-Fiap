@@ -392,7 +392,7 @@ fun SignupScreen(navController: NavController) {
                                         "$messageThirdLine \n" +
                                         "$messageFourthLine\n" +
                                         "$messageFifthLine\n" +
-                                        "$messageSixthLine\n\n" +
+                                        "$messageSixthLine\n" +
                                         "$messageSeventhLine\n" +
                                         "$messageEighthLine\n" +
                                         "$messageNinthLine\n" +

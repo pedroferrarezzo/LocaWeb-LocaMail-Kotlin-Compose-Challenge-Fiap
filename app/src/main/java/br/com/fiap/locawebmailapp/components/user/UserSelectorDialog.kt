@@ -1,6 +1,7 @@
 package br.com.fiap.locawebmailapp.components.user
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -62,7 +64,11 @@ fun <T> UserSelectorDalog(
                     .padding(5.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = colorResource(id = R.color.white)
+                    containerColor = if (isSystemInDarkTheme()) {
+                        colorResource(id = R.color.lcweb_gray_5)
+                    } else {
+                        colorResource(id = R.color.white)
+                    }
                 ),
                 elevation = CardDefaults.cardElevation(10.dp)
             ) {
@@ -109,7 +115,7 @@ fun <T> UserSelectorDalog(
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(colorResource(id = R.color.lcweb_red_1)),
-                            shape = RoundedCornerShape(15.dp),
+                            shape = RoundedCornerShape(10.dp),
                             contentPadding = PaddingValues(5.dp)
                         ) {
                             Text(
@@ -129,7 +135,7 @@ fun <T> UserSelectorDalog(
                             modifier = Modifier
                                 .padding(horizontal = 5.dp),
                             colors = ButtonDefaults.buttonColors(colorResource(id = R.color.lcweb_red_1)),
-                            shape = RoundedCornerShape(15.dp),
+                            shape = RoundedCornerShape(10.dp),
                             contentPadding = PaddingValues(5.dp)
                         ) {
                             Text(
@@ -141,6 +147,10 @@ fun <T> UserSelectorDalog(
                             )
                         }
                     }
+
+                    HorizontalDivider(
+                        color = colorResource(id = R.color.lcweb_red_1)
+                    )
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -169,7 +179,8 @@ fun <T> UserSelectorDalog(
                                     }..."
                                 } else {
                                     usuarioSelecionado.value.nome
-                                }
+                                },
+                                color = colorResource(id = R.color.lcweb_gray_1)
                             )
                             Text(
                                 text = if (usuarioSelecionado.value.email.length > 25) {
@@ -180,7 +191,8 @@ fun <T> UserSelectorDalog(
                                     }..."
                                 } else {
                                     usuarioSelecionado.value.email
-                                }
+                                },
+                                color = colorResource(id = R.color.lcweb_gray_1)
                             )
                         }
                     }
@@ -252,7 +264,8 @@ fun <T> UserSelectorDalog(
                                                 }..."
                                             } else {
                                                 it.nome
-                                            }
+                                            },
+                                            color = colorResource(id = R.color.lcweb_gray_1)
                                         )
                                         Text(
                                             text = if (it.email.length > 25) {
@@ -263,7 +276,8 @@ fun <T> UserSelectorDalog(
                                                 }..."
                                             } else {
                                                 it.email
-                                            }
+                                            },
+                                            color = colorResource(id = R.color.lcweb_gray_1)
                                         )
                                     }
                                 }
