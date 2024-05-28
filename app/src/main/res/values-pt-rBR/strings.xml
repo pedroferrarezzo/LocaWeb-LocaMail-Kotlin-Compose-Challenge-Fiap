@@ -141,7 +141,7 @@
     <string name="register_welcome_title">Conecte-se, organize-se e realize tarefas com email pessoal e calendário gratuitos.</string>
     <string name="register_welcome_comeback">Opa, você de volta? Seja bem-vindo(a)!</string>
     <string name="register_forget_pass">Esqueceu sua senha?</string>
-    <string name="register_register">Registre-se</string>
+    <string name="register_register"> Registre-se</string>
     <string name="content_desc_welcome_image">Imagem de boas vindas</string>
     <string name="register_screen_signupupper">CADASTRO</string>
     <string name="content_desc_iconregister">Icone de cadastro</string>

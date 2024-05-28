@@ -140,7 +140,7 @@
     <string name="register_welcome_title">Connect, organize, and get things done with free personal email and calendar.</string>
     <string name="register_welcome_comeback">Oops, are you back? Welcome!</string>
     <string name="register_forget_pass">Forgot your password?</string>
-    <string name="register_register">Register</string>
+    <string name="register_register"> Register</string>
     <string name="content_desc_welcome_image">Welcome image</string>
     <string name="register_screen_signupupper">REGISTER</string>
     <string name="content_desc_iconregister">Register Icon</string>

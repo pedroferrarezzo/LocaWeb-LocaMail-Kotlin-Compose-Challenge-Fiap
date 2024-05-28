@@ -247,9 +247,6 @@ fun LoginScreen(navController: NavController) {
                 isErrorEmail.value = !validateEmail(email)
                 isErrorPassword.value = !validatePassword(password = password)
 
-
-
-
                 if (!isErrorEmail.value && !isErrorPassword.value) {
                     val usuarioExistente = usuarioRepository.retornaUsarioPorEmail(email)
 
@@ -290,7 +287,9 @@ fun LoginScreen(navController: NavController) {
         ) {
 
 
-            Text(text = stringResource(id = R.string.register_screen_login))
+            Text(
+                text = stringResource(id = R.string.register_screen_login),
+                color = colorResource(id = R.color.white))
         }
 
         Row(

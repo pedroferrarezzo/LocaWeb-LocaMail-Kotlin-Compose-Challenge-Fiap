@@ -64,7 +64,9 @@ fun HomeScreen(navController: NavController) {
 
 
                 Text(
-                    text = stringResource(id = R.string.register_screen_advance))
+                    text = stringResource(
+                        id = R.string.register_screen_advance),
+                    color = colorResource(id = R.color.white))
             }
         }
     }
