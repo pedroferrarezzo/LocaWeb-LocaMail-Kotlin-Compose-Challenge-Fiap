@@ -220,12 +220,12 @@ fun AiResponseScreen(
                 ) {
                     Box(
                         modifier
+                            .background(color = colorResource(id = R.color.white), shape = RoundedCornerShape(10.dp))
                             .border(
                                 width = 2.dp,
                                 color = colorResource(id = R.color.lcweb_red_1),
                                 shape = RoundedCornerShape(10.dp)
                             )
-                            .background(color = colorResource(id = R.color.white), shape = RoundedCornerShape(10.dp))
                             .height(300.dp)
                     ) {
                         LazyColumn(
