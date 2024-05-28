@@ -225,19 +225,19 @@ fun AiResponseScreen(
                                 color = colorResource(id = R.color.lcweb_red_1),
                                 shape = RoundedCornerShape(10.dp)
                             )
+                            .background(color = colorResource(id = R.color.white), shape = RoundedCornerShape(10.dp))
                             .height(300.dp)
                     ) {
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
+                            horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             item {
                                 Column(
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .padding(10.dp)
-                                        .background(color = colorResource(id = R.color.white))
                                 ) {
                                     val parser = CommonmarkAstNodeParser(
                                         options = MarkdownParseOptions(true)
