@@ -200,7 +200,6 @@ fun SignupScreen(navController: NavController) {
                     errorBorderColor = colorResource(id = R.color.lcweb_red_1),
                     errorCursorColor = colorResource(id = R.color.lcweb_red_1),
                     errorLabelColor = colorResource(id = R.color.lcweb_red_1),
-                    errorContainerColor = colorResource(id = R.color.white),
                     errorTextColor = colorResource(id = R.color.lcweb_red_1)
                 ),
                 value = nome,
@@ -233,7 +232,6 @@ fun SignupScreen(navController: NavController) {
                     errorBorderColor = colorResource(id = R.color.lcweb_red_1),
                     errorCursorColor = colorResource(id = R.color.lcweb_red_1),
                     errorLabelColor = colorResource(id = R.color.lcweb_red_1),
-                    errorContainerColor = colorResource(id = R.color.white),
                     errorTextColor = colorResource(id = R.color.lcweb_red_1)
                 ),
                 value = email,
@@ -267,7 +265,6 @@ fun SignupScreen(navController: NavController) {
                     errorBorderColor = colorResource(id = R.color.lcweb_red_1),
                     errorCursorColor = colorResource(id = R.color.lcweb_red_1),
                     errorLabelColor = colorResource(id = R.color.lcweb_red_1),
-                    errorContainerColor = colorResource(id = R.color.white),
                     focusedTrailingIconColor = colorResource(id = R.color.lcweb_gray_1),
                     unfocusedTrailingIconColor = colorResource(id = R.color.lcweb_gray_1),
                     errorTrailingIconColor = colorResource(id = R.color.lcweb_red_1),
