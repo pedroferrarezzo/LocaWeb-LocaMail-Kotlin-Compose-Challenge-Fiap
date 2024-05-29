@@ -252,7 +252,8 @@ fun EmailsPastaScreen(navController: NavController, id_pasta: Long) {
 
                                         pastaStateEmailLst.remove(it)
 
-                                    }
+                                    },
+                                    usuarioSelecionado = usuarioSelecionado,
                                 )
                             }
                         }

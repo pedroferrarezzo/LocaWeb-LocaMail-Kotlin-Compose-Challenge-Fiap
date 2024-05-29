@@ -226,7 +226,8 @@ fun EmailsSpamScreen(navController: NavController) {
                                     isImportant = isImportant,
                                     attachEmailList = attachEmailList,
                                     timeState = timeState,
-                                    email = it
+                                    email = it,
+                                    usuarioSelecionado = usuarioSelecionado,
                                 )
                             }
                         }

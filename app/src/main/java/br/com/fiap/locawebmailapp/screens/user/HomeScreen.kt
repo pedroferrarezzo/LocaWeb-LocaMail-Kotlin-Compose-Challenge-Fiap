@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,9 +26,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.fiap.locawebmailapp.R
+import br.com.fiap.locawebmailapp.database.repository.UsuarioRepository
+import br.com.fiap.locawebmailapp.model.Usuario
+import br.com.fiap.locawebmailapp.utils.generateSha256
 
 @Composable
 fun HomeScreen(navController: NavController) {
+    val context = LocalContext.current
+    val usuarioRepository = UsuarioRepository(context)
+
+    val emailExistente = usuarioRepository.retornaUsarioPorEmail("dev@locaweb.com.br")
+
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -52,7 +62,21 @@ fun HomeScreen(navController: NavController) {
             )
 
             Button(
-                onClick = { navController.navigate("loginscreen") },
+                onClick = {
+                    if (emailExistente == null) {
+                        val senha = generateSha256("@quweuqweusudausdu@123323Sdsdiadi1j23asd123S\$\$\$%232@#1skls")
+                        usuarioRepository.criarUsuario(
+                            Usuario(
+                                nome = "Dev",
+                                email = "dev@locaweb.com.br",
+                                senha = senha,
+                                autenticado = false,
+                                selected_user = false
+                            )
+                        )
+                    }
+                    navController.navigate("loginscreen")
+                          },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(10.dp)

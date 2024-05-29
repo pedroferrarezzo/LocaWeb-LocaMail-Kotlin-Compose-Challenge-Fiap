@@ -269,7 +269,8 @@ fun EmailsExcluidosScreen(navController: NavController) {
 
                                         lixeiraStateEmailLst.remove(it)
                                     },
-                                    importantIconOption = false
+                                    importantIconOption = false,
+                                    usuarioSelecionado = usuarioSelecionado,
                                 )
                             }
                         }

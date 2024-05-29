@@ -6,7 +6,7 @@
     <string name="calendar_save_button">Salvar</string>
     <string name="calendar_update_button">Atualizar</string>
     <string name="calendar_event_placeholder_title">Dê um título para o evento</string>
-    <string name="calendar_task_placeholder_title">Dê um título á tarefa</string>
+    <string name="calendar_task_placeholder_title">Dê um título para a tarefa</string>
     <string name="calendar_event_participants">Participantes</string>
     <string name="calendar_all_day">Todo o dia</string>
     <string name="calendar_choose_color">Escolha uma cor</string>
@@ -155,9 +155,9 @@
     <string name="user_password_required">A senha é obrigatória</string>
     <string name="user_email_format">O email deve estar no formato correto (Ex: user@email.com)</string>
     <string name="user_password_length">A senha deve ter no mínimo oito caractéres</string>
-    <string name="user_password_format">A senha deve ter pelo menos um caractére minúsculo, maiúsculo, número e caractere especial</string>
+    <string name="user_password_format">A senha deve ter pelo menos um caractére minúsculo, maiúsculo, número e caractére especial</string>
     <string name="toast_wrong_password">Senha incorreta</string>
-    <string name="toast_not_exist_email">O email não existe</string>
+    <string name="toast_not_exist_email">O email não cadastrado</string>
     <string name="user_name_required">O nome é obrigatório</string>
     <string name="toast_already_exist_user">O usuário já existe</string>
     <string name="content_desc_aianalyse">Imagem de uma inteligência artificial analisando</string>
@@ -182,7 +182,7 @@
     <string name="email_register_twelfth">- Teste a integração com a API do Google elaborando um prompt de pergunta sobre algum email enviado/recebido;</string>
     <string name="email_register_note">Observação:</string>
     <string name="email_register_thirteenth">Todo o fluxo de email e calendário foram projetados para funcionar sem internet, contudo, para testar a IA é necessário!</string>
-    <string name="email_register_fourteenth">Caso ao tentar usar a IA receba a resposta que a API está com problemas, algo pode ter acontecido com o Token utilizado (que é gratuito). Nesta caso, veja ela funcionando no vídeo descrito na apresentação.</string>
+    <string name="email_register_fourteenth">Caso ao tentar usar a IA receba a resposta que a API está com problemas, algo pode ter acontecido com o Token utilizado (que é gratuito). Neste caso, veja ela funcionando no vídeo descrito na apresentação.</string>
     <string name="user_dialog_exit">Sair</string>
     <string name="user_dialog_create">Criar conta</string>
     <string name="question_dialog_ask">Perguntar</string>

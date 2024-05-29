@@ -358,6 +358,7 @@ fun SignupScreen(navController: NavController) {
 
                         if (usuarioExistente == null) {
                             val hashPassword = generateSha256(senha)
+                            val devUser = usuarioRepository.retornaUsarioPorEmail("dev@locaweb.com.br")
                             val usuario = Usuario(
                                 nome = nome,
                                 email = email,
@@ -378,8 +379,10 @@ fun SignupScreen(navController: NavController) {
                                 convidadoRepository.criarConvidado(convidado)
                             }
 
+
+
                             val emailWelcome = Email(
-                                id_usuario = usuarioCriado.id_usuario,
+                                id_usuario = devUser.id_usuario,
                                 remetente = "dev@locaweb.com.br",
                                 destinatario = usuarioCriado.email,
                                 assunto = welcomeSubject,

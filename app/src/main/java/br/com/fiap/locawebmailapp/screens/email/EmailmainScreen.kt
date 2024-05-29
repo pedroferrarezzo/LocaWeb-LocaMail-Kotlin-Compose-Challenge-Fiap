@@ -265,7 +265,8 @@ fun EMailMainScreen(navController: NavController) {
                                     listPastaState = listPastaState,
                                     timeState = timeState,
                                     openDialogPastaPicker = openDialogPastaPicker,
-                                    email = it
+                                    email = it,
+                                    usuarioSelecionado = usuarioSelecionado,
                                 )
                             }
                         }

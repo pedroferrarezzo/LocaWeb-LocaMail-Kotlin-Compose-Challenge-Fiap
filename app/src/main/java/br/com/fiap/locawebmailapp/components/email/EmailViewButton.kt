@@ -38,6 +38,7 @@ import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.model.EmailComAlteracao
 import br.com.fiap.locawebmailapp.model.Pasta
 import br.com.fiap.locawebmailapp.model.RespostaEmail
+import br.com.fiap.locawebmailapp.model.Usuario
 import br.com.fiap.locawebmailapp.utils.convertTo12Hours
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,7 +60,8 @@ fun EmailViewButton(
     email: EmailComAlteracao,
     moveIconOption: Boolean = false,
     importantIconOption: Boolean = true,
-    onClickMoveButton: () -> Unit = {}
+    onClickMoveButton: () -> Unit = {},
+    usuarioSelecionado: MutableState<Usuario>
 
     ) {
     Button(
@@ -122,18 +124,38 @@ fun EmailViewButton(
                         )
                     }
 
-                    Text(
-                        text = if (email.email.destinatario.length > 25) {
-                            "${stringResource(id = R.string.mail_generic_to)} ${
-                                email.email.destinatario.take(
-                                    25
-                                )
-                            }..."
-                        } else {
-                            "${stringResource(id = R.string.mail_generic_to)} ${email.email.destinatario}"
-                        },
-                        maxLines = 1
-                    )
+                    if (email.email.id_usuario == usuarioSelecionado.value.id_usuario) {
+                        Text(
+                            text = if (email.email.destinatario.length > 25) {
+                                "${stringResource(id = R.string.mail_generic_to)} ${
+                                    email.email.destinatario.take(
+                                        25
+                                    )
+                                }..."
+                            } else {
+                                "${stringResource(id = R.string.mail_generic_to)} ${email.email.destinatario}"
+                            },
+                            maxLines = 1
+                        )
+
+                    }
+                    else {
+                        Text(
+                            text = if (email.email.remetente.length > 25) {
+                                "${stringResource(id = R.string.mail_generic_from)} ${
+                                    email.email.remetente.take(
+                                        25
+                                    )
+                                }..."
+                            } else {
+                                "${stringResource(id = R.string.mail_generic_from)} ${email.email.remetente}"
+                            },
+                            maxLines = 1
+                        )
+
+                    }
+
+
                 }
 
 

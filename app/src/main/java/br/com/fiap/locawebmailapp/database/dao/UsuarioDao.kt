@@ -10,7 +10,6 @@ interface UsuarioDao {
     @Insert
     fun criarUsuario(usuario: Usuario): Long
 
-
     @Query("SELECT * FROM T_LCW_USUARIO where email = :email")
     fun retornaUsarioPorEmail(email: String): Usuario
 
@@ -18,13 +17,13 @@ interface UsuarioDao {
     fun retornaUsuarioPorId(id_usuario: Long): Usuario
 
 
-    @Query("SELECT * FROM T_LCW_USUARIO")
+    @Query("SELECT * FROM T_LCW_USUARIO where email != 'dev@locaweb.com.br'")
     fun listarUsuarios(): List<Usuario>
 
-    @Query("SELECT * FROM T_LCW_USUARIO where selected_user = 0")
+    @Query("SELECT * FROM T_LCW_USUARIO where selected_user = 0 AND email != 'dev@locaweb.com.br'")
     fun listarUsuariosNaoSelecionados(): List<Usuario>
 
-    @Query("SELECT * FROM T_LCW_USUARIO where selected_user = 1")
+    @Query("SELECT * FROM T_LCW_USUARIO where selected_user = 1 AND email != 'dev@locaweb.com.br'")
     fun listarUsuarioSelecionado(): Usuario
 
     @Query("UPDATE T_LCW_USUARIO SET selected_user = 0 where selected_user = 1")
@@ -37,7 +36,7 @@ interface UsuarioDao {
     fun atualizaAutenticaUsuario(id_usuario: Long, autenticado: Boolean)
 
 
-    @Query("SELECT * FROM T_LCW_USUARIO where autenticado = 1")
+    @Query("SELECT * FROM T_LCW_USUARIO where autenticado = 1 AND email != 'dev@locaweb.com.br'")
     fun listarUsuariosAutenticados(): List<Usuario>
 
 
