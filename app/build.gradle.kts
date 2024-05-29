@@ -87,7 +87,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Calendar Composale
+    // Calendar Composable
     implementation(libs.compose)
 
     // Dependencias do ROOM
