@@ -104,7 +104,7 @@
     <string name="calendar_event_draft_everydayuntil">every day until:</string>
     <string name="calendar_event_draft_hourtext">Event time:</string>
     <string name="calendar_event_draft_allday">All day</string>
-    <string name="mail_generic_move_all">Mover all</string>
+    <string name="mail_generic_move_all">Move all</string>
     <string name="calendar_mail_options_selector_no">Nothing</string>
     <string name="calendar_mail_options_selector_invite">Email invitation</string>
     <string name="calendar_mail_options_selector_draft">Save draft</string>
