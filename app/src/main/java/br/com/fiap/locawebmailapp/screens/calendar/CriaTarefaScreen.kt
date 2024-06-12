@@ -58,9 +58,13 @@ import br.com.fiap.locawebmailapp.utils.localDateToMillis
 import br.com.fiap.locawebmailapp.utils.returnColor
 import br.com.fiap.locawebmailapp.utils.returnOneMonthFromDate
 import br.com.fiap.locawebmailapp.utils.returnStringRepeatOption
+import br.com.fiap.locawebmailapp.utils.stringToLocalDate
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
+import java.util.TimeZone
 
 @Stable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -96,8 +100,12 @@ fun CriaTarefaScreen(navController: NavController) {
         )
     )
     val openDialogDatePicker = remember { mutableStateOf(false) }
+    val timezoneFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+        timeZone = TimeZone.getTimeZone("GMT")
+    }
+
     val millisToLocalDate = datePickerState.selectedDateMillis?.let {
-        convertMillisToLocalDate(it)
+        stringToLocalDate(timezoneFormatter.format(it))
     }
     val selectedDate = remember {
         mutableStateOf(dateToCompleteStringDate(LocalDate.now()))

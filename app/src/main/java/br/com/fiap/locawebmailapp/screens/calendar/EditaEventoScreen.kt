@@ -72,9 +72,12 @@ import br.com.fiap.locawebmailapp.utils.returnStringRepeatOption
 import br.com.fiap.locawebmailapp.utils.stringToDate
 import br.com.fiap.locawebmailapp.utils.stringToLocalDate
 import br.com.fiap.locawebmailapp.utils.validateIfAllDay
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
+import java.util.TimeZone
 
 @Stable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -130,8 +133,12 @@ fun EditaEventoScreen(navController: NavController, id_agenda: Int) {
         initialSelectedDateMillis = if (agenda != null) localDateToMillis(stringToLocalDate(agenda.data)) else 0
     )
     val openDialogDatePicker = remember { mutableStateOf(false) }
+    val timezoneFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+        timeZone = TimeZone.getTimeZone("GMT")
+    }
+
     val millisToLocalDate = datePickerState.selectedDateMillis?.let {
-        convertMillisToLocalDate(it)
+        stringToLocalDate(timezoneFormatter.format(it))
     }
     val selectedDate = remember {
         mutableStateOf(stringToDate(agenda.data))

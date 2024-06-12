@@ -9,12 +9,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import br.com.fiap.locawebmailapp.R
 import br.com.fiap.locawebmailapp.utils.dateToCompleteStringDate
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,6 +57,7 @@ fun DateSelectorDialog(
                 }
             }
         ) {
+
             DatePicker(
                 state = datePickerState,
                 colors = DatePickerDefaults.colors(
@@ -76,7 +81,8 @@ fun DateSelectorDialog(
                         errorSupportingTextColor = colorResource(id = R.color.lcweb_red_1)
                     )
 
-                ),
+
+                )
             )
         }
     }
