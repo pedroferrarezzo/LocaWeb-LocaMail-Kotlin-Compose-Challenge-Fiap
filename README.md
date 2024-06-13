@@ -10,7 +10,7 @@ Requisitos:
 - Integração com calendário: Permitir a integração do aplicativo de e-mail com calendário. Isso proporcionará uma experiência mais integrada e conveniente para os usuários;
 - Modo Offline: Arquitete uma forma para o funcionamento do aplicativo de modo offline, que permita aos usuários acessar e gerenciar seus e-mails e calendário mesmo quando não estiverem conectados à internet."
 
-# Tecnologias Utilizadas
+# TECNOLOGIAS UTILIZADAS
 - Kotlin;
 - Android API Level 27 (Android Oreo);
 - Framework UI: Jetpack Compose;
