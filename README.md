@@ -11,7 +11,7 @@ Requisitos:
 - Modo Offline: Arquitete uma forma para o funcionamento do aplicativo de modo offline, que permita aos usuários acessar e gerenciar seus e-mails e calendário mesmo quando não estiverem conectados à internet."
   
 # DEMO - APLICATIVO
-https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/9404d6f4-6ea9-4fa0-ad5a-85343df40d66
+https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/426a9b43-e7d5-473b-88af-3a26a69019e1
 
 # TECNOLOGIAS UTILIZADAS
 - Kotlin;
