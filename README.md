@@ -9,12 +9,6 @@ Requisitos:
 - Recursos Avançados de Organização: Implemente recursos avançados de organização de e-mails, como marcadores, filtros inteligentes, categorização automática e destaque de mensagens importantes;
 - Integração com calendário: Permitir a integração do aplicativo de e-mail com calendário. Isso proporcionará uma experiência mais integrada e conveniente para os usuários;
 - Modo Offline: Arquitete uma forma para o funcionamento do aplicativo de modo offline, que permita aos usuários acessar e gerenciar seus e-mails e calendário mesmo quando não estiverem conectados à internet."
-  
-# DEMO - APLICATIVO
-https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/426a9b43-e7d5-473b-88af-3a26a69019e1
-
-# INTEGRAÇÃO - CALENDÁRIO X EMAIL
-https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/f18d1e4e-16a6-47c5-b929-947ef5a86254
 
 # TECNOLOGIAS UTILIZADAS
 - Kotlin;
@@ -23,6 +17,12 @@ https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/f18d1e4e
 - SGBD SQLite;
 - ORM ROOM;
 - Google Gemini LLM.
+
+# DEMO - APLICATIVO
+https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/426a9b43-e7d5-473b-88af-3a26a69019e1
+
+# INTEGRAÇÃO - CALENDÁRIO X EMAIL
+https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/f18d1e4e-16a6-47c5-b929-947ef5a86254
 
 # CARACTERÍSTICAS DISTINTIVAS DO APLICATIVO
 - Multicontas: Permite criar e gerenciar múltiplas contas de email em um único aplicativo, facilitando a organização de diferentes perfis de usuário;
