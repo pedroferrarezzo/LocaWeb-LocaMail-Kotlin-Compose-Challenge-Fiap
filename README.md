@@ -21,6 +21,15 @@ https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/426a9b43
 - ORM ROOM;
 - Google Gemini LLM.
 
+# CARACTERÍSTICAS DISTINTIVAS DO APLICATIVO
+- Multicontas: Permite criar e gerenciar múltiplas contas de email em um único aplicativo, facilitando a organização de diferentes perfis de usuário;
+- Sincronização Offline: Todos os emails e compromissos podem ser acessados e gerenciados sem conexão com a internet;
+- Gerenciamento de Rascunhos: Emails não enviados são automaticamente salvos como rascunhos, garantindo que nenhuma mensagem importante seja perdida;
+- Organização Avançada: Marque emails como favoritos, spam, arquivados ou excluídos. Crie pastas personalizadas para organizar suas mensagens de maneira eficiente;
+- Calendário Integrado: Criação de tarefas e eventos diretamente no aplicativo. Ao convidar participantes, os convites são enviados por email e, quando aceitos, os eventos são automaticamente adicionados ao calendário dos convidados;
+- Classificação Automática: Convites de eventos são automaticamente categorizados como emails sociais, facilitando a organização da caixa de entrada;
+- Integração com Google API: Utilize a integração com a API do Google para elaborar perguntas sobre emails enviados ou recebidos, aumentando a produtividade e a eficiência no gerenciamento de informações.
+
 # MODELO DE ENTIDADE E RELACIONAMENTO
 ![image](https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/cad1d717-8e33-4255-a7da-115a2f5e484d)
 
@@ -64,6 +73,3 @@ https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/426a9b43
 
   - Dados sensíveis como Tokens de API não foram inseridos diretamente no código fonte da aplicação, mas em um arquivo de propriedades a parte.
     ![image](https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/6b1e79ba-4a5e-4582-958b-50e41bc020ec)
-
-
-
