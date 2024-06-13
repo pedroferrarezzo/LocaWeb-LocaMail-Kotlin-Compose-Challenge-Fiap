@@ -13,6 +13,9 @@ Requisitos:
 # DEMO - APLICATIVO
 https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/426a9b43-e7d5-473b-88af-3a26a69019e1
 
+# INTEGRAÇÃO - CALENDÁRIO X EMAIL
+https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/f18d1e4e-16a6-47c5-b929-947ef5a86254
+
 # TECNOLOGIAS UTILIZADAS
 - Kotlin;
 - Android API Level 27 (Android Oreo);
