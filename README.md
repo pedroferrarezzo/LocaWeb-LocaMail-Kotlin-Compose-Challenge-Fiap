@@ -9,6 +9,9 @@ Requisitos:
 - Recursos Avançados de Organização: Implemente recursos avançados de organização de e-mails, como marcadores, filtros inteligentes, categorização automática e destaque de mensagens importantes;
 - Integração com calendário: Permitir a integração do aplicativo de e-mail com calendário. Isso proporcionará uma experiência mais integrada e conveniente para os usuários;
 - Modo Offline: Arquitete uma forma para o funcionamento do aplicativo de modo offline, que permita aos usuários acessar e gerenciar seus e-mails e calendário mesmo quando não estiverem conectados à internet."
+  
+# DEMO - APLICATIVO
+https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/9404d6f4-6ea9-4fa0-ad5a-85343df40d66
 
 # TECNOLOGIAS UTILIZADAS
 - Kotlin;
@@ -20,5 +23,5 @@ Requisitos:
 # MODELO DE ENTIDADE E RELACIONAMENTO
 ![image](https://github.com/pedroferrarezzo/locawebmailapp-fiap/assets/124400471/cad1d717-8e33-4255-a7da-115a2f5e484d)
 
-# DEMO - APLICATIVO
+
 
