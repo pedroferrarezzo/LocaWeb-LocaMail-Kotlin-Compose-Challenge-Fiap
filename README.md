@@ -16,6 +16,7 @@ Requisitos:
 - Framework UI: Jetpack Compose;
 - SGBD SQLite;
 - ORM ROOM;
+- Retrofit e GSON;
 - Google Gemini LLM.
 
 # DEMO - APLICATIVO
