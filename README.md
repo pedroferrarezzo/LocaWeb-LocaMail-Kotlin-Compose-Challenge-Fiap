@@ -1,6 +1,6 @@
-# DESAFIO - 2ª PARTE
+# DESAFIO - 1ª PARTE
 
-`1ª PARTE DO DESAFIO:` https://github.com/pedroferrarezzo/LocaWeb-LocaMail-Kotlin-Compose-Challenge-Fiap
+`2ª PARTE DO DESAFIO:` https://github.com/pedroferrarezzo/LocaWeb-LocaMail-Kotlin-Compose-Java-SpringBoot-Challenge-Fiap
 
 "Desenvolver um aplicativo de e-mail, inovador, que visa revolucionar a forma como as pessoas interagem com suas caixas de entrada.
 
